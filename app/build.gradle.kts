@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.a3rdtimesthecharm"
+    namespace = "com.can_inanir.spacex"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.a3rdtimesthecharm"
+        applicationId = "com.can_inanir.spacex"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
@@ -91,4 +91,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.gms:google-services:4.4.2")
     implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
 }

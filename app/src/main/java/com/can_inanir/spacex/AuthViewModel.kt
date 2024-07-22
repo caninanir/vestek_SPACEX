@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val _userState = MutableStateFlow(auth.currentUser)
+    private val _userState = MutableStateFlow<FirebaseUser?>(auth.currentUser)
     val userState: StateFlow<FirebaseUser?> = _userState
 
     init {
@@ -61,5 +61,18 @@ class AuthViewModel : ViewModel() {
                 Log.e("AuthViewModel", "createAccount:failure", e)
             }
         }
+    }
+
+    fun handleGoogleAccessToken(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("AuthViewModel", "signInWithCredential:success")
+                    _userState.value = auth.currentUser
+                } else {
+                    Log.w("AuthViewModel", "signInWithCredential:failure", task.exception)
+                }
+            }
     }
 }

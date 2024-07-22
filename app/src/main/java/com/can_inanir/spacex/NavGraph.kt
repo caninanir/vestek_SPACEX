@@ -10,8 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
+
+
 @Composable
-fun NavGraph() {
+fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
@@ -21,13 +23,13 @@ fun NavGraph() {
             RocketsScreen(navController)
         }
         composable(BottomNavItem.Login.route) {
-            LoginScreen()
+            LoginScreen(signInWithGoogle)
         }
         composable(BottomNavItem.Profile.route) {
             if (userState != null) {
                 ProfileScreen()
             } else {
-                LoginScreen()
+                LoginScreen(signInWithGoogle)
             }
         }
         composable(
@@ -35,6 +37,9 @@ fun NavGraph() {
             arguments = listOf(navArgument("rocketId") { type = NavType.StringType })
         ) { backStackEntry ->
             RocketDetailScreen(backStackEntry.arguments?.getString("rocketId"))
+        }
+        composable(BottomNavItem.CreateAccount.route) {
+            CreateAccountScreen()
         }
     }
 

@@ -10,13 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/space"
         android:supportsRtl="true"
-        android:theme="@style/Theme._3rdtimesthecharm"
+        android:theme="@style/Theme._spacex"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme._3rdtimesthecharm">
+            android:theme="@style/Theme._spacex">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

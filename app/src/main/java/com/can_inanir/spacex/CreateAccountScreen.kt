@@ -1,8 +1,6 @@
 package com.can_inanir.spacex
 
 
-
-import android.view.View
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.Button
@@ -10,15 +8,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import com.google.firebase.auth.FirebaseUser
 
 @Composable
-fun LoginScreen(signInWithGoogle: () -> Unit) {
+fun CreateAccountScreen() {
     val authViewModel: AuthViewModel = viewModel()
-    val userState by authViewModel.userState.collectAsState()
+    val userState by authViewModel.userState.collectAsState(initial = null)
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -33,7 +30,7 @@ fun LoginScreen(signInWithGoogle: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Login")
+            Text(text = "Create Account")
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
@@ -55,28 +52,19 @@ fun LoginScreen(signInWithGoogle: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { authViewModel.login(email, password) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Login")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
                 onClick = { authViewModel.createAccount(email, password) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Create Account")
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { signInWithGoogle() },
+                onClick = { authViewModel.login(email, password) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Sign in with Google")
+                Text(text = "Login")
             }
         }
     }
