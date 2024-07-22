@@ -3,10 +3,13 @@ package com.example.a3rdtimesthecharm
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-
+import retrofit2.http.Path
 interface ApiService {
     @GET("rockets")
     suspend fun getRockets(): List<Rocket>
+
+    @GET("rockets/{id}")
+    suspend fun getRocket(@Path("id") id: String): Rocket
 }
 
 object RetrofitInstance {
