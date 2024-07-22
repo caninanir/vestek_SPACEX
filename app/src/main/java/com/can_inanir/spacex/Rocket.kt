@@ -1,4 +1,4 @@
-package com.example.a3rdtimesthecharm
+package com.can_inanir.spacex
 
 data class Rocket(
     val id: String,

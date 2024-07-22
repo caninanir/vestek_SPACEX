@@ -1,4 +1,4 @@
-package com.example.a3rdtimesthecharm
+package com.can_inanir.spacex
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

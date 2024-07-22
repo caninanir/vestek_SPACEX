@@ -1,5 +1,4 @@
-package com.example.a3rdtimesthecharm
-
+package com.can_inanir.spacex
 
 import android.content.Intent
 import android.net.Uri

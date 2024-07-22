@@ -1,9 +1,9 @@
-package com.example.a3rdtimesthecharm
+package com.can_inanir.spacex
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ProfileScreen() {
-    Text(text = "Profile Screen")
+fun RocketsScreen() {
+    Text(text = "Rockets Screen")
 }
