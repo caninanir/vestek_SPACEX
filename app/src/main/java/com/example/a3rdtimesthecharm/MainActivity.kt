@@ -22,7 +22,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.*
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberImagePainter
 import androidx.compose.material3.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -32,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 
 import android.content.Intent
 import android.net.Uri
+import coil.compose.rememberAsyncImagePainter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,7 +106,7 @@ fun RocketCard(rocket: Rocket, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
             rocket.flickr_images.firstOrNull()?.let { imageUrl ->
                 Image(
-                    painter = rememberImagePainter(data = imageUrl),
+                    painter = rememberAsyncImagePainter(model = imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -159,7 +159,7 @@ fun RocketDetail(rocket: Rocket, paddingValues: PaddingValues) {
     ) {
         rocket.flickr_images.firstOrNull()?.let { imageUrl ->
             Image(
-                painter = rememberImagePainter(data = imageUrl),
+                painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
