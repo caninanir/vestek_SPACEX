@@ -14,46 +14,65 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketsScreen(navController: NavController) {
     val viewModel: RocketsViewModel = viewModel()
-    val rockets by viewModel.rockets.collectAsState(emptyList())
+    val rockets by viewModel.rockets.collectAsState(initial = emptyList())
+    val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("SpaceX Rockets") })
         },
         content = { paddingValues ->
-            RocketList(rockets, paddingValues, navController)
+            RocketList(rockets, favorites, paddingValues, navController, viewModel)
         }
     )
 }
 
 @Composable
-fun RocketList(rockets: List<Rocket>, paddingValues: PaddingValues, navController: NavController) {
+fun RocketList(
+    rockets: List<Rocket>,
+    favorites: Set<String>,
+    paddingValues: PaddingValues,
+    navController: NavController,
+    viewModel: RocketsViewModel
+) {
+    val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
-        rockets.forEach { rocket ->
-            RocketCard(rocket) {
-                navController.navigate("${BottomNavItem.Rockets.route}/${rocket.id}")
-            }
+        sortedRockets.forEach { rocket ->
+            RocketCard(
+                rocket = rocket,
+                isFavorite = favorites.contains(rocket.name),
+                onClick = { navController.navigate("rocketDetail/${rocket.id}") },
+                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun RocketCard(rocket: Rocket, onClick: () -> Unit) {
+fun RocketCard(
+    rocket: Rocket,
+    isFavorite: Boolean,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +94,21 @@ fun RocketCard(rocket: Rocket, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            Text(text = rocket.description, maxLines = 3)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = rocket.description, maxLines = 3, modifier = Modifier.weight(1f))
+                IconButton(onClick = onFavoriteClick) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+                        ),
+                        contentDescription = null
+                    )
+                }
+            }
         }
     }
 }
+

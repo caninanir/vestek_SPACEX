@@ -27,21 +27,17 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
         }
         composable(BottomNavItem.Profile.route) {
             if (userState != null) {
-                ProfileScreen()
+                ProfileScreen(navController)
             } else {
                 LoginScreen(signInWithGoogle)
             }
         }
         composable(
-            "${BottomNavItem.Rockets.route}/{rocketId}",
+            route = "rocketDetail/{rocketId}",
             arguments = listOf(navArgument("rocketId") { type = NavType.StringType })
         ) { backStackEntry ->
             RocketDetailScreen(backStackEntry.arguments?.getString("rocketId"))
         }
-        composable(BottomNavItem.CreateAccount.route) {
-            CreateAccountScreen()
-        }
     }
-
     BottomNavBar(navController = navController)
 }

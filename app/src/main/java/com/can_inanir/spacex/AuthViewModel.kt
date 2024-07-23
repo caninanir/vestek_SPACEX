@@ -7,9 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+
+val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -18,8 +23,11 @@ class AuthViewModel : ViewModel() {
     val userState: StateFlow<FirebaseUser?> = _userState
 
     init {
-        auth.addAuthStateListener {
-            _userState.value = it.currentUser
+        auth.addAuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            user?.let {
+                checkAndCreateUserDocument(it.email!!)
+            }
         }
     }
 
@@ -31,6 +39,7 @@ class AuthViewModel : ViewModel() {
                         if (task.isSuccessful) {
                             Log.d("AuthViewModel", "signInWithEmail:success")
                             _userState.value = auth.currentUser
+                            auth.currentUser?.let { checkAndCreateUserDocument(it.email!!) }
                         } else {
                             Log.w("AuthViewModel", "signInWithEmail:failure", task.exception)
                         }
@@ -41,8 +50,11 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+
+
     fun logout() {
         auth.signOut()
+        _userState.value = null
     }
 
     fun createAccount(email: String, password: String) {
@@ -53,6 +65,7 @@ class AuthViewModel : ViewModel() {
                         if (task.isSuccessful) {
                             Log.d("AuthViewModel", "createUserWithEmail:success")
                             _userState.value = auth.currentUser
+                            auth.currentUser?.let { checkAndCreateUserDocument(it.email!!) }
                         } else {
                             Log.w("AuthViewModel", "createUserWithEmail:failure", task.exception)
                         }
@@ -74,5 +87,20 @@ class AuthViewModel : ViewModel() {
                     Log.w("AuthViewModel", "signInWithCredential:failure", task.exception)
                 }
             }
+    }
+}
+
+
+
+private fun checkAndCreateUserDocument(email: String) {
+    val userDocRef = db.collection("users").document(email)
+    userDocRef.get().addOnSuccessListener { documentSnapshot ->
+        if (!documentSnapshot.exists()) {
+            val userData = hashMapOf(
+                "email" to email,
+                "favorites" to emptyMap<String, Boolean>()
+            )
+            userDocRef.set(userData, SetOptions.merge())
+        }
     }
 }

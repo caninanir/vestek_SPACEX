@@ -1,5 +1,6 @@
 package com.can_inanir.spacex
 
+@Suppress("PropertyName")
 data class Rocket(
     val id: String,
     val name: String,
@@ -8,5 +9,6 @@ data class Rocket(
     val cost_per_launch: Long,
     val success_rate_pct: Int,
     val wikipedia: String,
-    val flickr_images: List<String>
+    val flickr_images: List<String>,
 )
+

@@ -14,13 +14,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberAsyncImagePainter
-@OptIn(ExperimentalMaterial3Api::class)
+import coil.compose.rememberAsyncImagePainter@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketDetailScreen(rocketId: String?) {
     val viewModel: RocketsViewModel = viewModel()
+    val rocket by viewModel.selectedRocket.collectAsState(initial = null)
+    val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
     LaunchedEffect(rocketId) {
         if (rocketId != null) {
@@ -28,15 +30,18 @@ fun RocketDetailScreen(rocketId: String?) {
         }
     }
 
-    val rocket by viewModel.selectedRocket.collectAsState()
-
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(rocket?.name ?: "Rocket Details") })
         },
         content = { paddingValues ->
             if (rocket != null) {
-                RocketDetail(rocket!!, paddingValues)
+                RocketDetail(
+                    rocket = rocket!!,
+                    isFavorite = favorites.contains(rocket!!.name),
+                    paddingValues = paddingValues,
+                    viewModel = viewModel
+                )
             } else {
                 Text("Loading...", modifier = Modifier.padding(paddingValues))
             }
@@ -45,7 +50,12 @@ fun RocketDetailScreen(rocketId: String?) {
 }
 
 @Composable
-fun RocketDetail(rocket: Rocket, paddingValues: PaddingValues) {
+fun RocketDetail(
+    rocket: Rocket,
+    isFavorite: Boolean,
+    paddingValues: PaddingValues,
+    viewModel: RocketsViewModel
+) {
     val context = LocalContext.current
 
     Column(
@@ -75,12 +85,19 @@ fun RocketDetail(rocket: Rocket, paddingValues: PaddingValues) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = rocket.description)
         Spacer(modifier = Modifier.height(8.dp))
-
         Button(onClick = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(rocket.wikipedia))
             context.startActivity(intent)
         }) {
             Text("Learn More")
+        }
+        IconButton(onClick = { viewModel.toggleFavorite(rocket.name) }) {
+            Icon(
+                painter = painterResource(
+                    id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+                ),
+                contentDescription = null
+            )
         }
     }
 }

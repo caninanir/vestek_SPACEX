@@ -12,18 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
 fun LoginScreen(signInWithGoogle: () -> Unit) {
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
+    val navController = rememberNavController()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     if (userState != null) {
-        ProfileScreen()
+        ProfileScreen(navController)
     } else {
         Column(
             modifier = Modifier

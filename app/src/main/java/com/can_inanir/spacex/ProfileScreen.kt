@@ -11,11 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
+
+    LaunchedEffect(userState) {
+        if (userState == null) {
+            navController.navigate(BottomNavItem.Login.route) {
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -24,12 +34,15 @@ fun ProfileScreen() {
     ) {
         Text(text = "Profile")
         Spacer(modifier = Modifier.height(16.dp))
-
         userState?.let { user ->
             Text(text = "Email: ${user.email}")
             Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { authViewModel.logout() }) {
+            Button(onClick = {
+                authViewModel.logout()
+                navController.navigate(BottomNavItem.Login.route) {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+            }) {
                 Text(text = "Logout")
             }
         }
