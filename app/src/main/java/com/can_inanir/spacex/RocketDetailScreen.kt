@@ -54,7 +54,7 @@ fun RocketDetail(rocket: Rocket, paddingValues: PaddingValues) {
             .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
-        rocket.flickr_images.firstOrNull()?.let { imageUrl ->
+        rocket.flickrImages.firstOrNull()?.let { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = null,
@@ -67,11 +67,11 @@ fun RocketDetail(rocket: Rocket, paddingValues: PaddingValues) {
         }
         Text(text = rocket.name, style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "First flight: ${rocket.first_flight}")
+        Text(text = "First flight: ${rocket.firstFlight}")
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Cost per launch: \$${rocket.cost_per_launch}")
+        Text(text = "Cost per launch: \$${rocket.costPerLaunch}")
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Success rate: ${rocket.success_rate_pct}%")
+        Text(text = "Success rate: ${rocket.successRatePct}%")
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = rocket.description)
         Spacer(modifier = Modifier.height(8.dp))
