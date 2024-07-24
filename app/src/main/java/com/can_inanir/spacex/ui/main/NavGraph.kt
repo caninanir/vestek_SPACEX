@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.navigation
+package com.can_inanir.spacex.ui.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,14 +12,16 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.ui.Modifier
-import com.can_inanir.spacex.authandapi.AuthViewModel
-import com.can_inanir.spacex.screens.FavoritesScreen
-import com.can_inanir.spacex.screens.LaunchDetailScreen
-import com.can_inanir.spacex.screens.LoginScreen
-import com.can_inanir.spacex.screens.ProfileScreen
-import com.can_inanir.spacex.screens.RocketDetailScreen
-import com.can_inanir.spacex.screens.RocketsScreen
-import com.can_inanir.spacex.screens.UpcomingLaunchesScreen
+import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
+import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
+import com.can_inanir.spacex.ui.feature.login.AuthViewModel
+import com.can_inanir.spacex.ui.feature.favorite.FavoritesScreen
+import com.can_inanir.spacex.ui.feature.launchdetail.LaunchDetailScreen
+import com.can_inanir.spacex.ui.feature.login.LoginScreen
+import com.can_inanir.spacex.ui.feature.profile.ProfileScreen
+import com.can_inanir.spacex.ui.feature.rocketdetail.RocketDetailScreen
+import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
+import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
 
 @Composable
 fun NavGraph(signInWithGoogle: () -> Unit) {

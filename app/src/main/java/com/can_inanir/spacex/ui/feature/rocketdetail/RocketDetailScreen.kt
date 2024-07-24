@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.screens
+package com.can_inanir.spacex.ui.feature.rocketdetail
 
 import android.content.Intent
 import android.net.Uri
@@ -19,13 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.dataclasses.Rocket
-import com.can_inanir.spacex.authandapi.RocketsViewModel
+import com.can_inanir.spacex.data.model.Rocket
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketDetailScreen(rocketId: String?) {
-    val viewModel: RocketsViewModel = viewModel()
+    val viewModel: FetchDataViewModel = viewModel()
     val rocket by viewModel.selectedRocket.collectAsState(initial = null)
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
@@ -59,7 +59,7 @@ fun RocketDetail(
     rocket: Rocket,
     isFavorite: Boolean,
     paddingValues: PaddingValues,
-    viewModel: RocketsViewModel
+    viewModel: FetchDataViewModel
 ) {
     val context = LocalContext.current
 

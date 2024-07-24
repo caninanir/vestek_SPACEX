@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.screens
+package com.can_inanir.spacex.ui.feature.favorite
 
 
 import androidx.compose.foundation.layout.*
@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.can_inanir.spacex.dataclasses.Rocket
-import com.can_inanir.spacex.authandapi.RocketsViewModel
+import com.can_inanir.spacex.data.model.Rocket
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.ui.feature.rockets.RocketCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(navController: NavController) {
-    val viewModel: RocketsViewModel = viewModel()
+    val viewModel: FetchDataViewModel = viewModel()
     val rockets by viewModel.rockets.collectAsState(initial = emptyList())
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
@@ -40,7 +41,7 @@ fun FavoriteRocketList(
     favorites: Set<String>,
     paddingValues: PaddingValues,
     navController: NavController,
-    viewModel: RocketsViewModel
+    viewModel: FetchDataViewModel
 ) {
     val favoriteRockets = rockets.filter { favorites.contains(it.name) }
 

@@ -1,18 +1,18 @@
-package com.can_inanir.spacex.authandapi
+package com.can_inanir.spacex.data.remote
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.can_inanir.spacex.dataclasses.Launch
-import com.can_inanir.spacex.dataclasses.Launchpad
-import com.can_inanir.spacex.dataclasses.Rocket
+import com.can_inanir.spacex.data.model.Launch
+import com.can_inanir.spacex.data.model.Launchpad
+import com.can_inanir.spacex.data.model.Rocket
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class RocketsViewModel : ViewModel() {
+class FetchDataViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -28,8 +28,6 @@ class RocketsViewModel : ViewModel() {
     private val _upcomingLaunches = MutableStateFlow<List<Launch>>(emptyList())
     val upcomingLaunches: StateFlow<List<Launch>> = _upcomingLaunches
 
-    private val _selectedLaunchpad = MutableStateFlow<Launchpad?>(null)
-    val selectedLaunchpad: StateFlow<Launchpad?> = _selectedLaunchpad
 
     init {
         fetchRockets()
@@ -86,17 +84,6 @@ class RocketsViewModel : ViewModel() {
         }
     }
 
-    fun fetchLaunchpadById(id: String, onSuccess: (Launchpad) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val launchpad = RetrofitInstance.api.getLaunchpad(id)
-                onSuccess(launchpad)
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching launchpad by ID", e)
-            }
-        }
-    }
-
     fun fetchRocketById(id: String) {
         viewModelScope.launch {
             try {
@@ -108,6 +95,16 @@ class RocketsViewModel : ViewModel() {
         }
     }
 
+    fun fetchLaunchpadById(id: String, onSuccess: (Launchpad) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val launchpad = RetrofitInstance.api.getLaunchpad(id)
+                onSuccess(launchpad)
+            } catch (e: Exception) {
+                Log.e("RocketsViewModel", "Error fetching launchpad by ID", e)
+            }
+        }
+    }
 
     fun toggleFavorite(rocketName: String) {
         val userEmail = auth.currentUser?.email ?: return

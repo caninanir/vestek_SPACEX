@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.screens
+package com.can_inanir.spacex.ui.feature.rockets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,14 +23,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.dataclasses.Rocket
-import com.can_inanir.spacex.authandapi.RocketsViewModel
+import com.can_inanir.spacex.data.model.Rocket
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketsScreen(navController: NavController) {
-    val viewModel: RocketsViewModel = viewModel()
+    val viewModel: FetchDataViewModel = viewModel()
     val rockets by viewModel.rockets.collectAsState(initial = emptyList())
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
@@ -50,7 +50,7 @@ fun RocketList(
     favorites: Set<String>,
     paddingValues: PaddingValues,
     navController: NavController,
-    viewModel: RocketsViewModel
+    viewModel: FetchDataViewModel
 ) {
     val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }
 

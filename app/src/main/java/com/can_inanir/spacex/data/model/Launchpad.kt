@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.dataclasses
+package com.can_inanir.spacex.data.model
 
 @Suppress("PropertyName")
 data class Launchpad(
@@ -9,8 +9,8 @@ data class Launchpad(
     val region: String,
     val details: String,
     val images: LaunchpadImages
-)
+){
 
 data class LaunchpadImages(
     val large: List<String>
-)
+)}

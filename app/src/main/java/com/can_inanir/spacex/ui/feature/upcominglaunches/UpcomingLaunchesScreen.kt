@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.screens
+package com.can_inanir.spacex.ui.feature.upcominglaunches
 
 import android.content.Intent
 import android.net.Uri
@@ -16,17 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.can_inanir.spacex.authandapi.RocketsViewModel
-import com.can_inanir.spacex.dataclasses.Launch
-import com.can_inanir.spacex.dataclasses.Launchpad
-import com.can_inanir.spacex.dataclasses.Rocket
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.model.Launch
+import com.can_inanir.spacex.data.model.Launchpad
+import com.can_inanir.spacex.data.model.Rocket
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpcomingLaunchesScreen(navController: NavController) {
-    val viewModel: RocketsViewModel = viewModel()
+    val viewModel: FetchDataViewModel = viewModel()
     val upcomingLaunches by viewModel.upcomingLaunches.collectAsState(initial = emptyList())
 
     Scaffold(
@@ -44,7 +44,7 @@ fun LaunchList(
     launches: List<Launch>,
     paddingValues: PaddingValues,
     navController: NavController,
-    viewModel: RocketsViewModel
+    viewModel: FetchDataViewModel
 ) {
     Column(
         modifier = Modifier
@@ -64,7 +64,7 @@ fun LaunchList(
 }
 
 @Composable
-fun LaunchCard(launch: Launch, navController: NavController, viewModel: RocketsViewModel) {
+fun LaunchCard(launch: Launch, navController: NavController, viewModel: FetchDataViewModel) {
     var rocket by remember { mutableStateOf<Rocket?>(null) }
     var launchpad by remember { mutableStateOf<Launchpad?>(null) }
 

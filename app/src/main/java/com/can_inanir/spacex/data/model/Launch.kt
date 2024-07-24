@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.dataclasses
+package com.can_inanir.spacex.data.model
 @Suppress("PropertyName")
 data class Launch(
     val id: String,

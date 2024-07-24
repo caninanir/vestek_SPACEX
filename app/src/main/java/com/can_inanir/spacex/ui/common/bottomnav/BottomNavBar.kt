@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.navigation
+package com.can_inanir.spacex.ui.common.bottomnav
 
 
 

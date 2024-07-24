@@ -1,8 +1,8 @@
-package com.can_inanir.spacex.authandapi
+package com.can_inanir.spacex.data.remote
 
-import com.can_inanir.spacex.dataclasses.Launch
-import com.can_inanir.spacex.dataclasses.Launchpad
-import com.can_inanir.spacex.dataclasses.Rocket
+import com.can_inanir.spacex.data.model.Launch
+import com.can_inanir.spacex.data.model.Launchpad
+import com.can_inanir.spacex.data.model.Rocket
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

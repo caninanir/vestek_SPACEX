@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.screens
+package com.can_inanir.spacex.ui.feature.login
 
 
 
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.can_inanir.spacex.authandapi.AuthViewModel
+import com.can_inanir.spacex.ui.feature.profile.ProfileScreen
 
 
 @Composable
