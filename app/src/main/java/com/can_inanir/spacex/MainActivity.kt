@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.can_inanir.spacex
 
 
@@ -6,9 +8,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.auth.api.signin.*
@@ -16,6 +22,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+
+import kotlinx.coroutines.delay
 
 @Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
@@ -27,21 +40,17 @@ class MainActivity : ComponentActivity() {
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
-        account?.idToken?.let {
-            authViewModel.handleGoogleAccessToken(it)
-        }
-
+        account?.idToken?.let { authViewModel.handleGoogleAccessToken(it) }
     }
+
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
         setContent {
             MyApp {
                 authViewModel = ViewModelProvider(this@MainActivity)[AuthViewModel::class.java]
@@ -56,15 +65,34 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun SplashScreen() {
+    Image(
+        painter = painterResource(id = R.drawable.space_x_android_splash_screen_bg),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
+}
+
 @SuppressLint("RememberReturnType")
 @Composable
 fun MyApp(signInWithGoogle: () -> Unit) {
     val authViewModel: AuthViewModel = viewModel()
     val context = LocalContext.current
+    var showSplash by remember { mutableStateOf(true) }
 
-    remember {
-        (context as? MainActivity)?.authViewModel = authViewModel
+    LaunchedEffect(Unit) {
+        delay(3000) // Duration to show the splash screen (3 seconds)
+        showSplash = false
     }
 
-    NavGraph(signInWithGoogle = signInWithGoogle)
+    // Store authViewModel in MainActivity
+    remember { (context as? MainActivity)?.authViewModel = authViewModel }
+
+    if (showSplash) {
+        SplashScreen()
+    } else {
+        NavGraph(signInWithGoogle = signInWithGoogle)
+    }
 }
