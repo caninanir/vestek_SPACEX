@@ -24,6 +24,7 @@ import com.google.android.gms.common.api.ApiException
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.core.view.WindowCompat
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.authandapi.AuthViewModel
 
