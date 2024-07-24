@@ -1,4 +1,4 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.dataclasses
 
 @Suppress("PropertyName")
 data class Rocket(

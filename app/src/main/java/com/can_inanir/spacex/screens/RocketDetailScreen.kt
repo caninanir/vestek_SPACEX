@@ -1,4 +1,4 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -18,6 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.can_inanir.spacex.R
+import com.can_inanir.spacex.dataclasses.Rocket
+import com.can_inanir.spacex.authandapi.RocketsViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketDetailScreen(rocketId: String?) {

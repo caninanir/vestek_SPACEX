@@ -1,4 +1,4 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.navigation
 
 
 
@@ -23,6 +23,7 @@ fun BottomNavBar(navController: NavController) {
         BottomNavItem.Rockets,
         BottomNavItem.Favorites,
         BottomNavItem.Profile,
+        BottomNavItem.Upcoming,
 
     )
     BottomNavigation(

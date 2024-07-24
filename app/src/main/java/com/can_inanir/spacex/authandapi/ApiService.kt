@@ -1,19 +1,30 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.authandapi
 
+import com.can_inanir.spacex.dataclasses.Launch
+import com.can_inanir.spacex.dataclasses.Launchpad
+import com.can_inanir.spacex.dataclasses.Rocket
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 interface ApiService {
-    @GET("rockets")
+    @GET("v4/rockets")
     suspend fun getRockets(): List<Rocket>
 
-    @GET("rockets/{id}")
+    @GET("v4/rockets/{id}")
     suspend fun getRocket(@Path("id") id: String): Rocket
+
+    @GET("v5/launches/upcoming")
+    suspend fun getUpcomingLaunches(): List<Launch>
+
+    @GET("v4/launchpads/{id}")
+    suspend fun getLaunchpad(@Path("id") id: String): Launchpad
+
+
 }
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://api.spacexdata.com/v4/"
+    private const val BASE_URL = "https://api.spacexdata.com/"
 
     val api: ApiService by lazy {
         Retrofit.Builder()

@@ -1,8 +1,11 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.authandapi
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.can_inanir.spacex.dataclasses.Launch
+import com.can_inanir.spacex.dataclasses.Launchpad
+import com.can_inanir.spacex.dataclasses.Rocket
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -22,8 +25,15 @@ class RocketsViewModel : ViewModel() {
     private val _favorites = MutableStateFlow<Set<String>>(emptySet())
     val favorites: StateFlow<Set<String>> = _favorites
 
+    private val _upcomingLaunches = MutableStateFlow<List<Launch>>(emptyList())
+    val upcomingLaunches: StateFlow<List<Launch>> = _upcomingLaunches
+
+    private val _selectedLaunchpad = MutableStateFlow<Launchpad?>(null)
+    val selectedLaunchpad: StateFlow<Launchpad?> = _selectedLaunchpad
+
     init {
         fetchRockets()
+        fetchUpcomingLaunches()
         auth.currentUser?.let { fetchFavorites(it.email!!) }
     }
 
@@ -37,6 +47,18 @@ class RocketsViewModel : ViewModel() {
             }
         }
     }
+
+    private fun fetchUpcomingLaunches() {
+        viewModelScope.launch {
+            try {
+                val fetchedLaunches = RetrofitInstance.api.getUpcomingLaunches()
+                _upcomingLaunches.value = fetchedLaunches
+            } catch (e: Exception) {
+                Log.e("RocketsViewModel", "Error fetching upcoming launches", e)
+            }
+        }
+    }
+
 
     @Suppress("UNCHECKED_CAST")
     private fun fetchFavorites(userEmail: String) {
@@ -60,6 +82,17 @@ class RocketsViewModel : ViewModel() {
                 _selectedRocket.value = fetchedRocket
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
+            }
+        }
+    }
+
+    fun fetchLaunchpadById(id: String, onSuccess: (Launchpad) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val launchpad = RetrofitInstance.api.getLaunchpad(id)
+                onSuccess(launchpad)
+            } catch (e: Exception) {
+                Log.e("RocketsViewModel", "Error fetching launchpad by ID", e)
             }
         }
     }

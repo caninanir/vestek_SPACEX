@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.can_inanir.spacex
+package com.can_inanir.spacex.navigation
 
 
 import android.annotation.SuppressLint
@@ -24,6 +24,8 @@ import com.google.android.gms.common.api.ApiException
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import com.can_inanir.spacex.R
+import com.can_inanir.spacex.authandapi.AuthViewModel
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 

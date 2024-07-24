@@ -1,4 +1,4 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,9 +12,17 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.ui.Modifier
+import com.can_inanir.spacex.authandapi.AuthViewModel
+import com.can_inanir.spacex.screens.FavoritesScreen
+import com.can_inanir.spacex.screens.LaunchDetailScreen
+import com.can_inanir.spacex.screens.LoginScreen
+import com.can_inanir.spacex.screens.ProfileScreen
+import com.can_inanir.spacex.screens.RocketDetailScreen
+import com.can_inanir.spacex.screens.RocketsScreen
+import com.can_inanir.spacex.screens.UpcomingLaunchesScreen
 
-
-@Composable fun NavGraph(signInWithGoogle: () -> Unit) {
+@Composable
+fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
@@ -35,6 +43,9 @@ import androidx.compose.ui.Modifier
             composable(BottomNavItem.Favorites.route) {
                 FavoritesScreen(navController)
             }
+            composable(BottomNavItem.Upcoming.route) {
+                UpcomingLaunchesScreen(navController)
+            }
             composable(BottomNavItem.Login.route) {
                 LoginScreen(signInWithGoogle)
             }
@@ -50,6 +61,12 @@ import androidx.compose.ui.Modifier
                 arguments = listOf(navArgument("rocketId") { type = NavType.StringType })
             ) { backStackEntry ->
                 RocketDetailScreen(backStackEntry.arguments?.getString("rocketId"))
+            }
+            composable(
+                route = "launchDetail/{launchId}",
+                arguments = listOf(navArgument("launchId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                LaunchDetailScreen(backStackEntry.arguments?.getString("launchId"))
             }
         }
     }

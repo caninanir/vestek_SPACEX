@@ -1,4 +1,4 @@
-package com.can_inanir.spacex
+package com.can_inanir.spacex.screens
 
 
 import androidx.compose.foundation.layout.*
@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.LaunchedEffect
+import com.can_inanir.spacex.authandapi.AuthViewModel
+import com.can_inanir.spacex.navigation.BottomNavItem
 
 @Composable
 fun ProfileScreen(navController: NavController) {
