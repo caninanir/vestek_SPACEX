@@ -1,12 +1,16 @@
 package com.can_inanir.spacex
+
+
+
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Icon
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Text
+
+
+import androidx.compose.material3.Icon
+
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -18,7 +22,6 @@ fun BottomNavBar(navController: NavController) {
     val items = listOf(
         BottomNavItem.Rockets,
         BottomNavItem.Favorites,
-        //BottomNavItem.Login,
         BottomNavItem.Profile,
 
     )

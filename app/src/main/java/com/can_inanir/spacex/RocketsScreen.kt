@@ -5,12 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Card
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.MaterialTheme
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Text
+
+import androidx.compose.material3.Card
+
+import androidx.compose.material3.MaterialTheme
+
+import androidx.compose.material3.Text
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -82,10 +82,9 @@ fun RocketCard(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable(onClick = onClick),
-        elevation = 4.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = rocket.name, style = MaterialTheme.typography.h6)
+            Text(text = rocket.name, style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(8.dp))
             rocket.flickr_images.firstOrNull()?.let { imageUrl ->
                 Image(

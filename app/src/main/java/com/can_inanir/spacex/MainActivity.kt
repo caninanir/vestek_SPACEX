@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.auth.api.signin.*
@@ -83,11 +82,11 @@ fun MyApp(signInWithGoogle: () -> Unit) {
     var showSplash by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        delay(3000) // Duration to show the splash screen (3 seconds)
+        delay(2000)
         showSplash = false
     }
 
-    // Store authViewModel in MainActivity
+
     remember { (context as? MainActivity)?.authViewModel = authViewModel }
 
     if (showSplash) {

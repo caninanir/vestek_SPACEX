@@ -17,7 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberAsyncImagePainter@OptIn(ExperimentalMaterial3Api::class)
+import coil.compose.rememberAsyncImagePainter
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketDetailScreen(rocketId: String?) {
     val viewModel: RocketsViewModel = viewModel()
