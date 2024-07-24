@@ -26,20 +26,16 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
-            account?.idToken?.let {
-                authViewModel.handleGoogleAccessToken(it)
-            }
-        } catch (e: ApiException) {
-            // Handle error
+        val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+        account?.idToken?.let {
+            authViewModel.handleGoogleAccessToken(it)
         }
+
     }
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Google Sign-In options
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()

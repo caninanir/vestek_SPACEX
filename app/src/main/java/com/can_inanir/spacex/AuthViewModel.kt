@@ -1,6 +1,7 @@
 package com.can_inanir.spacex
 
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("StaticFieldLeak")
 val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 class AuthViewModel : ViewModel() {

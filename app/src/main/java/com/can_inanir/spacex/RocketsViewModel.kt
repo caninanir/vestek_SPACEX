@@ -30,11 +30,9 @@ class RocketsViewModel : ViewModel() {
     private fun fetchRockets() {
         viewModelScope.launch {
             try {
-                // Fetch rockets from SpaceX API
                 val fetchedRockets = RetrofitInstance.api.getRockets()
                 _rockets.value = fetchedRockets
             } catch (e: Exception) {
-                // Handle the error appropriately
                 Log.e("RocketsViewModel", "Error fetching rockets", e)
             }
         }
@@ -50,7 +48,7 @@ class RocketsViewModel : ViewModel() {
             }
 
             val favoritesMap = documentSnapshot?.data?.get("favorites") as? Map<String, Boolean> ?: emptyMap()
-            val favoriteSet = favoritesMap.filter { it.value == true }.keys
+            val favoriteSet = favoritesMap.filter { it.value }.keys
             _favorites.value = favoriteSet
         }
     }
@@ -61,7 +59,6 @@ class RocketsViewModel : ViewModel() {
                 val fetchedRocket = RetrofitInstance.api.getRocket(id)
                 _selectedRocket.value = fetchedRocket
             } catch (e: Exception) {
-                // Handle the error appropriately
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
             }
         }
@@ -73,10 +70,8 @@ class RocketsViewModel : ViewModel() {
         val userDocRef = db.collection("users").document(userEmail)
 
         if (_favorites.value.contains(rocketName)) {
-            // Remove from favorites
             userDocRef.update("favorites.$rocketName", false)
         } else {
-            // Add to favorites
             userDocRef.update("favorites.$rocketName", true)
         }
     }

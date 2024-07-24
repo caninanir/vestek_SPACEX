@@ -1,8 +1,11 @@
 package com.can_inanir.spacex
-
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +35,7 @@ fun BottomNavBar(navController: NavController) {
                 label = { Text(text = item.title) },
                 selectedContentColor = Color.Blue,
                 unselectedContentColor = Color.Gray,
-                alwaysShowLabel = true,
+                alwaysShowLabel = false,
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
