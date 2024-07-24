@@ -75,11 +75,11 @@ class RocketsViewModel : ViewModel() {
         }
     }
 
-    fun fetchRocketById(id: String) {
+    fun fetchRocketById(id: String, onSuccess: (Rocket) -> Unit) {
         viewModelScope.launch {
             try {
-                val fetchedRocket = RetrofitInstance.api.getRocket(id)
-                _selectedRocket.value = fetchedRocket
+                val rocket = RetrofitInstance.api.getRocket(id)
+                onSuccess(rocket)
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
             }
@@ -96,6 +96,18 @@ class RocketsViewModel : ViewModel() {
             }
         }
     }
+
+    fun fetchRocketById(id: String) {
+        viewModelScope.launch {
+            try {
+                val fetchedRocket = RetrofitInstance.api.getRocket(id)
+                _selectedRocket.value = fetchedRocket
+            } catch (e: Exception) {
+                Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
+            }
+        }
+    }
+
 
     fun toggleFavorite(rocketName: String) {
         val userEmail = auth.currentUser?.email ?: return
