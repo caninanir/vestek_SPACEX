@@ -25,6 +25,9 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
         composable(BottomNavItem.Login.route) {
             LoginScreen(signInWithGoogle)
         }
+        composable(BottomNavItem.Favorites.route) {
+            FavoritesScreen(navController)
+        }
         composable(BottomNavItem.Profile.route) {
             if (userState != null) {
                 ProfileScreen(navController)
