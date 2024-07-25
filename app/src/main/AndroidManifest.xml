@@ -10,12 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/spacex_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SPaceX.NoSplash"
+        android:theme="@style/SpaceX"
         tools:targetApi="31">
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.SPaceX.NoSplash">
+            android:theme="@style/SpaceX">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

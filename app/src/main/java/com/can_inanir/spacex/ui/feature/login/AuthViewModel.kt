@@ -1,7 +1,5 @@
 package com.can_inanir.spacex.ui.feature.login
 
-
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,22 +11,21 @@ import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-
-@SuppressLint("StaticFieldLeak")
-val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+import kotlinx.coroutines.tasks.await
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private val _userState = MutableStateFlow(auth.currentUser)
+    private val _userState: MutableStateFlow<FirebaseUser?> = MutableStateFlow(auth.currentUser)
     val userState: StateFlow<FirebaseUser?> = _userState
 
     init {
         auth.addAuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
-            user?.let {
-                checkAndCreateUserDocument(it.email!!)
+            firebaseAuth.currentUser?.let { user ->
+                viewModelScope.launch {
+                    checkAndCreateUserDocument(user.email!!)
+                }
             }
         }
     }
@@ -36,23 +33,19 @@ class AuthViewModel : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("AuthViewModel", "signInWithEmail:success")
-                            _userState.value = auth.currentUser
-                            auth.currentUser?.let { checkAndCreateUserDocument(it.email!!) }
-                        } else {
-                            Log.w("AuthViewModel", "signInWithEmail:failure", task.exception)
-                        }
-                    }
+                val task = auth.signInWithEmailAndPassword(email, password).await()
+                if (task.user != null) {
+                    Log.d("AuthViewModel", "signInWithEmail:success")
+                    _userState.value = auth.currentUser
+                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
+                } else {
+                    Log.w("AuthViewModel", "signInWithEmail:failure")
+                }
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "login:failure", e)
             }
         }
     }
-
-
 
     fun logout() {
         auth.signOut()
@@ -62,16 +55,14 @@ class AuthViewModel : ViewModel() {
     fun createAccount(email: String, password: String) {
         viewModelScope.launch {
             try {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("AuthViewModel", "createUserWithEmail:success")
-                            _userState.value = auth.currentUser
-                            auth.currentUser?.let { checkAndCreateUserDocument(it.email!!) }
-                        } else {
-                            Log.w("AuthViewModel", "createUserWithEmail:failure", task.exception)
-                        }
-                    }
+                val task = auth.createUserWithEmailAndPassword(email, password).await()
+                if (task.user != null) {
+                    Log.d("AuthViewModel", "createUserWithEmail:success")
+                    _userState.value = auth.currentUser
+                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
+                } else {
+                    Log.w("AuthViewModel", "createUserWithEmail:failure")
+                }
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "createAccount:failure", e)
             }
@@ -79,30 +70,36 @@ class AuthViewModel : ViewModel() {
     }
 
     fun handleGoogleAccessToken(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+        viewModelScope.launch {
+            try {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                val task = auth.signInWithCredential(credential).await()
+                if (task.user != null) {
                     Log.d("AuthViewModel", "signInWithCredential:success")
                     _userState.value = auth.currentUser
+                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
                 } else {
-                    Log.w("AuthViewModel", "signInWithCredential:failure", task.exception)
+                    Log.w("AuthViewModel", "signInWithCredential:failure")
                 }
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "handleGoogleAccessToken:failure", e)
             }
+        }
     }
-}
 
-
-
-private fun checkAndCreateUserDocument(email: String) {
-    val userDocRef = db.collection("users").document(email)
-    userDocRef.get().addOnSuccessListener { documentSnapshot ->
-        if (!documentSnapshot.exists()) {
-            val userData = hashMapOf(
-                "email" to email,
-                "favorites" to emptyMap<String, Boolean>()
-            )
-            userDocRef.set(userData, SetOptions.merge())
+    private suspend fun checkAndCreateUserDocument(email: String) {
+        try {
+            val userDocRef = db.collection("users").document(email)
+            val documentSnapshot = userDocRef.get().await()
+            if (!documentSnapshot.exists()) {
+                val userData = hashMapOf(
+                    "email" to email,
+                    "favorites" to emptyMap<String, Boolean>()
+                )
+                userDocRef.set(userData, SetOptions.merge()).await()
+            }
+        } catch (e: Exception) {
+            Log.e("AuthViewModel", "checkAndCreateUserDocument:failure", e)
         }
     }
 }

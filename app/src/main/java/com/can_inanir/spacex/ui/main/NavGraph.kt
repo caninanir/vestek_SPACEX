@@ -29,15 +29,10 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
 
-    Scaffold(
-        bottomBar = {
-            BottomNavBar(navController = navController)
-        }
-    ) { paddingValues ->
+
         NavHost(
             navController = navController,
             startDestination = BottomNavItem.Rockets.route,
-            modifier = Modifier.padding(paddingValues)
         ) {
             composable(BottomNavItem.Rockets.route) {
                 RocketsScreen(navController)
@@ -72,4 +67,3 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
             }
         }
     }
-}
