@@ -1,25 +1,21 @@
 package com.can_inanir.spacex.ui.feature.rockets
 
-import androidx.compose.animation.core.copy
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-
-import androidx.compose.material3.Card
-
-import androidx.compose.material3.MaterialTheme
-
-import androidx.compose.material3.Text
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,26 +24,20 @@ import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
-
-
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Alignment
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketsScreen(navController: NavController) {
     val viewModel: FetchDataViewModel = viewModel()
     val rockets by viewModel.rockets.collectAsState(initial = emptyList())
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
-
-
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
@@ -55,27 +45,29 @@ fun RocketsScreen(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
+        val activity = LocalContext.current as ComponentActivity
 
         Scaffold(
             content = { paddingValues ->
                 RocketList(
-                    rockets,
-                    favorites,
-                    paddingValues,
-                    navController,
-                    viewModel
+                    rockets = rockets,
+                    favorites = favorites,
+                    paddingValues = paddingValues,
+                    navController = navController,
+                    viewModel = viewModel
                 )
             },
             containerColor = Color.Transparent
         )
 
-        BottomNavBar(navController = navController, modifier = Modifier.align(Alignment.BottomCenter))
+        BottomNavBar(
+            navController = navController,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            activity = activity
+        )
+        Spacer(modifier = Modifier.height(50.dp))
     }
-
-
-
 }
-
 
 @Composable
 fun RocketList(
@@ -118,11 +110,14 @@ fun RocketCard(
             .clickable(onClick = onClick)
             .padding(0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = rocket.name, style = MaterialTheme.typography.headlineLarge, color = Color.White)
+            Text(
+                text = rocket.name,
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White
+            )
             Spacer(modifier = Modifier.height(8.dp))
             rocket.flickr_images.firstOrNull()?.let { imageUrl ->
                 Image(
@@ -139,7 +134,12 @@ fun RocketCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = rocket.description, maxLines = 3, modifier = Modifier.weight(1f), color = Color.White)
+                Text(
+                    text = rocket.description,
+                    maxLines = 3,
+                    modifier = Modifier.weight(1f),
+                    color = Color.White
+                )
                 IconButton(onClick = onFavoriteClick) {
                     Icon(
                         painter = painterResource(
@@ -152,4 +152,3 @@ fun RocketCard(
         }
     }
 }
-

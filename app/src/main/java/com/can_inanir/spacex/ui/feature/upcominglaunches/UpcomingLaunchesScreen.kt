@@ -2,6 +2,7 @@ package com.can_inanir.spacex.ui.feature.upcominglaunches
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,10 +22,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Launchpad
 import com.can_inanir.spacex.data.model.Rocket
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -35,25 +36,35 @@ fun UpcomingLaunchesScreen(navController: NavController) {
     val viewModel: FetchDataViewModel = viewModel()
     val upcomingLaunches by viewModel.upcomingLaunches.collectAsState(initial = emptyList())
 
-
-
-
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-    Scaffold(
-        content = { paddingValues ->
-            LaunchList(upcomingLaunches, paddingValues, navController, viewModel)
-        },
-                containerColor = Color.Transparent
-    )
-        BottomNavBar(navController = navController, modifier = Modifier.align(Alignment.BottomCenter))
-    }
 
+        val activity = LocalContext.current as ComponentActivity
+/*
+        Scaffold(
+            content = { paddingValues ->
+                LaunchList(upcomingLaunches, paddingValues, navController, viewModel)
+            },
+            containerColor = Color.Transparent
+        )
+
+S
+ */
+        BottomNavBar(
+            navController = navController,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            activity = activity
+        )
+    }
 }
 
 @Composable
@@ -70,18 +81,18 @@ fun LaunchList(
             .verticalScroll(rememberScrollState())
     ) {
         launches.forEach { launch ->
-            LaunchCard(
-                launch = launch,
-                navController = navController,
-                viewModel = viewModel
-            )
+            LaunchCard(launch, navController, viewModel)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun LaunchCard(launch: Launch, navController: NavController, viewModel: FetchDataViewModel) {
+fun LaunchCard(
+    launch: Launch,
+    navController: NavController,
+    viewModel: FetchDataViewModel
+) {
     var rocket by remember { mutableStateOf<Rocket?>(null) }
     var launchpad by remember { mutableStateOf<Launchpad?>(null) }
 
@@ -95,15 +106,22 @@ fun LaunchCard(launch: Launch, navController: NavController, viewModel: FetchDat
             .fillMaxWidth()
             .padding(16.dp)
             .clickable { navController.navigate("launchDetail/${launch.id}") },
-
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        ) {
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(color = Color.White,text = launch.name, style = MaterialTheme.typography.headlineLarge)
+            Text(
+                color = Color.White,
+                text = launch.name,
+                style = MaterialTheme.typography.headlineLarge
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}")
+            Text(
+                color = Color.White,
+                text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}"
+            )
             Spacer(modifier = Modifier.height(8.dp))
+
             if (rocket != null && launchpad != null) {
                 Text(color = Color.White, text = "Rocket: ${rocket!!.name}")
                 Image(
@@ -126,8 +144,9 @@ fun LaunchCard(launch: Launch, navController: NavController, viewModel: FetchDat
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             } else {
-                Text("Loading...")
+                Text("Loading...", color = Color.White)
             }
+
             launch.links.webcast?.let { webcastUrl ->
                 val context = LocalContext.current
                 Text(

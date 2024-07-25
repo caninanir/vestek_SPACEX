@@ -1,5 +1,6 @@
 package com.can_inanir.spacex.ui.main
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import com.can_inanir.spacex.ui.feature.rocketdetail.RocketDetailScreen
 import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
 import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
