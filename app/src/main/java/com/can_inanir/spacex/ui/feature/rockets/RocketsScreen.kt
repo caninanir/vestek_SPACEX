@@ -31,6 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -62,13 +65,17 @@ fun RocketsScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
-            modifier = Modifier.fillMaxSize().haze(state = hazeState),
+            modifier = Modifier
+                .fillMaxSize()
+                .haze(state = hazeState),
             contentScale = ContentScale.Crop
         )
 
 
         Scaffold(
-            modifier = Modifier.fillMaxSize().haze(state = hazeState),
+            modifier = Modifier
+                .fillMaxSize()
+                .haze(state = hazeState),
             content = { paddingValues ->
                 RocketList(
                     rockets = rockets,
@@ -105,7 +112,7 @@ fun RocketList(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 0.dp,top = 0.dp)
+            .padding(bottom = 0.dp, top = 0.dp)
             .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -128,6 +135,8 @@ fun RocketCard(
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
+
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,8 +148,9 @@ fun RocketCard(
         Column {
             Text(
                 text = rocket.name,
-                style = MaterialTheme.typography.headlineLarge,
-                color = Color.White
+                style = MaterialTheme.typography.headlineLarge ,
+                color = Color.White,
+                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
             )
             Spacer(modifier = Modifier.height(8.dp))
             rocket.flickr_images.firstOrNull()?.let { imageUrl ->
@@ -162,7 +172,8 @@ fun RocketCard(
                     text = rocket.description,
                     maxLines = 3,
                     modifier = Modifier.weight(1f),
-                    color = Color.White
+                    color = Color.White,
+                    fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
                 )
                 IconButton(onClick = onFavoriteClick) {
                     Icon(

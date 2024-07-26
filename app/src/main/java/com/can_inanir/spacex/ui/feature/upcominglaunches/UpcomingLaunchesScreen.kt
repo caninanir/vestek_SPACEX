@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -116,12 +119,14 @@ fun LaunchCard(
             Text(
                 color = Color.White,
                 text = launch.name,
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 color = Color.White,
-                text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}"
+                text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}",
+                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -136,7 +141,7 @@ fun LaunchCard(
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(color = Color.White, text = "Launchpad: ${launchpad!!.name}")
+                Text(color = Color.White, text = "Launchpad: ${launchpad!!.name}", fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)))
                 Image(
                     painter = rememberAsyncImagePainter(model = launchpad!!.images.large.firstOrNull()),
                     contentDescription = null,
@@ -155,6 +160,7 @@ fun LaunchCard(
                 Text(
                     text = "Watch the webcast",
                     color = Color(color = 0xFF58FBC8),
+                    fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webcastUrl))
                         context.startActivity(intent)

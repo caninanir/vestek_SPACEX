@@ -13,9 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Launchpad
@@ -38,9 +42,6 @@ fun LaunchDetailScreen(launchId: String?) {
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text(launch?.name ?: "Launch Details") })
-        },
         content = { paddingValues ->
             if (launch != null && rocket != null && launchpad != null) {
                 LaunchDetail(
@@ -66,11 +67,14 @@ fun LaunchDetail(launch: Launch, rocket: Rocket, launchpad: Launchpad, paddingVa
             .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
-        Text(text = launch.name, style = MaterialTheme.typography.headlineLarge)
+        Text(text = launch.name, style = MaterialTheme.typography.headlineLarge, fontFamily = FontFamily(
+            Font(R.font.nasalization, FontWeight.Normal)
+        )
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}")
+        Text(text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}", fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)))
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Rocket: ${rocket.name}")
+        Text(text = "Rocket: ${rocket.name}", fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)))
         Image(
             painter = rememberAsyncImagePainter(model = rocket.flickr_images.firstOrNull()),
             contentDescription = null,
@@ -80,7 +84,7 @@ fun LaunchDetail(launch: Launch, rocket: Rocket, launchpad: Launchpad, paddingVa
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(text = "Launchpad: ${launchpad.name}")
+        Text(text = "Launchpad: ${launchpad.name}", fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)))
         Image(
             painter = rememberAsyncImagePainter(model = launchpad.images.large.firstOrNull()),
             contentDescription = null,
@@ -91,12 +95,13 @@ fun LaunchDetail(launch: Launch, rocket: Rocket, launchpad: Launchpad, paddingVa
         )
         Spacer(modifier = Modifier.height(8.dp))
         if (launch.details != null) {
-            Text(text = launch.details)
+            Text(text = launch.details, fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)))
             Spacer(modifier = Modifier.height(8.dp))
         }
         launch.links.webcast?.let { webcastUrl ->
             Text(
                 text = "Watch the webcast",
+                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webcastUrl))
