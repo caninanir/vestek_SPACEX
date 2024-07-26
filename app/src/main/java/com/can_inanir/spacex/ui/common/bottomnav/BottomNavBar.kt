@@ -1,5 +1,6 @@
 package com.can_inanir.spacex.ui.common.bottomnav
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -46,6 +47,7 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, ha
             .width(400.dp)
             .systemBarsPadding()
             .background(Color.Transparent)
+            .clip(RoundedCornerShape(16.dp))
     ) {
 
 
