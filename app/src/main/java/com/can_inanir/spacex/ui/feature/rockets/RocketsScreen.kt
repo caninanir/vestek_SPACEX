@@ -33,6 +33,7 @@ fun RocketsScreen(navController: NavController) {
     val rockets by viewModel.rockets.collectAsState(initial = emptyList())
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,10 +63,11 @@ fun RocketsScreen(navController: NavController) {
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier.fillMaxSize(),
             activity = activity
         )
-        Spacer(modifier = Modifier.height(50.dp))
+
+
     }
 }
 
@@ -142,6 +144,7 @@ fun RocketCard(
                 )
                 IconButton(onClick = onFavoriteClick) {
                     Icon(
+                        tint = Color.Unspecified,
                         painter = painterResource(
                             id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
                         ),

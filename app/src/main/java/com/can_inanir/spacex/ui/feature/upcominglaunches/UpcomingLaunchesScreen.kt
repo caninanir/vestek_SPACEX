@@ -40,6 +40,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
+            .padding(bottom = 0.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
@@ -49,7 +50,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
         )
 
         val activity = LocalContext.current as ComponentActivity
-/*
+
         Scaffold(
             content = { paddingValues ->
                 LaunchList(upcomingLaunches, paddingValues, navController, viewModel)
@@ -57,11 +58,12 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             containerColor = Color.Transparent
         )
 
-S
- */
+
+
+
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier.fillMaxSize(),
             activity = activity
         )
     }
