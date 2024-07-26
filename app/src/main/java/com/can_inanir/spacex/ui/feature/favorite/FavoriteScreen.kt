@@ -1,6 +1,5 @@
 package com.can_inanir.spacex.ui.feature.favorite
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.res.painterResource
@@ -29,6 +27,7 @@ import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.feature.rockets.RocketCard
 
+@Suppress("DEPRECATION")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun FavoritesScreen(navController: NavController) {
     val authViewModel: AuthViewModel = viewModel()
@@ -48,8 +47,6 @@ import com.can_inanir.spacex.ui.feature.rockets.RocketCard
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
-        val activity = LocalContext.current as ComponentActivity
 
         Scaffold(
             topBar = {
@@ -100,8 +97,7 @@ import com.can_inanir.spacex.ui.feature.rockets.RocketCard
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-            activity = activity
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

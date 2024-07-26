@@ -1,6 +1,5 @@
 package com.can_inanir.spacex.ui.feature.rockets
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,11 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,7 +23,6 @@ import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketsScreen(navController: NavController) {
     val viewModel: FetchDataViewModel = viewModel()
@@ -46,7 +42,6 @@ fun RocketsScreen(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
-        val activity = LocalContext.current as ComponentActivity
 
         Scaffold(
             content = { paddingValues ->
@@ -63,8 +58,7 @@ fun RocketsScreen(navController: NavController) {
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-            activity = activity
+            modifier = Modifier.fillMaxSize()
         )
 
 

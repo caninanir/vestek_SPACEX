@@ -1,13 +1,6 @@
 package com.can_inanir.spacex.ui.common.bottomnav
 
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.can_inanir.spacex.R
 
 sealed class BottomNavItem(val route: String, val title: String, val enabledIcon: Int, val disabledIcon: Int) {

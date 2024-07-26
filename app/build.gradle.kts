@@ -7,10 +7,13 @@ plugins {
 android {
     namespace = "com.can_inanir.spacex"
     compileSdk = 34
+    kotlinOptions {
+        freeCompilerArgs += "-Xallow-kotlin-package"
+    }
 
     defaultConfig {
         applicationId = "com.can_inanir.spacex"
-        minSdk = 31
+        minSdk = 33
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
@@ -101,5 +104,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.1")
     androidTestImplementation("androidx.test:rules:1.6.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+    implementation("com.github.prime-zs.toolkit:core-ktx:2.0.2-alpha")
+    implementation("com.github.x3rocode:xblur-compose:1.0.1")
 
     }

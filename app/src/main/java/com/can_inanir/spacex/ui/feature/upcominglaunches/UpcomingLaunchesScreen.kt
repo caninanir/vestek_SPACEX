@@ -2,7 +2,6 @@ package com.can_inanir.spacex.ui.feature.upcominglaunches
 
 import android.content.Intent
 import android.net.Uri
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -30,7 +28,7 @@ import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun UpcomingLaunchesScreen(navController: NavController) {
     val viewModel: FetchDataViewModel = viewModel()
@@ -49,7 +47,6 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
-        val activity = LocalContext.current as ComponentActivity
 
         Scaffold(
             content = { paddingValues ->
@@ -63,8 +60,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-            activity = activity
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

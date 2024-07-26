@@ -1,7 +1,7 @@
 package com.can_inanir.spacex.ui.common.bottomnav
 
-import android.graphics.Bitmap
-import android.graphics.BlurMaskFilter
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,43 +18,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.activity.ComponentActivity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlurEffect
-import androidx.compose.ui.graphics.Canvas
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.RenderEffect
-import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.graphics.asComposeRenderEffect
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.sp
-import com.can_inanir.spacex.R
+import androidx.compose.ui.unit.IntOffset
+import com.x3rocode.xblurlib.BlurDialog
 
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, activity: ComponentActivity) {
+fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
     val items = listOf(
         BottomNavItem.Rockets,
         BottomNavItem.Favorites,
         BottomNavItem.Upcoming,
     )
+
 
 
     Box(
@@ -64,13 +46,26 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, ac
             .systemBarsPadding()
             .background(Color.Transparent)
     ) {
+        BlurDialog(
+            blurRadius = 250,                       //blur radius
+            onDismiss = {},     //dialog ondismiss
+            size = IntOffset(280,160),              //dialog size
+            shape = RoundedCornerShape(30.dp),      //dialog shape
+            backgroundColor = Color.White,          //mixing color with dialog
+            backgroundColorAlpha = 0.4f,            //mixing color alpha
+            dialogDimAmount = 0.3f,                 //set this if you want dark behind dialog.
+            dialogBehindBlurRadius = 100,           //blur behind dialog
+            isRealtime = true                       //Realtime capture or not. false = only the first time captured when dialog opens.
+        ){}
+
+
         Surface(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .height(75.dp)
                 .width(400.dp)
                 .align(Alignment.BottomCenter)
-                .background(Color(0x805D5D5D)),
+                .background(Color(0x85FFFFFF)),
 
 
             color = Color.Transparent
