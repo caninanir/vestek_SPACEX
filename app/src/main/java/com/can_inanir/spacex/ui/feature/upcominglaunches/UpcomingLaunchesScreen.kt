@@ -25,6 +25,8 @@ import com.can_inanir.spacex.data.model.Launchpad
 import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,6 +35,7 @@ import java.time.format.DateTimeFormatter
 fun UpcomingLaunchesScreen(navController: NavController) {
     val viewModel: FetchDataViewModel = viewModel()
     val upcomingLaunches by viewModel.upcomingLaunches.collectAsState(initial = emptyList())
+    val hazeState = remember { HazeState() }
 
     Box(
         modifier = Modifier
@@ -43,12 +46,13 @@ fun UpcomingLaunchesScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().haze(state = hazeState),
             contentScale = ContentScale.Crop
         )
 
 
         Scaffold(
+            modifier = Modifier.haze(state = hazeState),
             content = { paddingValues ->
                 LaunchList(upcomingLaunches, paddingValues, navController, viewModel)
             },
@@ -60,7 +64,8 @@ fun UpcomingLaunchesScreen(navController: NavController) {
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            hazeState = hazeState
         )
     }
 }

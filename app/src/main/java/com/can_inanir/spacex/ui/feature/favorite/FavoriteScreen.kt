@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +27,8 @@ import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.feature.rockets.RocketCard
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 
 @Suppress("DEPRECATION")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,22 +38,25 @@ import com.can_inanir.spacex.ui.feature.rockets.RocketCard
     val userState by authViewModel.userState.collectAsState()
     val rockets by viewModel.rockets.collectAsState(initial = emptyList())
     val favorites by viewModel.favorites.collectAsState(initial = emptySet())
+    val hazeState = remember { HazeState() }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
+
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().haze(state = hazeState),
             contentScale = ContentScale.Crop
         )
 
         Scaffold(
             topBar = {
                 TopAppBar(
+                    modifier = Modifier.haze(state = hazeState),
                     colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent, titleContentColor = Color.White),
                     title = { Text("Favorite Rockets") },
                     actions = {
@@ -97,7 +103,8 @@ import com.can_inanir.spacex.ui.feature.rockets.RocketCard
 
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            hazeState = hazeState
         )
     }
 }
