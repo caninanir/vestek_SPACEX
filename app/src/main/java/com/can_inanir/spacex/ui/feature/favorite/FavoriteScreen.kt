@@ -85,7 +85,8 @@ import dev.chrisbanes.haze.haze
                         favorites = favorites,
                         paddingValues = paddingValues,
                         navController = navController,
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        hazeState = hazeState
                     )
                 } else {
                     Box(
@@ -114,7 +115,8 @@ import dev.chrisbanes.haze.haze
     favorites: Set<String>,
     paddingValues: PaddingValues,
     navController: NavController,
-    viewModel: FetchDataViewModel
+    viewModel: FetchDataViewModel,
+    hazeState: HazeState
 ) {
     val favoriteRockets = rockets.filter { favorites.contains(it.name) }
     Column(
@@ -128,7 +130,8 @@ import dev.chrisbanes.haze.haze
                 rocket = rocket,
                 isFavorite = true,
                 onClick = { navController.navigate("rocketDetail/${rocket.id}") },
-                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) }
+                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) },
+                hazeState = hazeState
             )
             Spacer(modifier = Modifier.height(16.dp))
         }

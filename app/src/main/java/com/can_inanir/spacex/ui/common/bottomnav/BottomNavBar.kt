@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,8 +59,8 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, ha
                 .width(360.dp)
                 .align(Alignment.BottomCenter)
                 .hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(
-                    0x26FFFFFF
-                ), 20.dp,0f)),
+                    0x33000000
+                ), 40.dp,0f)),
 
             color = Color.Transparent
         ) {
@@ -105,7 +106,12 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, ha
                                 restoreState = true
                             }
                         },
-                        alwaysShowLabel = false  // Remove label
+                        alwaysShowLabel = false,
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.Unspecified,
+                        unselectedIconColor = Color.Unspecified,
+                        indicatorColor = Color.Transparent
+                    )
                     )
                 }
             }

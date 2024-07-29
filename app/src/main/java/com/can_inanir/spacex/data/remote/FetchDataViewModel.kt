@@ -28,7 +28,6 @@ class FetchDataViewModel : ViewModel() {
     private val _upcomingLaunches = MutableStateFlow<List<Launch>>(emptyList())
     val upcomingLaunches: StateFlow<List<Launch>> = _upcomingLaunches
 
-
     init {
         fetchRockets()
         fetchUpcomingLaunches()
@@ -56,7 +55,6 @@ class FetchDataViewModel : ViewModel() {
             }
         }
     }
-
 
     @Suppress("UNCHECKED_CAST")
     private fun fetchFavorites(userEmail: String) {
@@ -108,7 +106,6 @@ class FetchDataViewModel : ViewModel() {
 
     fun toggleFavorite(rocketName: String) {
         val userEmail = auth.currentUser?.email ?: return
-
         val userDocRef = db.collection("users").document(userEmail)
 
         if (_favorites.value.contains(rocketName)) {
