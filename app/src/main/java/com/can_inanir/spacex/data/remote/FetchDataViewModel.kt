@@ -3,30 +3,26 @@ package com.can_inanir.spacex.data.remote
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.can_inanir.spacex.data.model.Launch
-import com.can_inanir.spacex.data.model.Launchpad
-import com.can_inanir.spacex.data.model.Rocket
+import com.can_inanir.spacex.data.repository.SpaceXRepository
+import com.can_inanir.spacex.data.local.entities.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class FetchDataViewModel : ViewModel() {
+class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private val _rockets = MutableStateFlow<List<Rocket>>(emptyList())
-    val rockets: StateFlow<List<Rocket>> = _rockets
+    private val _rockets = MutableStateFlow<List<RocketEntity>>(emptyList())
+    val rockets: StateFlow<List<RocketEntity>> = _rockets
 
-    private val _selectedRocket = MutableStateFlow<Rocket?>(null)
-    val selectedRocket: StateFlow<Rocket?> = _selectedRocket
+    private val _upcomingLaunches = MutableStateFlow<List<LaunchEntity>>(emptyList())
+    val upcomingLaunches: StateFlow<List<LaunchEntity>> = _upcomingLaunches
 
     private val _favorites = MutableStateFlow<Set<String>>(emptySet())
     val favorites: StateFlow<Set<String>> = _favorites
-
-    private val _upcomingLaunches = MutableStateFlow<List<Launch>>(emptyList())
-    val upcomingLaunches: StateFlow<List<Launch>> = _upcomingLaunches
 
     init {
         fetchRockets()
@@ -37,7 +33,7 @@ class FetchDataViewModel : ViewModel() {
     private fun fetchRockets() {
         viewModelScope.launch {
             try {
-                val fetchedRockets = RetrofitInstance.api.getRockets()
+                val fetchedRockets = repository.getRockets()
                 _rockets.value = fetchedRockets
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rockets", e)
@@ -48,7 +44,7 @@ class FetchDataViewModel : ViewModel() {
     private fun fetchUpcomingLaunches() {
         viewModelScope.launch {
             try {
-                val fetchedLaunches = RetrofitInstance.api.getUpcomingLaunches()
+                val fetchedLaunches = repository.getUpcomingLaunches()
                 _upcomingLaunches.value = fetchedLaunches
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching upcoming launches", e)
@@ -64,39 +60,27 @@ class FetchDataViewModel : ViewModel() {
                 Log.w("RocketsViewModel", "Listen failed.", exception)
                 return@addSnapshotListener
             }
-
             val favoritesMap = documentSnapshot?.data?.get("favorites") as? Map<String, Boolean> ?: emptyMap()
             val favoriteSet = favoritesMap.filter { it.value }.keys
             _favorites.value = favoriteSet
         }
     }
 
-    fun fetchRocketById(id: String, onSuccess: (Rocket) -> Unit) {
+    fun fetchRocketById(id: String, onSuccess: (RocketEntity) -> Unit) {
         viewModelScope.launch {
             try {
-                val rocket = RetrofitInstance.api.getRocket(id)
-                onSuccess(rocket)
+                val rocket = repository.getRocketById(id)
+                rocket?.let { onSuccess(it) }
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
             }
         }
     }
 
-    fun fetchRocketById(id: String) {
+    fun fetchLaunchpadById(id: String, onSuccess: (LaunchpadEntity) -> Unit) {
         viewModelScope.launch {
             try {
-                val fetchedRocket = RetrofitInstance.api.getRocket(id)
-                _selectedRocket.value = fetchedRocket
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
-            }
-        }
-    }
-
-    fun fetchLaunchpadById(id: String, onSuccess: (Launchpad) -> Unit) {
-        viewModelScope.launch {
-            try {
-                val launchpad = RetrofitInstance.api.getLaunchpad(id)
+                val launchpad = repository.getLaunchpadById(id)
                 onSuccess(launchpad)
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching launchpad by ID", e)
@@ -107,7 +91,6 @@ class FetchDataViewModel : ViewModel() {
     fun toggleFavorite(rocketName: String) {
         val userEmail = auth.currentUser?.email ?: return
         val userDocRef = db.collection("users").document(userEmail)
-
         if (_favorites.value.contains(rocketName)) {
             userDocRef.update("favorites.$rocketName", false)
         } else {

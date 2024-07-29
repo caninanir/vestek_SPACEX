@@ -9,8 +9,8 @@ data class Launchpad(
     val region: String,
     val details: String,
     val images: LaunchpadImages
-){
-
-data class LaunchpadImages(
-    val large: List<String>
-)}
+) {
+    data class LaunchpadImages(
+        val large: List<String>
+    )
+}

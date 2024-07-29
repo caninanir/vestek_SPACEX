@@ -18,13 +18,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.can_inanir.spacex.R
+import com.can_inanir.spacex.data.repository.SpaceXApplication
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.remote.FetchDataViewModelFactory
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    private lateinit var fetchDataViewModel: FetchDataViewModel
+    private lateinit var navController: NavController
 
     private lateinit var googleSignInClient: GoogleSignInClient
     lateinit var authViewModel: AuthViewModel
@@ -39,6 +45,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val repository = (application as SpaceXApplication).repository
+        val factory = FetchDataViewModelFactory(repository)
+        fetchDataViewModel = ViewModelProvider(this, factory)[FetchDataViewModel::class.java]
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 
