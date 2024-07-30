@@ -3,7 +3,7 @@ package com.can_inanir.spacex.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.can_inanir.spacex.data.model.Launchpad
-
+@Suppress("PropertyName")
 @Entity(tableName = "launchpads")
 data class LaunchpadEntity(
     @PrimaryKey val id: String,

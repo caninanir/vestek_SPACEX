@@ -12,9 +12,7 @@ class SpaceXRepository(private val apiService: ApiService, private val appDataba
     // Rockets
     suspend fun getRockets(): List<RocketEntity> {
         val cachedRockets = appDatabase.rocketDao().getAllRockets()
-        return if (cachedRockets.isNotEmpty()) {
-            cachedRockets
-        } else {
+        return cachedRockets.ifEmpty {
             val rocketsFromApi = apiService.getRockets()
             val rocketEntities = rocketsFromApi.map {
                 it.toRocketEntity() // Map Rocket to RocketEntity
@@ -24,7 +22,7 @@ class SpaceXRepository(private val apiService: ApiService, private val appDataba
         }
     }
 
-    suspend fun getRocketById(id: String): RocketEntity? {
+    suspend fun getRocketById(id: String): RocketEntity {
         val cachedRocket = appDatabase.rocketDao().getRocketById(id)
         return cachedRocket ?: run {
             val rocketFromApi = apiService.getRocket(id)
@@ -37,9 +35,7 @@ class SpaceXRepository(private val apiService: ApiService, private val appDataba
     // Upcoming Launches
     suspend fun getUpcomingLaunches(): List<LaunchEntity> {
         val cachedLaunches = appDatabase.launchDao().getAllLaunches()
-        return if (cachedLaunches.isNotEmpty()) {
-            cachedLaunches
-        } else {
+        return cachedLaunches.ifEmpty {
             val launchesFromApi = apiService.getUpcomingLaunches()
             val launchEntities = launchesFromApi.map {
                 it.toLaunchEntity() // Map Launch to LaunchEntity
@@ -52,12 +48,7 @@ class SpaceXRepository(private val apiService: ApiService, private val appDataba
     // Launchpad by ID
     suspend fun getLaunchpadById(id: String): LaunchpadEntity {
         val cachedLaunchpad = appDatabase.launchpadDao().getLaunchpadById(id)
-        return cachedLaunchpad ?: run {
-            val launchpadFromApi = apiService.getLaunchpad(id)
-            val launchpadEntity = launchpadFromApi.toLaunchpadEntity() // Map Launchpad to LaunchpadEntity
-            appDatabase.launchpadDao().insertLaunchpad(launchpadEntity)
-            launchpadEntity
-        }
+        return cachedLaunchpad
     }
 }
 
@@ -91,6 +82,7 @@ fun Launch.toLaunchEntity(): LaunchEntity {
     )
 }
 
+@Suppress("unused")
 fun Launchpad.toLaunchpadEntity(): LaunchpadEntity {
     return LaunchpadEntity(
         id = this.id,

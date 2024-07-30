@@ -2,30 +2,25 @@ package com.can_inanir.spacex.ui.main
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
+import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.remote.FetchDataViewModelFactory
+import com.can_inanir.spacex.data.repository.SpaceXApplication
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
-import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.feature.favorite.FavoritesScreen
 import com.can_inanir.spacex.ui.feature.login.LoginScreen
 import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
 import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
-import com.can_inanir.spacex.data.repository.SpaceXApplication
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
-import com.can_inanir.spacex.data.remote.FetchDataViewModelFactory
 
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
-    val authViewModel: AuthViewModel = viewModel()
-    val userState by authViewModel.userState.collectAsState()
     val repository = (LocalContext.current.applicationContext as SpaceXApplication).repository
     val factory = FetchDataViewModelFactory(repository)
 

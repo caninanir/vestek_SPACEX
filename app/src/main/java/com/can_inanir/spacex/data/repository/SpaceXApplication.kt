@@ -6,7 +6,7 @@ import com.can_inanir.spacex.data.local.AppDatabase
 import com.can_inanir.spacex.data.remote.RetrofitInstance
 
 class SpaceXApplication : Application() {
-    lateinit var database: AppDatabase
+    private lateinit var database: AppDatabase
     lateinit var repository: SpaceXRepository
 
     override fun onCreate() {

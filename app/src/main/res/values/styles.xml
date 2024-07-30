@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="SpaceX" parent="Theme.AppCompat.Light.NoActionBar">
+
+
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
@@ -11,5 +13,14 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:fontFamily">FontFamily(Font(R.font.nasalization, FontWeight.Normal))</item>
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/cool_green</item>
+        <item name="colorPrimaryVariant">@color/cool_green</item>
+        <item name="colorOnPrimary">@color/cool_green</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/cool_green</item>
+        <item name="colorSecondaryVariant">@color/cool_green</item>
+        <item name="colorOnSecondary">@color/cool_green</item>
     </style>
 </resources>

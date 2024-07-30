@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.can_inanir.spacex.data.model.Measurement
 import com.can_inanir.spacex.data.model.PayloadWeight
 import com.can_inanir.spacex.data.model.Weight
-
+@Suppress("PropertyName")
 @Entity(tableName = "rockets")
 data class RocketEntity(
     @PrimaryKey val id: String,

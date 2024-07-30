@@ -70,7 +70,7 @@ class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel()
         viewModelScope.launch {
             try {
                 val rocket = repository.getRocketById(id)
-                rocket?.let { onSuccess(it) }
+                rocket.let { onSuccess(it) }
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
             }

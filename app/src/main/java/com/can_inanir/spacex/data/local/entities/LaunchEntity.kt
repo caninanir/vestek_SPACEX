@@ -5,7 +5,7 @@ package com.can_inanir.spacex.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.can_inanir.spacex.data.model.Launch
-
+@Suppress("PropertyName")
 @Entity(tableName = "launches")
 data class LaunchEntity(
     @PrimaryKey val id: String,
