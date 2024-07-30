@@ -13,7 +13,6 @@ import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.feature.favorite.FavoritesScreen
 import com.can_inanir.spacex.ui.feature.login.LoginScreen
-import com.can_inanir.spacex.ui.feature.profile.ProfileScreen
 import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
 import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
 import com.can_inanir.spacex.data.repository.SpaceXApplication
@@ -27,7 +26,6 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
-
     val repository = (LocalContext.current.applicationContext as SpaceXApplication).repository
     val factory = FetchDataViewModelFactory(repository)
 
@@ -48,14 +46,10 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
             UpcomingLaunchesScreen(navController = navController, fetchDataViewModel)
         }
         composable(BottomNavItem.Login.route) {
-            LoginScreen(signInWithGoogle)
+            LoginScreen(navController, signInWithGoogle)
         }
         composable(BottomNavItem.Profile.route) {
-            if (userState != null) {
-                ProfileScreen(navController)
-            } else {
-                LoginScreen(signInWithGoogle)
+                LoginScreen(navController, signInWithGoogle)
             }
         }
     }
-}

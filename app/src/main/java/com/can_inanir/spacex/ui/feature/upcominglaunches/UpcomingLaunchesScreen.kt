@@ -178,8 +178,8 @@ fun LaunchCard(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable { onLaunchClick(launch) },
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+
+        colors = CardDefaults.cardColors(containerColor = Color(0x347C7C7C)),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -354,6 +354,7 @@ fun LaunchDetail(
                 val appContext = LocalContext.current
                 Text(
                     text = "Watch the webcast",
+                    color = colorResource(id = R.color.cool_green),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webcastUrl))
@@ -379,18 +380,6 @@ fun LaunchDetail(
 
         // Display All Available Images: Patch, Rocket, and Launchpad Images
         Column {
-            // Launch Patch
-            launch.patches?.large?.let { imageUrl ->
-                Image(
-                    painter = rememberAsyncImagePainter(model = imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .heightIn(max = 300.dp),
-                    contentScale = ContentScale.Crop
-                )
-            }
             // Rocket Images
             rocket?.flickr_images?.forEach { imageUrl ->
                 Image(

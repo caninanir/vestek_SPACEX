@@ -35,6 +35,7 @@ import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.data.remote.FetchDataViewModelFactory
 import com.can_inanir.spacex.data.repository.SpaceXApplication
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
+import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
@@ -44,8 +45,6 @@ import dev.chrisbanes.haze.hazeChild
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel) {
-
-
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
@@ -53,6 +52,7 @@ fun FavoritesScreen(navController: NavController, fetchDataViewModel: FetchDataV
     val hazeState = remember { HazeState() }
     val hazeState2 = remember { HazeState() }
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
+    var showProfile by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -91,13 +91,7 @@ fun FavoritesScreen(navController: NavController, fetchDataViewModel: FetchDataV
                             contentDescription = "Profile",
                             modifier = Modifier
                                 .padding(end = 16.dp)
-                                .clickable {
-                                    if (userState != null) {
-                                        navController.navigate("profile")
-                                    } else {
-                                        navController.navigate("login")
-                                    }
-                                },
+                                .clickable { showProfile = true },
                             tint = colorResource(R.color.cool_green)
                         )
                     }
@@ -141,11 +135,76 @@ fun FavoritesScreen(navController: NavController, fetchDataViewModel: FetchDataV
                 )
             }
         }
+        if (showProfile) {
+            if (userState == null){
+                navController.navigate(BottomNavItem.Login.route) {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .clickable { showProfile = false },
+                contentAlignment = Alignment.Center
+            ) {
+                ProfileOverlay(
+                    authViewModel = authViewModel,
+                    navController = navController,
+                    onClose = { showProfile = false },
+                    hazeState = hazeState2
+                )
+            }
+        }
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
             hazeState = hazeState2
         )
+    }
+}
+@Composable
+fun ProfileOverlay(
+    authViewModel: AuthViewModel,
+    navController: NavController,
+    onClose: () -> Unit,
+    hazeState: HazeState
+) {
+    val userState by authViewModel.userState.collectAsState()
+
+    Box(
+        modifier = Modifier
+            .size(width = 250.dp, height = 150.dp)
+            .hazeChild(state = hazeState, shape = RoundedCornerShape(24.dp), HazeStyle(Color(
+                0x808A8A8A
+            ), 20.dp, 0f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Logged in as", color = colorResource(id = R.color.cool_green))
+            userState?.let { user ->
+                Text(text = "${user.email}", color = colorResource(id = R.color.cool_green))
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red, contentColor = Color.White),
+                    onClick = {
+                        authViewModel.logout()
+                        navController.navigate(BottomNavItem.Login.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        }
+                        onClose()
+                    }
+                ) {
+                    Text(text = "Logout")
+                }
+            }
+        }
     }
 }
 
@@ -189,8 +248,7 @@ fun RocketCard(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x0DFFFFFF)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
+        colors = CardDefaults.cardColors(containerColor = Color(0x0DFFFFFF))
     ) {
         Column {
             Row(
