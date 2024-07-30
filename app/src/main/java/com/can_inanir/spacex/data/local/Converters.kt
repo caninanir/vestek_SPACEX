@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken
 
 class Converters {
 
-    // List<String> converters
+
     @TypeConverter
     fun fromString(value: String): List<String> {
         val listType = object : TypeToken<List<String>>() {}.type
@@ -19,7 +19,7 @@ class Converters {
         return Gson().toJson(list)
     }
 
-    // Measurement converters
+
     @TypeConverter
     fun fromMeasurement(measurement: Measurement): String {
         return Gson().toJson(measurement)
@@ -30,7 +30,7 @@ class Converters {
         return Gson().fromJson(value, Measurement::class.java)
     }
 
-    // Weight converters
+
     @TypeConverter
     fun fromWeight(weight: Weight): String {
         return Gson().toJson(weight)
@@ -41,18 +41,18 @@ class Converters {
         return Gson().fromJson(value, Weight::class.java)
     }
 
-    // PayloadWeight converters
+    @Suppress("unused")
     @TypeConverter
     fun fromPayloadWeight(payloadWeight: PayloadWeight): String {
         return Gson().toJson(payloadWeight)
     }
-
+    @Suppress("unused")
     @TypeConverter
     fun toPayloadWeight(value: String): PayloadWeight {
         return Gson().fromJson(value, PayloadWeight::class.java)
     }
 
-    // List<PayloadWeight> converters
+
     @TypeConverter
     fun fromPayloadWeightList(list: List<PayloadWeight>): String {
         return Gson().toJson(list)
@@ -64,7 +64,7 @@ class Converters {
         return Gson().fromJson(value, listType)
     }
 
-    // Launch.Links converters
+
     @TypeConverter
     fun fromLinks(links: Launch.Links): String {
         return Gson().toJson(links)
@@ -75,7 +75,7 @@ class Converters {
         return Gson().fromJson(value, Launch.Links::class.java)
     }
 
-    // Launch.Patches converters
+
     @TypeConverter
     fun fromPatches(patches: Launch.Patches?): String {
         return Gson().toJson(patches)
@@ -86,7 +86,7 @@ class Converters {
         return Gson().fromJson(value, Launch.Patches::class.java)
     }
 
-    // Launchpad.LaunchpadImages converters
+
     @TypeConverter
     fun fromLaunchpadImages(images: Launchpad.LaunchpadImages): String {
         return Gson().toJson(images)

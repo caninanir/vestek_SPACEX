@@ -9,13 +9,13 @@ import com.can_inanir.spacex.data.remote.ApiService
 
 class SpaceXRepository(private val apiService: ApiService, private val appDatabase: AppDatabase) {
 
-    // Rockets
+
     suspend fun getRockets(): List<RocketEntity> {
         val cachedRockets = appDatabase.rocketDao().getAllRockets()
         return cachedRockets.ifEmpty {
             val rocketsFromApi = apiService.getRockets()
             val rocketEntities = rocketsFromApi.map {
-                it.toRocketEntity() // Map Rocket to RocketEntity
+                it.toRocketEntity()
             }
             appDatabase.rocketDao().insertRockets(rocketEntities)
             rocketEntities
@@ -32,20 +32,19 @@ class SpaceXRepository(private val apiService: ApiService, private val appDataba
         }
     }
 
-    // Upcoming Launches
     suspend fun getUpcomingLaunches(): List<LaunchEntity> {
         val cachedLaunches = appDatabase.launchDao().getAllLaunches()
         return cachedLaunches.ifEmpty {
             val launchesFromApi = apiService.getUpcomingLaunches()
             val launchEntities = launchesFromApi.map {
-                it.toLaunchEntity() // Map Launch to LaunchEntity
+                it.toLaunchEntity()
             }
             appDatabase.launchDao().insertLaunches(launchEntities)
             launchEntities
         }
     }
 
-    // Launchpad by ID
+
     suspend fun getLaunchpadById(id: String): LaunchpadEntity {
         val cachedLaunchpad = appDatabase.launchpadDao().getLaunchpadById(id)
         return cachedLaunchpad

@@ -55,12 +55,12 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     val hazeState = remember { HazeState() }
 
 
-    // Checking userState to route to the favorites screen when logged in
+
     LaunchedEffect(userState) {
         if (userState != null) {
             navController.navigate(BottomNavItem.Favorites.route) {
                 popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true // Clears back stack
+                    inclusive = true
                 }
             }
         }

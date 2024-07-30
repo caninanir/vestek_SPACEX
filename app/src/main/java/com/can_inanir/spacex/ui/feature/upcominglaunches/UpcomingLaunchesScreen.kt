@@ -310,7 +310,7 @@ fun LaunchDetail(
                 HazeStyle(Color(0x80000000), 20.dp, 0f)
             )
     ) {
-        // Close Button and Launch Title
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -341,7 +341,7 @@ fun LaunchDetail(
             Spacer(modifier = Modifier.weight(1f))
         }
 
-        // Launch Details
+
         Text(
             text = launch.details ?: "No details available.",
             style = MaterialTheme.typography.bodyLarge,
@@ -350,13 +350,13 @@ fun LaunchDetail(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Date Info
+
         DetailItem(label = "DATE", value = ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME))
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Learn More and Webcast Buttons
+
         Column(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
@@ -399,9 +399,7 @@ fun LaunchDetail(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Display All Available Images: Patch, Rocket, and Launchpad Images
         Column {
-            // Rocket Images
             rocket?.flickr_images?.forEach { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),
@@ -413,7 +411,6 @@ fun LaunchDetail(
                     contentScale = ContentScale.Crop
                 )
             }
-            // Launchpad Images
             launchpad?.images?.large?.forEach { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),

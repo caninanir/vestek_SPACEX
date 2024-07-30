@@ -327,7 +327,6 @@ fun RocketDetail(
             .verticalScroll(rememberScrollState())
             .hazeChild(state = hazeState, shape = RoundedCornerShape(1.dp), HazeStyle(Color(0x80000000), 20.dp, 0f))
     ) {
-        // Header Row with Back Arrow, Text, and Favorite Icon
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -363,7 +362,6 @@ fun RocketDetail(
                 )
             }
         }
-        // Rocket Image
         rocket.flickr_images.firstOrNull()?.let { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
@@ -376,7 +374,6 @@ fun RocketDetail(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        // Rocket Description
         Text(
             text = rocket.description,
             style = MaterialTheme.typography.bodyLarge,
@@ -384,7 +381,6 @@ fun RocketDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        // Rocket Details with Dividers
         DetailItem(label = "HEIGHT", value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         DetailItem(label = "DIAMETER", value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft")
@@ -404,7 +400,6 @@ fun RocketDetail(
             HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        // Learn More Button
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.cool_green), contentColor = Color.White),
             onClick = {
@@ -416,7 +411,6 @@ fun RocketDetail(
             Text("Learn More")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        // Additional Rocket Images
         rocket.flickr_images.drop(1).forEach { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
