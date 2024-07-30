@@ -188,16 +188,14 @@ fun LaunchCard(
             Text(
                 color = Color.White,
                 text = launch.name,
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 22.sp),
-                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                modifier = Modifier.padding(bottom = 8.dp)
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 28.sp),
+                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold))
             )
             Text(
                 color = Color.White,
                 text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}",
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
-                modifier = Modifier.padding(bottom = 8.dp)
             )
 
                         if (rocket != null && launchpad != null) {
@@ -206,7 +204,6 @@ fun LaunchCard(
                                 text = "Rocket: ${rocket!!.name}",
                                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
-                                modifier = Modifier.padding(bottom = 8.dp)
                             )
 
                             val imageUrl = launch.patches?.large ?: rocket!!.flickr_images.randomOrNull()
@@ -222,15 +219,14 @@ fun LaunchCard(
                             }
 
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     color = Color.White,
                     text = "Launchpad: ${launchpad!!.name}",
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
-                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-
+                Spacer(modifier = Modifier.height(2.dp))
                 launchpad!!.images.large.randomOrNull()?.let { imageUrl ->
                     Image(
                         painter = rememberAsyncImagePainter(model = imageUrl),
@@ -243,7 +239,7 @@ fun LaunchCard(
                 }
 
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(2.dp))
             } else {
                 Text("Loading...", color = Color.White)
             }
