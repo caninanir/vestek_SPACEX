@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
@@ -70,7 +71,9 @@ import dev.chrisbanes.haze.hazeChild
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritesScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel) {
+fun FavoritesScreen(navController: NavController) {
+    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
+    val launches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
     val authViewModel: AuthViewModel = viewModel()
     val userState by authViewModel.userState.collectAsState()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())

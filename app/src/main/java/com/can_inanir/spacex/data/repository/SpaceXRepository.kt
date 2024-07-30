@@ -1,56 +1,60 @@
 package com.can_inanir.spacex.data.repository
 
 import com.can_inanir.spacex.data.local.AppDatabase
+import com.can_inanir.spacex.data.local.dao.LaunchDao
+import com.can_inanir.spacex.data.local.dao.LaunchpadDao
+import com.can_inanir.spacex.data.local.dao.RocketDao
 import com.can_inanir.spacex.data.local.entities.*
 import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Launchpad
 import com.can_inanir.spacex.data.remote.ApiService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SpaceXRepository(private val apiService: ApiService, private val appDatabase: AppDatabase) {
-
+@Singleton
+class SpaceXRepository @Inject constructor(
+    private val apiService: ApiService,
+    private val rocketDao: RocketDao,
+    private val launchDao: LaunchDao,
+    private val launchpadDao: LaunchpadDao
+) {
 
     suspend fun getRockets(): List<RocketEntity> {
-        val cachedRockets = appDatabase.rocketDao().getAllRockets()
+        val cachedRockets = rocketDao.getAllRockets()
         return cachedRockets.ifEmpty {
             val rocketsFromApi = apiService.getRockets()
-            val rocketEntities = rocketsFromApi.map {
-                it.toRocketEntity()
-            }
-            appDatabase.rocketDao().insertRockets(rocketEntities)
+            val rocketEntities = rocketsFromApi.map { it.toRocketEntity() }
+            rocketDao.insertRockets(rocketEntities)
             rocketEntities
         }
     }
 
     suspend fun getRocketById(id: String): RocketEntity {
-        val cachedRocket = appDatabase.rocketDao().getRocketById(id)
+        val cachedRocket = rocketDao.getRocketById(id)
         return cachedRocket ?: run {
             val rocketFromApi = apiService.getRocket(id)
             val rocketEntity = rocketFromApi.toRocketEntity()
-            appDatabase.rocketDao().insertRocket(rocketEntity)
+            rocketDao.insertRocket(rocketEntity)
             rocketEntity
         }
     }
 
     suspend fun getUpcomingLaunches(): List<LaunchEntity> {
-        val cachedLaunches = appDatabase.launchDao().getAllLaunches()
+        val cachedLaunches = launchDao.getAllLaunches()
         return cachedLaunches.ifEmpty {
             val launchesFromApi = apiService.getUpcomingLaunches()
-            val launchEntities = launchesFromApi.map {
-                it.toLaunchEntity()
-            }
-            appDatabase.launchDao().insertLaunches(launchEntities)
+            val launchEntities = launchesFromApi.map { it.toLaunchEntity() }
+            launchDao.insertLaunches(launchEntities)
             launchEntities
         }
     }
 
-
     suspend fun getLaunchpadById(id: String): LaunchpadEntity {
-        val cachedLaunchpad = appDatabase.launchpadDao().getLaunchpadById(id)
+        val cachedLaunchpad = launchpadDao.getLaunchpadById(id)
         return cachedLaunchpad
     }
 }
-
 fun Rocket.toRocketEntity(): RocketEntity {
     return RocketEntity(
         id = this.id,

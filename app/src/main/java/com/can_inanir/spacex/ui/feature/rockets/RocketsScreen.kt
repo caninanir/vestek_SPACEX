@@ -65,15 +65,19 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
+import androidx.hilt.*
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel)  {
+fun RocketsScreen(navController: NavController) {
+    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
     val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
     val hazeStateBottomNav = remember { HazeState() }
     val hazeStateBottomNav2 = remember { HazeState() }
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
+
 
 
 

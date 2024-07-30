@@ -21,24 +21,19 @@ import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
 @Composable
 fun NavGraph(signInWithGoogle: () -> Unit) {
     val navController = rememberNavController()
-    val repository = (LocalContext.current.applicationContext as SpaceXApplication).repository
-    val factory = FetchDataViewModelFactory(repository)
 
     NavHost(
         navController = navController,
         startDestination = BottomNavItem.Rockets.route,
     ) {
         composable(BottomNavItem.Rockets.route) {
-            val fetchDataViewModel: FetchDataViewModel = viewModel(factory = factory)
-            RocketsScreen(navController, fetchDataViewModel)
+            RocketsScreen(navController)
         }
         composable(BottomNavItem.Favorites.route) {
-            val fetchDataViewModel: FetchDataViewModel = viewModel(factory = factory)
-            FavoritesScreen(navController = navController, fetchDataViewModel)
+            FavoritesScreen(navController = navController)
         }
         composable(BottomNavItem.Upcoming.route) {
-            val fetchDataViewModel: FetchDataViewModel = viewModel(factory = factory)
-            UpcomingLaunchesScreen(navController = navController, fetchDataViewModel)
+            UpcomingLaunchesScreen(navController = navController)
         }
         composable(BottomNavItem.Login.route) {
             LoginScreen(navController, signInWithGoogle)

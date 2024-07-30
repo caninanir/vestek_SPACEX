@@ -7,11 +7,17 @@ import com.can_inanir.spacex.data.repository.SpaceXRepository
 import com.can_inanir.spacex.data.local.entities.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel() {
+@HiltViewModel
+class FetchDataViewModel @Inject constructor(
+    private val repository: SpaceXRepository
+) : ViewModel() {
+
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -30,7 +36,7 @@ class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel()
         auth.currentUser?.let { fetchFavorites(it.email!!) }
     }
 
-    private fun fetchRockets() {
+    fun fetchRockets() {
         viewModelScope.launch {
             try {
                 val fetchedRockets = repository.getRockets()
@@ -60,6 +66,7 @@ class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel()
                 Log.w("RocketsViewModel", "Listen failed.", exception)
                 return@addSnapshotListener
             }
+
             val favoritesMap = documentSnapshot?.data?.get("favorites") as? Map<String, Boolean> ?: emptyMap()
             val favoriteSet = favoritesMap.filter { it.value }.keys
             _favorites.value = favoriteSet

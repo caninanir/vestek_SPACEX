@@ -16,56 +16,48 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.repository.SpaceXApplication
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
-import com.can_inanir.spacex.data.remote.FetchDataViewModelFactory
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var fetchDataViewModel: FetchDataViewModel
-
     private lateinit var googleSignInClient: GoogleSignInClient
-    lateinit var authViewModel: AuthViewModel
+    var googleIdToken by mutableStateOf<String?>(null)
 
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
-        account?.idToken?.let { authViewModel.handleGoogleAccessToken(it) }
+        account?.idToken?.let { token ->
+            googleIdToken = token // Store the token
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val repository = (application as SpaceXApplication).repository
-        val factory = FetchDataViewModelFactory(repository)
-        fetchDataViewModel = ViewModelProvider(this, factory)[FetchDataViewModel::class.java]
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         WindowCompat.setDecorFitsSystemWindows(window, true)
-
-
-
-
-
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
+
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         setContent {
             MyApp {
-                authViewModel = ViewModelProvider(this@MainActivity)[AuthViewModel::class.java]
                 signInWithGoogle()
             }
         }
@@ -90,14 +82,19 @@ fun SplashScreen() {
 @SuppressLint("RememberReturnType")
 @Composable
 fun MyApp(signInWithGoogle: () -> Unit) {
-    val authViewModel: AuthViewModel = viewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
     val context = LocalContext.current
     var showSplash by remember { mutableStateOf(true) }
+    val mainActivity = context as MainActivity
 
-    remember { (context as? MainActivity)?.authViewModel = authViewModel }
+    LaunchedEffect(mainActivity.googleIdToken) {
+        mainActivity.googleIdToken?.let { token ->
+            authViewModel.handleGoogleAccessToken(token)
+        }
+    }
 
     LaunchedEffect(Unit) {
-        delay(2)
+        delay(2000) // 2 seconds delay
         showSplash = false
     }
 

@@ -68,12 +68,15 @@ import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import androidx.hilt.navigation.compose.hiltViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpcomingLaunchesScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel) {
+fun UpcomingLaunchesScreen(navController: NavController) {
 
-
+    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
+    val launches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
     val upcomingLaunches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
     val hazeState = remember { HazeState() }
     val hazeState2 = remember { HazeState() }

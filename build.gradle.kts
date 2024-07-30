@@ -16,6 +16,10 @@ buildscript {
     dependencies {
         classpath("com.google.gms:google-services:4.4.2")
         classpath("org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.20-Beta2")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.45")
+        classpath("com.android.tools.build:gradle:4.2.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.45")
     }
 }
 

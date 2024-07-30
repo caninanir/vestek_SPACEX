@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("dagger.hilt.android.plugin")
 }
 android {
     namespace = "com.can_inanir.spacex"
@@ -16,7 +17,8 @@ android {
     defaultConfig {
         applicationId = "com.can_inanir.spacex"
         minSdk = 33
-        targetSdk = 34
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -115,7 +117,22 @@ dependencies {
     implementation("com.github.x3rocode:xblur-compose:1.0.1")
     implementation("com.github.Dimezis:BlurView:version-2.0.3")
     implementation("dev.chrisbanes.haze:haze:0.7.3")
+
+
+
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
+
+
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.google.dagger:hilt-android:2.49")
+
+
+    ksp("com.google.dagger:hilt-compiler:2.45")
+    ksp("com.google.dagger:hilt-android-compiler:2.45")
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+
+
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }
