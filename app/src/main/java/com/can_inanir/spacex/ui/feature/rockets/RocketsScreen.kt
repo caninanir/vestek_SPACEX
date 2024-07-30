@@ -45,7 +45,10 @@ fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataVie
     val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
     val hazeStateBottomNav = remember { HazeState() }
     val hazeStateBottomNav2 = remember { HazeState() }
+    val hazeStateBottomNav3 = remember { HazeState() }
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
+
+
 
     BackHandler(enabled = selectedRocket != null) {
         selectedRocket = null
@@ -62,12 +65,14 @@ fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataVie
             modifier = Modifier
                 .fillMaxSize()
                 .haze(state = hazeStateBottomNav)
-                .haze(state = hazeStateBottomNav2),
+                .haze(state = hazeStateBottomNav2)
+                .haze(state = hazeStateBottomNav3),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
+                .systemBarsPadding()
                 .haze(state = hazeStateBottomNav)
                 .haze(state = hazeStateBottomNav2),
             topBar = {
@@ -90,7 +95,8 @@ fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataVie
                     favorites = favorites,
                     paddingValues = paddingValues,
                     onRocketClick = { rocket -> selectedRocket = rocket },
-                    viewModel = fetchDataViewModel
+                    viewModel = fetchDataViewModel,
+                    hazeState = hazeStateBottomNav3
                 )
             },
             containerColor = Color.Transparent
@@ -99,7 +105,6 @@ fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataVie
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0x1AFFFFFF))
                     .haze(state = hazeStateBottomNav2),
             ) {
                 RocketDetail(
@@ -125,7 +130,8 @@ fun RocketList(
     favorites: Set<String>,
     paddingValues: PaddingValues,
     onRocketClick: (RocketEntity) -> Unit,
-    viewModel: FetchDataViewModel
+    viewModel: FetchDataViewModel,
+    hazeState: HazeState
 ) {
     val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }
     Column(
@@ -140,7 +146,8 @@ fun RocketList(
                 rocket = rocket,
                 isFavorite = favorites.contains(rocket.name),
                 onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) }
+                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) },
+                hazeState = hazeState
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -152,15 +159,17 @@ fun RocketCard(
     rocket: RocketEntity,
     isFavorite: Boolean,
     onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    hazeState: HazeState
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x0DFFFFFF)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
+            //.hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp,0f)),
+        colors = CardDefaults.cardColors(containerColor = Color(0x347C7C7C)),
+        //elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column {
             Row(
@@ -183,7 +192,6 @@ fun RocketCard(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
             rocket.flickr_images.firstOrNull()?.let { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),

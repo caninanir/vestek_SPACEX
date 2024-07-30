@@ -99,6 +99,7 @@ fun UpcomingLaunchesScreen(navController: NavController, fetchDataViewModel: Fet
                 )
             },
             content = { paddingValues ->
+
                 LaunchList(
                     launches = upcomingLaunches,
                     paddingValues = paddingValues,
@@ -144,10 +145,13 @@ fun LaunchList(
             .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
+
         launches.forEach { launch ->
             LaunchCard(launch, onLaunchClick, viewModel)
             Spacer(modifier = Modifier.height(16.dp))
         }
+
+
     }
 }
 
@@ -157,6 +161,8 @@ fun LaunchCard(
     onLaunchClick: (LaunchEntity) -> Unit,
     viewModel: FetchDataViewModel
 ) {
+
+
     var rocket by remember { mutableStateOf<RocketEntity?>(null) }
     var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
 
@@ -164,6 +170,8 @@ fun LaunchCard(
         viewModel.fetchRocketById(launch.rocket) { rocket = it }
         viewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
     }
+
+
 
     Card(
         modifier = Modifier
@@ -191,25 +199,29 @@ fun LaunchCard(
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            if (rocket != null && launchpad != null) {
-                Text(
-                    color = Color.White,
-                    text = "Rocket: ${rocket!!.name}",
-                    fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                val imageUrl = launch.patches?.large ?: rocket!!.flickr_images.randomOrNull()
-                imageUrl?.let {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = it),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+
+                        if (rocket != null && launchpad != null) {
+                            Text(
+                                color = Color.White,
+                                text = "Rocket: ${rocket!!.name}",
+                                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
+                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+
+                            val imageUrl = launch.patches?.large ?: rocket!!.flickr_images.randomOrNull()
+                            imageUrl?.let {
+                                Image(
+                                    painter = rememberAsyncImagePainter(model = it),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+
+
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     color = Color.White,
@@ -218,6 +230,7 @@ fun LaunchCard(
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
+
                 launchpad!!.images.large.randomOrNull()?.let { imageUrl ->
                     Image(
                         painter = rememberAsyncImagePainter(model = imageUrl),
@@ -228,6 +241,8 @@ fun LaunchCard(
                         contentScale = ContentScale.Crop
                     )
                 }
+
+
                 Spacer(modifier = Modifier.height(8.dp))
             } else {
                 Text("Loading...", color = Color.White)
