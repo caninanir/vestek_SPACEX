@@ -38,7 +38,7 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
             LoginScreen(navController, signInWithGoogle)
         }
         composable("easter_egg") {
-            EasterEggScreen()
+            EasterEggScreen(navController)
         }
     }
 }
