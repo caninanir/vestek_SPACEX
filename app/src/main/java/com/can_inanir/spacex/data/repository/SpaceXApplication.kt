@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.room.Room
 import com.can_inanir.spacex.data.local.AppDatabase
 import com.can_inanir.spacex.data.remote.RetrofitInstance
+import dagger.hilt.android.HiltAndroidApp
 
+//@HiltAndroidApp
 class SpaceXApplication : Application() {
     private lateinit var database: AppDatabase
     lateinit var repository: SpaceXRepository

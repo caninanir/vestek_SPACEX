@@ -4,6 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("com.google.dagger.hilt.android")
+    id("dagger.hilt.android.plugin")
 }
 android {
     namespace = "com.can_inanir.spacex"
@@ -118,4 +120,12 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.google.dagger:hilt-android:2.49")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    ksp("com.google.dagger:hilt-compiler:2.45")
+    ksp("com.google.dagger:hilt-android-compiler:2.45")
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+    implementation("androidx.fragment:fragment-compose:1.8.2")
+    implementation("androidx.activity:activity-compose:1.9.1")
 }

@@ -7,11 +7,14 @@ import com.can_inanir.spacex.data.repository.SpaceXRepository
 import com.can_inanir.spacex.data.local.entities.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FetchDataViewModel(private val repository: SpaceXRepository) : ViewModel() {
+@HiltViewModel
+class FetchDataViewModel @Inject constructor(private val repository: SpaceXRepository) : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
