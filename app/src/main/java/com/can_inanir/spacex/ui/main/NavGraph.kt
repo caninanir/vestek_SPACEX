@@ -2,6 +2,7 @@ package com.can_inanir.spacex.ui.main
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -10,6 +11,7 @@ import com.can_inanir.spacex.ui.feature.favorite.FavoritesScreen
 import com.can_inanir.spacex.ui.feature.login.LoginScreen
 import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
 import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
+import com.can_inanir.spacex.ui.feature.easteregg.EasterEggScreen
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -34,6 +36,9 @@ fun NavGraph(signInWithGoogle: () -> Unit) {
         }
         composable(BottomNavItem.Profile.route) {
             LoginScreen(navController, signInWithGoogle)
+        }
+        composable("easter_egg") {
+            EasterEggScreen()
         }
     }
 }
