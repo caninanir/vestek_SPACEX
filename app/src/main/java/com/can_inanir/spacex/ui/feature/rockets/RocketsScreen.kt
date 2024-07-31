@@ -55,6 +55,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
@@ -68,7 +69,8 @@ import dev.chrisbanes.haze.hazeChild
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RocketsScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel)  {
+fun RocketsScreen(navController: NavController) {
+    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
     val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
     val hazeStateBottomNav = remember { HazeState() }

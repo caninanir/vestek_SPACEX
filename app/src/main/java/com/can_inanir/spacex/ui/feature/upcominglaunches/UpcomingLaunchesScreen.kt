@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
@@ -71,7 +72,8 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpcomingLaunchesScreen(navController: NavController, fetchDataViewModel: FetchDataViewModel) {
+fun UpcomingLaunchesScreen(navController: NavController) {
+    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
 
 
     val upcomingLaunches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())

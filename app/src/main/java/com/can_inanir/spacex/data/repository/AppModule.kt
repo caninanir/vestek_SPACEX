@@ -1,9 +1,16 @@
+@file:Suppress("deprecation")
 package com.can_inanir.spacex.data.repository
 
 import android.app.Application
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.can_inanir.spacex.R
 import androidx.room.Room
 import com.can_inanir.spacex.data.local.AppDatabase
 import com.can_inanir.spacex.data.remote.ApiService
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,5 +44,27 @@ object AppModule {
     @Singleton
     fun provideSpaceXRepository(apiService: ApiService, appDatabase: AppDatabase): SpaceXRepository {
         return SpaceXRepository(apiService, appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInClient(app: Application): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(app.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(app, gso)
     }
 }

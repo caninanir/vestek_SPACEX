@@ -3,8 +3,8 @@ package com.can_inanir.spacex.data.remote
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.can_inanir.spacex.data.repository.SpaceXRepository
 import com.can_inanir.spacex.data.local.entities.*
+import com.can_inanir.spacex.data.repository.SpaceXRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,10 +14,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FetchDataViewModel @Inject constructor(private val repository: SpaceXRepository) : ViewModel() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-
+class FetchDataViewModel @Inject constructor(
+    private val repository: SpaceXRepository,
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : ViewModel() {
     private val _rockets = MutableStateFlow<List<RocketEntity>>(emptyList())
     val rockets: StateFlow<List<RocketEntity>> = _rockets
 
@@ -73,7 +74,7 @@ class FetchDataViewModel @Inject constructor(private val repository: SpaceXRepos
         viewModelScope.launch {
             try {
                 val rocket = repository.getRocketById(id)
-                rocket.let { onSuccess(it) }
+                onSuccess(rocket)
             } catch (e: Exception) {
                 Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
             }

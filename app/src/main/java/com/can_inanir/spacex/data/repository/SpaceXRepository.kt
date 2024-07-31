@@ -6,8 +6,11 @@ import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Launchpad
 import com.can_inanir.spacex.data.remote.ApiService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SpaceXRepository(private val apiService: ApiService, private val appDatabase: AppDatabase) {
+@Singleton
+class SpaceXRepository @Inject constructor(private val apiService: ApiService, private val appDatabase: AppDatabase) {
 
 
     suspend fun getRockets(): List<RocketEntity> {
