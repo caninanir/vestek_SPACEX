@@ -2,15 +2,15 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") // Keep this for Room, but not for Hilt
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
-    id("com.google.dagger.hilt.android") version "2.49"
+    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
 android {
     namespace = "com.can_inanir.spacex"
-    compileSdk = 34
+    compileSdk = 35
 
     kotlinOptions {
         freeCompilerArgs += "-Xallow-kotlin-package"
@@ -19,7 +19,6 @@ android {
     defaultConfig {
         applicationId = "com.can_inanir.spacex"
         minSdk = 23
-        //noinspection EditedTargetSdkVersion
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -40,8 +39,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
 
     kotlinOptions {
@@ -52,7 +51,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -83,7 +82,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Coil
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
@@ -92,7 +91,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
 
     // Google Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 
     // Compose additions
     implementation("androidx.compose.ui:ui-test-junit4")
@@ -108,10 +107,4 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-    // Other dependencies
-    //implementation("com.github.prime-zs.toolkit:core-ktx:2.0.2-alpha")
-    //implementation("com.github.x3rocode:xblur-compose:1.0.1")
-    //implementation("com.github.Dimezis:BlurView:version-2.0.3")
-    //implementation("dev.chrisbanes.haze:haze:0.7.3")
 }

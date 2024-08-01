@@ -1,5 +1,6 @@
 package com.can_inanir.spacex.ui.feature.easteregg
 
+import android.text.format.DateUtils.formatElapsedTime
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
@@ -33,23 +34,19 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.PI
+
 @Composable
 fun EasterEggScreen(navController: NavController) {
     BackHandler { navController.popBackStack() }
-
-    val debug = false
-
+    val debug = true
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
-
     val density = LocalDensity.current
     val screenWidthPx = with(density) { screenWidth.toPx() }
     val screenHeightPx = with(density) { screenHeight.toPx() }
-
     var spaceshipPosition by remember { mutableStateOf(Offset(screenWidthPx / 2f, screenHeightPx / 2f)) }
     var targetPosition by remember { mutableStateOf<Offset?>(null) }
     val velocity = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
@@ -76,12 +73,10 @@ fun EasterEggScreen(navController: NavController) {
 
     val asteroids = remember { mutableStateListOf<Asteroid>() }
     val randomGenerator = Random.Default
-
     LaunchedEffect(Unit) {
         while (true) {
             val delayTime = (2000 - 50 * elapsedTime).coerceAtLeast(200)
             delay(delayTime.toLong())
-
             val side = randomGenerator.nextInt(4)
             val (posX, posY) = when (side) {
                 0 -> Pair(-50f, randomGenerator.nextFloat() * screenHeightPx) // Left
@@ -89,12 +84,10 @@ fun EasterEggScreen(navController: NavController) {
                 2 -> Pair(randomGenerator.nextFloat() * screenWidthPx, -50f) // Top
                 else -> Pair(randomGenerator.nextFloat() * screenWidthPx, screenHeightPx + 50f) // Bottom
             }
-
             val angle = randomGenerator.nextFloat() * 360f
             val velocityMagnitude = randomGenerator.nextInt(200, 1000).toFloat()
             val velocityX = cos(Math.toRadians(angle.toDouble())).toFloat() * velocityMagnitude
             val velocityY = sin(Math.toRadians(angle.toDouble())).toFloat() * velocityMagnitude
-
             val newAsteroid = Asteroid(
                 size = randomGenerator.nextInt(30, 300).toFloat(),
                 position = Offset(posX, posY),
@@ -102,7 +95,6 @@ fun EasterEggScreen(navController: NavController) {
                 rotation = (randomGenerator.nextFloat() * 2f - 1f) * 30f,
                 imageRes = R.drawable.fav_d
             )
-
             asteroids.add(newAsteroid)
         }
     }
@@ -112,7 +104,6 @@ fun EasterEggScreen(navController: NavController) {
             spaceshipPosition += velocity.value * 0.016f // Assuming 60 updates per second
             val newVelocity = velocity.value * friction
             velocity.snapTo(newVelocity)
-
             targetPosition?.let { target ->
                 val direction = target - spaceshipPosition
                 if (direction.getDistance() > 5f) {
@@ -126,21 +117,18 @@ fun EasterEggScreen(navController: NavController) {
             // Update asteroid positions
             asteroids.forEachIndexed { index, asteroid ->
                 val curving = randomGenerator.nextFloat()
-                val curveVelocity = if (index % 2 == 0) asteroid.velocity.rotate(curving * 10f) else asteroid.velocity.rotate(-curving * 10f)
+                val curveVelocity = if (index % 2 == 0) asteroid.velocity.rotate(curving * 10f)
+                else asteroid.velocity.rotate(-curving * 10f)
                 asteroids[index] = asteroid.copy(position = asteroid.position + curveVelocity * 0.016f)
             }
 
             // Remove asteroids that are off-screen
-            asteroids.removeAll {
-                it.position.x < -it.size - 500 ||
-                        it.position.x > screenWidthPx + it.size + 500 ||
-                        it.position.y < -it.size - 500 ||
-                        it.position.y > screenHeightPx + it.size + 500
-            }
+            asteroids.removeAll { it.position.x < -it.size - 500 || it.position.x > screenWidthPx + it.size + 500 || it.position.y < -it.size - 500 || it.position.y > screenHeightPx + it.size + 500 }
 
             // Check collision exactly when they touch
             asteroids.forEach {
-                if ((spaceshipPosition - it.position).getDistance() <= ((it.size / 2f) + 25f)) { // Collision detected if they touch
+                if ((spaceshipPosition - it.position).getDistance() <= ((it.size) + 50f)) {
+                    // Collision detected if they touch
                     Toast.makeText(context, "You crashed! High score = $elapsedTime", Toast.LENGTH_LONG).show()
                     elapsedTime = 0
                     asteroids.clear()
@@ -149,8 +137,7 @@ fun EasterEggScreen(navController: NavController) {
                     targetPosition = null
                 }
             }
-
-           delay(16)
+            delay(8)
         }
     }
 
@@ -158,9 +145,7 @@ fun EasterEggScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .pointerInput(Unit) {
-                detectDragGestures { change, _ -> targetPosition = change.position }
-            }
+            .pointerInput(Unit) { detectDragGestures { change, _ -> targetPosition = change.position } }
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
@@ -182,6 +167,17 @@ fun EasterEggScreen(navController: NavController) {
             contentScale = ContentScale.Crop
         )
 
+        // Timer Display
+        Text(
+            text = formatElapsedTime(elapsedTime),
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .systemBarsPadding()
+                .padding(top = 16.dp)
+        )
+
         // Spaceship
         Image(
             painter = painterResource(id = R.drawable.rocket_e),
@@ -197,19 +193,16 @@ fun EasterEggScreen(navController: NavController) {
 
         // Debug spaceship collision outline
         if (debug) {
-            Canvas(modifier = Modifier
-                .graphicsLayer(
-                    translationX = spaceshipPosition.x - with(LocalDensity.current) { 25.dp.toPx() },
-                    translationY = spaceshipPosition.y - with(LocalDensity.current) { 25.dp.toPx() },
-                    rotationZ = angle
-                )
-                .size(50.dp)
+            Canvas(
+                modifier = Modifier
+                    .graphicsLayer(
+                        translationX = spaceshipPosition.x - with(LocalDensity.current) { 25.dp.toPx() },
+                        translationY = spaceshipPosition.y - with(LocalDensity.current) { 25.dp.toPx() },
+                        rotationZ = angle
+                    )
+                    .size(50.dp)
             ) {
-                drawCircle(
-                    color = Color.Red,
-                    radius = 25.dp.toPx(),
-                    style = Stroke(width = 2f)
-                )
+                drawCircle(Color.Blue, 25.dp.toPx(), style = Stroke(width = 2f))
             }
         }
 
@@ -221,37 +214,33 @@ fun EasterEggScreen(navController: NavController) {
                 modifier = Modifier
                     .size(asteroid.size.dp) // Scale image with size
                     .graphicsLayer(
-                        translationX = asteroid.position.x - (with(LocalDensity.current) {asteroid.size.dp.toPx()} / 2),
-                        translationY = asteroid.position.y - (with(LocalDensity.current) {asteroid.size.dp.toPx()} / 2),
+                        translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
+                        translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
                         rotationZ = asteroid.rotation
                     )
             )
 
             // Debug asteroid collision outlines
             if (debug) {
-                Canvas(modifier = Modifier
-                    .size(asteroid.size.dp)
-                    .graphicsLayer(
-                        translationX = asteroid.position.x - (with(LocalDensity.current) {asteroid.size.dp.toPx()} / 2),
-                        translationY = asteroid.position.y - (with(LocalDensity.current) {asteroid.size.dp.toPx()} / 2)
-                    )
+                Canvas(
+                    modifier = Modifier
+                        .size(asteroid.size.dp)
+                        .graphicsLayer(
+                            translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
+                            translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2)
+                        )
                 ) {
-                    drawCircle(
-                        color = Color.Red,
-                        radius = asteroid.size.dp.toPx() / 2,
-                        style = Stroke(width = 2f)
-                    )
+                    drawCircle(Color.White, asteroid.size.dp.toPx() / 2, style = Stroke(width = 20f))
                 }
             }
         }
     }
 }
 
-// Utility to rotate an Offset
 private fun Offset.rotate(degrees: Float): Offset {
     val radians = Math.toRadians(degrees.toDouble())
-    val cosTheta = kotlin.math.cos(radians)
-    val sinTheta = kotlin.math.sin(radians)
+    val cosTheta = cos(radians)
+    val sinTheta = sin(radians)
     return Offset(
         (cosTheta * x - sinTheta * y).toFloat(),
         (sinTheta * x + cosTheta * y).toFloat()
@@ -266,7 +255,6 @@ private fun Offset.normalize(): Offset {
 private operator fun Offset.plus(other: Offset) = Offset(x + other.x, y + other.y)
 private operator fun Offset.minus(other: Offset) = Offset(x - other.x, y - other.y)
 private operator fun Offset.times(scalar: Float) = Offset(x * scalar, y * scalar)
-private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / scalar)
+private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / y)
 
-// Extension function to calculate Euclidean distance
 private fun Offset.getDistance() = kotlin.math.sqrt(x * x + y * y)
