@@ -22,14 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeChild
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+//import dev.chrisbanes.haze.HazeState
+//import dev.chrisbanes.haze.HazeStyle
+//import dev.chrisbanes.haze.hazeChild
 
 @Composable
-fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, hazeState: HazeState) {
+fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier/*, hazeState: HazeState*/) {
     val items = listOf(
         BottomNavItem.Rockets,
         BottomNavItem.Favorites,
@@ -53,9 +51,9 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier, ha
                 .clip(RoundedCornerShape(16.dp))
                 .height(60.dp)
                 .width(360.dp)
-                .align(Alignment.BottomCenter)
-                .hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp, 0f)),
-            color = Color.Transparent
+                .align(Alignment.BottomCenter),
+                //.hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp, 0f)),
+            color = Color(0x80000000)
         ) {
             NavigationBar(
                 containerColor = Color.Transparent,

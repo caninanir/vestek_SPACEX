@@ -110,8 +110,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Other dependencies
-    implementation("com.github.prime-zs.toolkit:core-ktx:2.0.2-alpha")
-    implementation("com.github.x3rocode:xblur-compose:1.0.1")
-    implementation("com.github.Dimezis:BlurView:version-2.0.3")
-    implementation("dev.chrisbanes.haze:haze:0.7.3")
+    //implementation("com.github.prime-zs.toolkit:core-ktx:2.0.2-alpha")
+    //implementation("com.github.x3rocode:xblur-compose:1.0.1")
+    //implementation("com.github.Dimezis:BlurView:version-2.0.3")
+    //implementation("dev.chrisbanes.haze:haze:0.7.3")
 }

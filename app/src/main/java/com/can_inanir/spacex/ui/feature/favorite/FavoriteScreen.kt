@@ -35,10 +35,10 @@ import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
+//import dev.chrisbanes.haze.HazeState
+//import dev.chrisbanes.haze.HazeStyle
+//import dev.chrisbanes.haze.haze
+//import dev.chrisbanes.haze.hazeChild
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,8 +48,8 @@ fun FavoritesScreen(navController: NavController) {
     val userState by authViewModel.userState.collectAsState()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
     val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
-    val hazeState = remember { HazeState() }
-    val hazeState2 = remember { HazeState() }
+//    val hazeState = remember { HazeState() }
+//    val hazeState2 = remember { HazeState() }
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
     var showProfile by remember { mutableStateOf(false) }
 
@@ -62,20 +62,20 @@ fun FavoritesScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
             modifier = Modifier
-                .fillMaxSize()
-                .haze(state = hazeState)
-                .haze(state = hazeState2),
+                .fillMaxSize(),
+//                .haze(state = hazeState)
+//                .haze(state = hazeState2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .haze(state = hazeState)
-                .haze(state = hazeState2),
+                .fillMaxSize(),
+//                .haze(state = hazeState)
+//                .haze(state = hazeState2),
             topBar = {
                 TopAppBar(
                     modifier = Modifier
-                        .haze(state = hazeState)
+//                        .haze(state = hazeState)
                         .align(Alignment.TopCenter),
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Transparent,
@@ -128,13 +128,13 @@ fun FavoritesScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0x1AFFFFFF))
-                    .haze(state = hazeState2)
+//                    .haze(state = hazeState2)
             ) {
                 RocketDetail(
                     rocket = selectedRocket!!,
                     isFavorite = favorites.contains(selectedRocket!!.name),
                     onClose = { selectedRocket = null },
-                    hazeState = hazeState,
+//                    hazeState = hazeState,
                     viewModel = fetchDataViewModel
                 )
             }
@@ -156,14 +156,14 @@ fun FavoritesScreen(navController: NavController) {
                     authViewModel = authViewModel,
                     navController = navController,
                     onClose = { showProfile = false },
-                    hazeState = hazeState2
+//                    hazeState = hazeState2
                 )
             }
         }
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
-            hazeState = hazeState2
+//            hazeState = hazeState2
         )
     }
 }
@@ -173,17 +173,18 @@ fun ProfileOverlay(
     authViewModel: AuthViewModel,
     navController: NavController,
     onClose: () -> Unit,
-    hazeState: HazeState
+//    hazeState: HazeState
 ) {
     val userState by authViewModel.userState.collectAsState()
     Box(
         modifier = Modifier
             .size(width = 250.dp, height = 150.dp)
-            .hazeChild(
-                state = hazeState,
-                shape = RoundedCornerShape(24.dp),
-                HazeStyle(Color(0x808A8A8A), 20.dp, 0f)
-            ),
+            .background(colorResource(id = R.color.transparent_background)),
+//            .hazeChild(
+//                state = hazeState,
+//                shape = RoundedCornerShape(24.dp),
+//                HazeStyle(Color(0x808A8A8A), 20.dp, 0f)
+//            ),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -297,7 +298,7 @@ fun RocketDetail(
     rocket: RocketEntity,
     isFavorite: Boolean,
     onClose: () -> Unit,
-    hazeState: HazeState,
+//    hazeState: HazeState,
     viewModel: FetchDataViewModel
 ) {
     val context = LocalContext.current
@@ -305,11 +306,12 @@ fun RocketDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .hazeChild(
-                state = hazeState,
-                shape = RoundedCornerShape(1.dp),
-                HazeStyle(Color(0x80000000), 20.dp, 0f)
-            )
+            .background(colorResource(id = R.color.transparent_background))
+//            .hazeChild(
+//                state = hazeState,
+//                shape = RoundedCornerShape(1.dp),
+//                HazeStyle(Color(0x80000000), 20.dp, 0f)
+//            )
     ) {
         Row(
             modifier = Modifier

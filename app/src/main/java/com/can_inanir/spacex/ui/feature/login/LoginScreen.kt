@@ -1,6 +1,7 @@
 package com.can_inanir.spacex.ui.feature.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,8 +26,8 @@ import androidx.navigation.NavController
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.haze
+//import dev.chrisbanes.haze.HazeState
+//import dev.chrisbanes.haze.haze
 
 @Composable
 fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
@@ -35,7 +36,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    val hazeState = remember { HazeState() }
+//    val hazeState = remember { HazeState() }
 
     LaunchedEffect(userState) {
         if (userState != null) {
@@ -52,7 +53,8 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .haze(state = hazeState)
+                .background(Color(0x806E6E6E))
+//                .haze(state = hazeState)
         )
         Column(
             modifier = Modifier
@@ -129,7 +131,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
-            hazeState = hazeState
+//            hazeState = hazeState
         )
     }
 }

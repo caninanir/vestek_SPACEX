@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+//import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -62,10 +62,10 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
+//import dev.chrisbanes.haze.HazeState
+//import dev.chrisbanes.haze.HazeStyle
+//import dev.chrisbanes.haze.haze
+//import dev.chrisbanes.haze.hazeChild
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,8 +73,8 @@ fun RocketsScreen(navController: NavController) {
     val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
     val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
     val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
-    val hazeStateBottomNav = remember { HazeState() }
-    val hazeStateBottomNav2 = remember { HazeState() }
+    //val hazeStateBottomNav = remember { HazeState() }
+    //val hazeStateBottomNav2 = remember { HazeState() }
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
 
 
@@ -92,20 +92,20 @@ fun RocketsScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
             modifier = Modifier
-                .fillMaxSize()
-                .haze(state = hazeStateBottomNav)
-                .haze(state = hazeStateBottomNav2),
+                .fillMaxSize(),
+                //.haze(state = hazeStateBottomNav)
+                //.haze(state = hazeStateBottomNav2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
-                .haze(state = hazeStateBottomNav)
-                .haze(state = hazeStateBottomNav2),
+                .systemBarsPadding(),
+                //.haze(state = hazeStateBottomNav)
+                //.haze(state = hazeStateBottomNav2),
             topBar = {
                 TopAppBar(
-                    modifier = Modifier.haze(state = hazeStateBottomNav).align(Alignment.TopCenter),
+                    modifier = Modifier.align(Alignment.TopCenter)/*.haze(state = hazeStateBottomNav)*/,
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent, titleContentColor = Color.White),
                     title = {
                         Text(
@@ -132,13 +132,13 @@ fun RocketsScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .haze(state = hazeStateBottomNav2),
+                    //.haze(state = hazeStateBottomNav2),
             ) {
                 RocketDetail(
                     rocket = selectedRocket!!,
                     isFavorite = favorites.contains(selectedRocket!!.name),
                     onClose = { selectedRocket = null },
-                    hazeState = hazeStateBottomNav,
+                    //hazeState = hazeStateBottomNav,
                     viewModel = fetchDataViewModel
                 )
             }
@@ -146,7 +146,7 @@ fun RocketsScreen(navController: NavController) {
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
-            hazeState = hazeStateBottomNav2
+            //hazeState = hazeStateBottomNav2
         )
     }
 }
@@ -233,7 +233,7 @@ fun RocketDetail(
     rocket: RocketEntity,
     isFavorite: Boolean,
     onClose: () -> Unit,
-    hazeState: HazeState,
+    //hazeState: HazeState,
     viewModel: FetchDataViewModel
 ) {
     val context = LocalContext.current
@@ -241,7 +241,8 @@ fun RocketDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .hazeChild(state = hazeState, shape = RoundedCornerShape(1.dp), HazeStyle(Color(0x80000000), 20.dp, 0f))
+            .background(colorResource(id = R.color.transparent_background))
+            //.hazeChild(state = hazeState, shape = RoundedCornerShape(1.dp), HazeStyle(Color(0x80000000), 20.dp, 0f))
     ) {
         Row(
             modifier = Modifier

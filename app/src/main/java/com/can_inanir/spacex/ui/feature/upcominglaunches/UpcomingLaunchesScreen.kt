@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -63,10 +62,11 @@ import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.haze
-import dev.chrisbanes.haze.hazeChild
+//import dev.chrisbanes.haze.HazeState
+//import dev.chrisbanes.haze.HazeStyle
+//import dev.chrisbanes.haze.haze
+//import dev.chrisbanes.haze.hazeChild
+//import androidx.compose.foundation.shape.RoundedCornerShape
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -77,8 +77,8 @@ fun UpcomingLaunchesScreen(navController: NavController) {
 
 
     val upcomingLaunches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
-    val hazeState = remember { HazeState() }
-    val hazeState2 = remember { HazeState() }
+//    val hazeState = remember { HazeState() }
+//    val hazeState2 = remember { HazeState() }
     var selectedLaunch by remember { mutableStateOf<LaunchEntity?>(null) }
 
     Box(
@@ -90,19 +90,19 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = "Background",
             modifier = Modifier
-                .fillMaxSize()
-                .haze(state = hazeState)
-                .haze(state = hazeState2),
+                .fillMaxSize(),
+//                .haze(state = hazeState)
+//                .haze(state = hazeState2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .haze(state = hazeState)
-                .haze(state = hazeState2),
+                .fillMaxSize(),
+//                .haze(state = hazeState)
+//                .haze(state = hazeState2),
             topBar = {
                 TopAppBar(
-                    modifier = Modifier.haze(state = hazeState),
+//                    modifier = Modifier.haze(state = hazeState),
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Transparent,
                         titleContentColor = Color.White
@@ -139,12 +139,12 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0x1AFFFFFF))
-                    .haze(state = hazeState2)
+//                    .haze(state = hazeState2)
             ) {
                 LaunchDetail(
                     launch = selectedLaunch!!,
                     onClose = { selectedLaunch = null },
-                    hazeState = hazeState,
+//                    hazeState = hazeState,
                     viewModel = fetchDataViewModel
                 )
             }
@@ -152,7 +152,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
-            hazeState = hazeState2
+//            hazeState = hazeState2
         )
     }
 }
@@ -290,7 +290,7 @@ fun LaunchCard(
 fun LaunchDetail(
     launch: LaunchEntity,
     onClose: () -> Unit,
-    hazeState: HazeState,
+//    hazeState: HazeState,
     viewModel: FetchDataViewModel
 ) {
     val context = LocalContext.current
@@ -306,11 +306,12 @@ fun LaunchDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .hazeChild(
-                state = hazeState,
-                shape = RoundedCornerShape(1.dp),
-                HazeStyle(Color(0x80000000), 20.dp, 0f)
-            )
+            .background(colorResource(id = R.color.transparent_background))
+//            .hazeChild(
+//                state = hazeState,
+//                shape = RoundedCornerShape(1.dp),
+//                HazeStyle(Color(0x80000000), 20.dp, 0f)
+//            )
     ) {
 
         Row(
