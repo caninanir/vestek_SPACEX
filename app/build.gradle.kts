@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.can_inanir.spacex"
-        minSdk = 33
+        minSdk = 23
         //noinspection EditedTargetSdkVersion
         targetSdk = 35
         versionCode = 1

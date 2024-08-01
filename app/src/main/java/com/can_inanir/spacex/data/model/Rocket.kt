@@ -1,19 +1,25 @@
 package com.can_inanir.spacex.data.model
 
-@Suppress("PropertyName")
+import androidx.room.ColumnInfo
+
 data class Rocket(
     val id: String,
     val name: String,
     val description: String,
-    val first_flight: String,
-    val cost_per_launch: Long,
-    val success_rate_pct: Int,
+    @ColumnInfo(name = "first_flight")
+    val firstFlight: String,
+    @ColumnInfo(name = "cost_per_launch")
+    val costPerLaunch: Long,
+    @ColumnInfo(name = "success_rate_pct")
+    val successRatePct: Int,
     val wikipedia: String,
-    val flickr_images: List<String>,
+    @ColumnInfo(name = "flickr_images")
+    val flickrImages: List<String>,
     val height: Measurement,
     val diameter: Measurement,
     val mass: Weight,
-    val payload_weights: List<PayloadWeight>
+    @ColumnInfo(name = "payload_weights")
+    val payloadWeights: List<PayloadWeight>
 )
 
 data class Measurement(

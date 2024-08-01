@@ -1,10 +1,12 @@
 package com.can_inanir.spacex.data.model
 
-@Suppress("PropertyName")
+import androidx.room.ColumnInfo
+
 data class Launch(
     val id: String,
     val name: String,
-    val date_utc: String,
+    @ColumnInfo(name = "date_utc")
+    val dateUtc: String,
     val rocket: String,
     val launchpad: String,
     val details: String?,
@@ -22,6 +24,7 @@ data class Launch(
             val original: List<String>
         )
     }
+
     data class Patches(
         val small: String?,
         val large: String?

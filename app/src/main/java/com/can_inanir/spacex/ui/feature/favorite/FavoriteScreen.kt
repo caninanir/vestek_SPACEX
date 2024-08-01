@@ -279,7 +279,7 @@ fun RocketCard(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            rocket.flickr_images.firstOrNull()?.let { imageUrl ->
+            rocket.flickrImages.firstOrNull()?.let { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),
                     contentDescription = null,
@@ -346,7 +346,7 @@ fun RocketDetail(
                 )
             }
         }
-        rocket.flickr_images.firstOrNull()?.let { imageUrl ->
+        rocket.flickrImages.firstOrNull()?.let { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = null,
@@ -371,15 +371,15 @@ fun RocketDetail(
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         DetailItem(label = "MASS", value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
-        rocket.payload_weights.find { it.id == "leo" }?.let {
+        rocket.payloadWeights.find { it.id == "leo" }?.let {
             DetailItem(label = "PAYLOAD TO LEO", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         }
-        rocket.payload_weights.find { it.id == "gto" }?.let {
+        rocket.payloadWeights.find { it.id == "gto" }?.let {
             DetailItem(label = "PAYLOAD TO GTO", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         }
-        rocket.payload_weights.find { it.id == "mars" }?.let {
+        rocket.payloadWeights.find { it.id == "mars" }?.let {
             DetailItem(label = "PAYLOAD TO MARS", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
         }
@@ -398,7 +398,7 @@ fun RocketDetail(
             Text("Learn More")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        rocket.flickr_images.drop(1).forEach { imageUrl ->
+        rocket.flickrImages.drop(1).forEach { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = null,

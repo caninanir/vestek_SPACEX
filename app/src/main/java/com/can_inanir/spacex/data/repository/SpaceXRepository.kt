@@ -59,15 +59,15 @@ fun Rocket.toRocketEntity(): RocketEntity {
         id = this.id,
         name = this.name,
         description = this.description,
-        first_flight = this.first_flight,
-        cost_per_launch = this.cost_per_launch,
-        success_rate_pct = this.success_rate_pct,
+        firstFlight = this.firstFlight,
+        costPerLaunch = this.costPerLaunch,
+        successRatePct = this.successRatePct,
         wikipedia = this.wikipedia,
-        flickr_images = this.flickr_images,
+        flickrImages = this.flickrImages,
         height = this.height,
         diameter = this.diameter,
         mass = this.mass,
-        payload_weights = this.payload_weights
+        payloadWeights = this.payloadWeights
     )
 }
 
@@ -75,7 +75,7 @@ fun Launch.toLaunchEntity(): LaunchEntity {
     return LaunchEntity(
         id = this.id,
         name = this.name,
-        date_utc = this.date_utc,
+        dateUtc = this.dateUtc,
         rocket = this.rocket,
         launchpad = this.launchpad,
         details = this.details,
@@ -89,7 +89,7 @@ fun Launchpad.toLaunchpadEntity(): LaunchpadEntity {
     return LaunchpadEntity(
         id = this.id,
         name = this.name,
-        full_name = this.full_name,
+        fullName = this.fullName,
         status = this.status,
         region = this.region,
         details = this.details,

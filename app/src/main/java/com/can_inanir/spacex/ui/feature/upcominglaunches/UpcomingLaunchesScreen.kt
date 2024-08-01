@@ -69,6 +69,8 @@ import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 //import androidx.compose.foundation.shape.RoundedCornerShape
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -219,7 +221,7 @@ fun LaunchCard(
             )
             Text(
                 color = Color.White,
-                text = "Date: ${ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME)}",
+                text = "Date: ${formatUtcToRfc1123(launch.dateUtc)}",
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
             )
@@ -232,7 +234,7 @@ fun LaunchCard(
                                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                             )
 
-                            val imageUrl = launch.patches?.large ?: rocket!!.flickr_images.randomOrNull()
+                            val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
                             imageUrl?.let {
                                 Image(
                                     painter = rememberAsyncImagePainter(model = it),
@@ -354,7 +356,7 @@ fun LaunchDetail(
         Spacer(modifier = Modifier.height(16.dp))
 
 
-        DetailItem(label = "DATE", value = ZonedDateTime.parse(launch.date_utc).format(DateTimeFormatter.RFC_1123_DATE_TIME))
+        DetailItem(label = "DATE", value = formatUtcToRfc1123(launch.dateUtc))
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -403,7 +405,7 @@ fun LaunchDetail(
         Spacer(modifier = Modifier.height(16.dp))
 
         Column {
-            rocket?.flickr_images?.forEach { imageUrl ->
+            rocket?.flickrImages?.forEach { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),
                     contentDescription = "Rocket Image",
@@ -455,4 +457,23 @@ fun DetailItem(label: String, value: String) {
             color = Color.White
         )
     }
+}
+
+@Composable
+fun formatUtcToRfc1123(dateUtc: String): String {
+    // Define the input format with milliseconds
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+
+    // Define the output format (RFC 1123 Date Time format)
+    val outputFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US).apply {
+        timeZone = TimeZone.getDefault()
+    }
+
+    // Parse the date
+    val date: Date = inputFormat.parse(dateUtc)
+
+    // Format the date into RFC 1123 format
+    return outputFormat.format(date)
 }

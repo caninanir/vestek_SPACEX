@@ -1,10 +1,12 @@
 package com.can_inanir.spacex.data.model
 
-@Suppress("PropertyName")
+import androidx.room.ColumnInfo
+
 data class Launchpad(
     val id: String,
     val name: String,
-    val full_name: String,
+    @ColumnInfo(name = "full_name")
+    val fullName: String,
     val status: String,
     val region: String,
     val details: String,
