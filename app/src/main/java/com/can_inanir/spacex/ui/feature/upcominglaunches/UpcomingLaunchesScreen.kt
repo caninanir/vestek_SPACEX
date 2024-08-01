@@ -1,10 +1,5 @@
 package com.can_inanir.spacex.ui.feature.upcominglaunches
 
-// import dev.chrisbanes.haze.HazeState
-// import dev.chrisbanes.haze.HazeStyle
-// import dev.chrisbanes.haze.haze
-// import dev.chrisbanes.haze.hazeChild
-// import androidx.compose.foundation.shape.RoundedCornerShape
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -66,21 +61,23 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.remote.LaunchpadDetailViewModel
+import com.can_inanir.spacex.data.remote.RocketDetailViewModel
+import com.can_inanir.spacex.data.remote.UpcomingLaunchesViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpcomingLaunchesScreen(navController: NavController) {
-    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
+    val upcomingLaunchesViewModel: UpcomingLaunchesViewModel = hiltViewModel()
+    val rocketDetailViewModel: RocketDetailViewModel = hiltViewModel()
+    val launchpadDetailViewModel: LaunchpadDetailViewModel = hiltViewModel()
 
-    val upcomingLaunches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
-//    val hazeState = remember { HazeState() }
-//    val hazeState2 = remember { HazeState() }
+    val upcomingLaunches by upcomingLaunchesViewModel.upcomingLaunches.collectAsState(initial = emptyList())
+
     var selectedLaunch by remember { mutableStateOf<LaunchEntity?>(null) }
 
     Box(
@@ -93,18 +90,13 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
-//                .haze(state = hazeState)
-//                .haze(state = hazeState2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
-//                .haze(state = hazeState)
-//                .haze(state = hazeState2),
             topBar = {
                 TopAppBar(
-//                    modifier = Modifier.haze(state = hazeState),
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Transparent,
                         titleContentColor = Color.White
@@ -126,12 +118,12 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                 )
             },
             content = { paddingValues ->
-
                 LaunchList(
                     launches = upcomingLaunches,
                     paddingValues = paddingValues,
                     onLaunchClick = { launch -> selectedLaunch = launch },
-                    viewModel = fetchDataViewModel
+                    rocketDetailViewModel = rocketDetailViewModel,
+                    launchpadDetailViewModel = launchpadDetailViewModel
                 )
             },
             containerColor = Color.Transparent
@@ -141,20 +133,18 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0x1AFFFFFF))
-//                    .haze(state = hazeState2)
             ) {
                 LaunchDetail(
                     launch = selectedLaunch!!,
                     onClose = { selectedLaunch = null },
-//                    hazeState = hazeState,
-                    viewModel = fetchDataViewModel
+                    rocketDetailViewModel = rocketDetailViewModel,
+                    launchpadDetailViewModel = launchpadDetailViewModel
                 )
             }
         }
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-//            hazeState = hazeState2
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -164,7 +154,8 @@ fun LaunchList(
     launches: List<LaunchEntity>,
     paddingValues: PaddingValues,
     onLaunchClick: (LaunchEntity) -> Unit,
-    viewModel: FetchDataViewModel
+    rocketDetailViewModel: RocketDetailViewModel,
+    launchpadDetailViewModel: LaunchpadDetailViewModel
 ) {
     Column(
         modifier = Modifier
@@ -173,25 +164,29 @@ fun LaunchList(
             .verticalScroll(rememberScrollState())
     ) {
         launches.forEach { launch ->
-            LaunchCard(launch, onLaunchClick, viewModel)
+            LaunchCard(
+                launch = launch,
+                onLaunchClick = onLaunchClick,
+                rocketDetailViewModel = rocketDetailViewModel,
+                launchpadDetailViewModel = launchpadDetailViewModel
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
-
-@Suppress("name_shadowing")
 @Composable
 fun LaunchCard(
     launch: LaunchEntity,
     onLaunchClick: (LaunchEntity) -> Unit,
-    viewModel: FetchDataViewModel
+    rocketDetailViewModel: RocketDetailViewModel,
+    launchpadDetailViewModel: LaunchpadDetailViewModel
 ) {
     var rocket by remember { mutableStateOf<RocketEntity?>(null) }
     var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
 
     LaunchedEffect(launch) {
-        viewModel.fetchRocketById(launch.rocket) { rocket = it }
-        viewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
+        rocketDetailViewModel.fetchRocketById(launch.rocket) { rocket = it }
+        launchpadDetailViewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
     }
 
     Card(
@@ -199,7 +194,6 @@ fun LaunchCard(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onLaunchClick(launch) },
-
         colors = CardDefaults.cardColors(containerColor = Color(0x347C7C7C)),
     ) {
         Column(
@@ -218,7 +212,6 @@ fun LaunchCard(
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
             )
-
             if (rocket != null && launchpad != null) {
                 Text(
                     color = Color.White,
@@ -226,7 +219,6 @@ fun LaunchCard(
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                 )
-
                 val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
                 imageUrl?.let {
                     Image(
@@ -238,7 +230,6 @@ fun LaunchCard(
                         contentScale = ContentScale.Crop
                     )
                 }
-
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     color = Color.White,
@@ -247,7 +238,6 @@ fun LaunchCard(
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                 )
                 Spacer(modifier = Modifier.height(2.dp))
-
                 launchpad!!.images.large.randomOrNull()?.let { imageUrl ->
                     Image(
                         painter = rememberAsyncImagePainter(model = imageUrl),
@@ -258,7 +248,6 @@ fun LaunchCard(
                         contentScale = ContentScale.Crop
                     )
                 }
-
                 Spacer(modifier = Modifier.height(2.dp))
             } else {
                 Text(stringResource(R.string.loading), color = Color.White)
@@ -278,21 +267,20 @@ fun LaunchCard(
         }
     }
 }
-
 @Composable
 fun LaunchDetail(
     launch: LaunchEntity,
     onClose: () -> Unit,
-//    hazeState: HazeState,
-    viewModel: FetchDataViewModel
+    rocketDetailViewModel: RocketDetailViewModel,
+    launchpadDetailViewModel: LaunchpadDetailViewModel
 ) {
     val context = LocalContext.current
     var rocket by remember { mutableStateOf<RocketEntity?>(null) }
     var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
 
     LaunchedEffect(launch) {
-        viewModel.fetchRocketById(launch.rocket) { rocket = it }
-        viewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
+        rocketDetailViewModel.fetchRocketById(launch.rocket) { rocket = it }
+        launchpadDetailViewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
     }
 
     Column(
@@ -300,11 +288,6 @@ fun LaunchDetail(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(colorResource(id = R.color.transparent_background))
-//            .hazeChild(
-//                state = hazeState,
-//                shape = RoundedCornerShape(1.dp),
-//                HazeStyle(Color(0x80000000), 20.dp, 0f)
-//            )
     ) {
         Row(
             modifier = Modifier
@@ -313,10 +296,7 @@ fun LaunchDetail(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(
-                onClick = onClose,
-                modifier = Modifier.size(48.dp)
-            ) {
+            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.close),
@@ -343,15 +323,10 @@ fun LaunchDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-
         DetailItem(label = "DATE", value = formatUtcToRfc1123(launch.dateUtc))
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
+        Column(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             launch.links.wikipedia?.let { wikipediaUrl ->
                 Button(
                     colors = ButtonDefaults.buttonColors(
@@ -366,6 +341,7 @@ fun LaunchDetail(
                     Text(stringResource(R.string.learn_more))
                 }
             }
+
             launch.links.webcast?.let { webcastUrl ->
                 val appContext = LocalContext.current
                 Text(
@@ -378,6 +354,7 @@ fun LaunchDetail(
                     }
                 )
             }
+
             launch.links.article?.let { articleUrl ->
                 val appContext = LocalContext.current
                 Text(
@@ -391,9 +368,7 @@ fun LaunchDetail(
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Column {
             rocket?.flickrImages?.forEach { imageUrl ->
                 Image(
@@ -418,7 +393,6 @@ fun LaunchDetail(
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -451,19 +425,15 @@ fun DetailItem(label: String, value: String) {
 
 @Composable
 fun formatUtcToRfc1123(dateUtc: String): String {
-    // Define the input format with milliseconds
     val inputFormat = SimpleDateFormat(stringResource(R.string.yyyy_mm_dd_t_hh_mm_ss_sss_z), Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
-    // Define the output format (RFC 1123 Date Time format)
     val outputFormat = SimpleDateFormat(stringResource(R.string.eee_dd_mmm_yyyy_hh_mm_ss_zzz), Locale.US).apply {
         timeZone = TimeZone.getDefault()
     }
 
-    // Parse the date
     val date: Date? = inputFormat.parse(dateUtc)
 
-    // Format the date into RFC 1123 format
     return date?.let { outputFormat.format(it) }.toString()
 }

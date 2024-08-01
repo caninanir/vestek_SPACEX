@@ -44,8 +44,7 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 
-// import dev.chrisbanes.haze.HazeState
-// import dev.chrisbanes.haze.haze
+
 
 @Composable
 fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
@@ -54,7 +53,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-//    val hazeState = remember { HazeState() }
+
 
     LaunchedEffect(userState) {
         if (userState != null) {
@@ -72,7 +71,6 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(color = 0x806E6E6E))
-//                .haze(state = hazeState)
         )
         Column(
             modifier = Modifier
@@ -166,7 +164,6 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
-//            hazeState = hazeState
         )
     }
 }

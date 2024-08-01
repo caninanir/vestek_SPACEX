@@ -1,6 +1,5 @@
 package com.can_inanir.spacex.ui.feature.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +19,7 @@ class AuthViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore
 ) : ViewModel() {
+
     private val _userState: MutableStateFlow<FirebaseUser?> = MutableStateFlow(auth.currentUser)
     val userState: StateFlow<FirebaseUser?> = _userState
 
@@ -37,11 +37,8 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val task = auth.signInWithEmailAndPassword(email, password).await()
             if (task.user != null) {
-                Log.d("AuthViewModel", "signInWithEmail:success")
                 _userState.value = auth.currentUser
                 checkAndCreateUserDocument(auth.currentUser!!.email!!)
-            } else {
-                Log.w("AuthViewModel", "signInWithEmail:failure")
             }
         }
     }
@@ -55,11 +52,8 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val task = auth.createUserWithEmailAndPassword(email, password).await()
             if (task.user != null) {
-                Log.d("AuthViewModel", "createUserWithEmail:success")
                 _userState.value = auth.currentUser
                 checkAndCreateUserDocument(auth.currentUser!!.email!!)
-            } else {
-                Log.w("AuthViewModel", "createUserWithEmail:failure")
             }
         }
     }
@@ -69,11 +63,8 @@ class AuthViewModel @Inject constructor(
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             val task = auth.signInWithCredential(credential).await()
             if (task.user != null) {
-                Log.d("AuthViewModel", "signInWithCredential:success")
                 _userState.value = auth.currentUser
                 checkAndCreateUserDocument(auth.currentUser!!.email!!)
-            } else {
-                Log.w("AuthViewModel", "signInWithCredential:failure")
             }
         }
     }

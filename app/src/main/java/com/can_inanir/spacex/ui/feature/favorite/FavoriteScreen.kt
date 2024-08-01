@@ -59,26 +59,23 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.remote.RocketListViewModel
+
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
+import com.can_inanir.spacex.ui.favorites.FavoritesViewModel
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
-
-// import dev.chrisbanes.haze.HazeState
-// import dev.chrisbanes.haze.HazeStyle
-// import dev.chrisbanes.haze.haze
-// import dev.chrisbanes.haze.hazeChild
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesScreen(navController: NavController) {
-    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
+    val rocketListViewModel: RocketListViewModel = hiltViewModel()
+    val favoritesViewModel: FavoritesViewModel = hiltViewModel()
     val authViewModel: AuthViewModel = hiltViewModel()
+
     val userState by authViewModel.userState.collectAsState()
-    val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
-    val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
-//    val hazeState = remember { HazeState() }
-//    val hazeState2 = remember { HazeState() }
+    val rockets by rocketListViewModel.rockets.collectAsState(initial = emptyList())
+    val favorites by favoritesViewModel.favorites.collectAsState(initial = emptySet())
+
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
     var showProfile by remember { mutableStateOf(false) }
 
@@ -92,20 +89,14 @@ fun FavoritesScreen(navController: NavController) {
             contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
-//                .haze(state = hazeState)
-//                .haze(state = hazeState2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
-//                .haze(state = hazeState)
-//                .haze(state = hazeState2),
             topBar = {
                 TopAppBar(
-                    modifier = Modifier
-//                        .haze(state = hazeState)
-                        .align(Alignment.TopCenter),
+                    modifier = Modifier.align(Alignment.TopCenter),
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Transparent,
                         titleContentColor = Color.White
@@ -137,7 +128,7 @@ fun FavoritesScreen(navController: NavController) {
                         favorites = favorites,
                         paddingValues = paddingValues,
                         onRocketClick = { rocket -> selectedRocket = rocket },
-                        viewModel = fetchDataViewModel
+                        onFavoriteClick = { rocketName -> favoritesViewModel.toggleFavorite(rocketName) }
                     )
                 } else {
                     Box(
@@ -146,7 +137,10 @@ fun FavoritesScreen(navController: NavController) {
                             .padding(paddingValues),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = stringResource(R.string.log_in_to_view_favorites), color = Color.White)
+                        Text(
+                            text = stringResource(R.string.log_in_to_view_favorites),
+                            color = Color.White
+                        )
                     }
                 }
             },
@@ -157,21 +151,21 @@ fun FavoritesScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(color = 0x1AFFFFFF))
-//                    .haze(state = hazeState2)
             ) {
                 RocketDetail(
                     rocket = selectedRocket!!,
                     isFavorite = favorites.contains(selectedRocket!!.name),
                     onClose = { selectedRocket = null },
-//                    hazeState = hazeState,
-                    viewModel = fetchDataViewModel
+                    onFavoriteClick = { rocketName -> favoritesViewModel.toggleFavorite(rocketName) }
                 )
             }
         }
         if (showProfile) {
             if (userState == null) {
                 navController.navigate(BottomNavItem.Login.route) {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
                 }
             }
             Box(
@@ -184,15 +178,13 @@ fun FavoritesScreen(navController: NavController) {
                 ProfileOverlay(
                     authViewModel = authViewModel,
                     navController = navController,
-                    onClose = { showProfile = false },
-//                    hazeState = hazeState2
+                    onClose = { showProfile = false }
                 )
             }
         }
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-//            hazeState = hazeState2
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -202,18 +194,12 @@ fun ProfileOverlay(
     authViewModel: AuthViewModel,
     navController: NavController,
     onClose: () -> Unit,
-//    hazeState: HazeState
 ) {
     val userState by authViewModel.userState.collectAsState()
     Box(
         modifier = Modifier
             .size(width = 250.dp, height = 150.dp)
             .background(colorResource(id = R.color.transparent_background)),
-//            .hazeChild(
-//                state = hazeState,
-//                shape = RoundedCornerShape(24.dp),
-//                HazeStyle(Color(0x808A8A8A), 20.dp, 0f)
-//            ),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -243,14 +229,13 @@ fun ProfileOverlay(
         }
     }
 }
-
 @Composable
 fun FavoriteRocketList(
     rockets: List<RocketEntity>,
     favorites: Set<String>,
     paddingValues: PaddingValues,
     onRocketClick: (RocketEntity) -> Unit,
-    viewModel: FetchDataViewModel
+    onFavoriteClick: (String) -> Unit
 ) {
     val favoriteRockets = rockets.filter { favorites.contains(it.name) }
     Column(
@@ -265,7 +250,7 @@ fun FavoriteRocketList(
                 rocket = rocket,
                 isFavorite = true,
                 onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) }
+                onFavoriteClick = { onFavoriteClick(rocket.name) }
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -323,14 +308,12 @@ fun RocketCard(
         }
     }
 }
-
 @Composable
 fun RocketDetail(
     rocket: RocketEntity,
     isFavorite: Boolean,
     onClose: () -> Unit,
-//    hazeState: HazeState,
-    viewModel: FetchDataViewModel
+    onFavoriteClick: (String) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -338,11 +321,6 @@ fun RocketDetail(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(colorResource(id = R.color.transparent_background))
-//            .hazeChild(
-//                state = hazeState,
-//                shape = RoundedCornerShape(1.dp),
-//                HazeStyle(Color(0x80000000), 20.dp, 0f)
-//            )
     ) {
         Row(
             modifier = Modifier
@@ -369,7 +347,7 @@ fun RocketDetail(
                 softWrap = false
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { viewModel.toggleFavorite(rocket.name) }) {
+            IconButton(onClick = { onFavoriteClick(rocket.name) }) {
                 Icon(
                     painter = painterResource(
                         id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
@@ -390,18 +368,27 @@ fun RocketDetail(
                 contentScale = ContentScale.Crop
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = rocket.description,
             style = MaterialTheme.typography.bodyLarge,
             color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+
         Spacer(modifier = Modifier.height(16.dp))
-        DetailItem(label = stringResource(R.string.height),
-            value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
+
+        DetailItem(
+            label = stringResource(R.string.height),
+            value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
+        )
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        DetailItem(label = stringResource(R.string.diameter), value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft")
+        DetailItem(
+            label = stringResource(R.string.diameter),
+            value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft"
+        )
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         DetailItem(label = stringResource(R.string.mass), value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
@@ -409,7 +396,7 @@ fun RocketDetail(
             DetailItem(label = "leo", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
-        rocket.payloadWeights.find { it.id == "gto" }?.let {
+        rocket.payloadWeights.find { it.id == stringResource(R.string.gto) }?.let {
             DetailItem(label = stringResource(R.string.payload_to_gto), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
@@ -417,7 +404,9 @@ fun RocketDetail(
             DetailItem(label = stringResource(R.string.payload_to_mars), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.cool_green),
@@ -431,7 +420,9 @@ fun RocketDetail(
         ) {
             Text(stringResource(R.string.learn_more))
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         rocket.flickrImages.drop(1).forEach { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),

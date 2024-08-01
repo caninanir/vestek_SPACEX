@@ -60,21 +60,19 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
-import com.can_inanir.spacex.data.remote.FetchDataViewModel
+import com.can_inanir.spacex.data.remote.RocketListViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
-// import dev.chrisbanes.haze.HazeState
-// import dev.chrisbanes.haze.HazeStyle
-// import dev.chrisbanes.haze.haze
-// import dev.chrisbanes.haze.hazeChild
+import com.can_inanir.spacex.ui.favorites.FavoritesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RocketsScreen(navController: NavController) {
-    val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
-    val rockets by fetchDataViewModel.rockets.collectAsState(initial = emptyList())
-    val favorites by fetchDataViewModel.favorites.collectAsState(initial = emptySet())
-    // val hazeStateBottomNav = remember { HazeState() }
-    // val hazeStateBottomNav2 = remember { HazeState() }
+    val rocketListViewModel: RocketListViewModel = hiltViewModel()
+    val favoritesViewModel: FavoritesViewModel = hiltViewModel()
+
+
+    val rockets by rocketListViewModel.rockets.collectAsState(initial = emptyList())
+    val favorites by favoritesViewModel.favorites.collectAsState(initial = emptySet())
     var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
 
     BackHandler(enabled = selectedRocket != null) {
@@ -91,17 +89,12 @@ fun RocketsScreen(navController: NavController) {
             contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
-            // .haze(state = hazeStateBottomNav)
-            // .haze(state = hazeStateBottomNav2),
             contentScale = ContentScale.Crop
         )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .systemBarsPadding(),
-            // .haze(state = hazeStateBottomNav)
-            // .haze(state = hazeStateBottomNav2),
-            /*.haze(state = hazeStateBottomNav)*/
             topBar = {
                 TopAppBar(
                     modifier = Modifier.align(Alignment.TopCenter),
@@ -125,7 +118,7 @@ fun RocketsScreen(navController: NavController) {
                     favorites = favorites,
                     paddingValues = paddingValues,
                     onRocketClick = { rocket -> selectedRocket = rocket },
-                    viewModel = fetchDataViewModel
+                    onFavoriteClick = { rocketName -> favoritesViewModel.toggleFavorite(rocketName) }
                 )
             },
             containerColor = Color.Transparent
@@ -134,21 +127,18 @@ fun RocketsScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                // .haze(state = hazeStateBottomNav2),
             ) {
                 RocketDetail(
                     rocket = selectedRocket!!,
                     isFavorite = favorites.contains(selectedRocket!!.name),
                     onClose = { selectedRocket = null },
-                    // hazeState = hazeStateBottomNav,
-                    viewModel = fetchDataViewModel
+                    onFavoriteClick = { rocketName -> favoritesViewModel.toggleFavorite(rocketName) }
                 )
             }
         }
         BottomNavBar(
             navController = navController,
-            modifier = Modifier.fillMaxSize(),
-            // hazeState = hazeStateBottomNav2
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -159,7 +149,7 @@ fun RocketList(
     favorites: Set<String>,
     paddingValues: PaddingValues,
     onRocketClick: (RocketEntity) -> Unit,
-    viewModel: FetchDataViewModel
+    onFavoriteClick: (String) -> Unit
 ) {
     val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }
     Column(
@@ -174,7 +164,7 @@ fun RocketList(
                 rocket = rocket,
                 isFavorite = favorites.contains(rocket.name),
                 onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { viewModel.toggleFavorite(rocket.name) }
+                onFavoriteClick = { onFavoriteClick(rocket.name) }
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -231,14 +221,12 @@ fun RocketCard(
         }
     }
 }
-
 @Composable
 fun RocketDetail(
     rocket: RocketEntity,
     isFavorite: Boolean,
     onClose: () -> Unit,
-    // hazeState: HazeState,
-    viewModel: FetchDataViewModel
+    onFavoriteClick: (String) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -246,7 +234,6 @@ fun RocketDetail(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(colorResource(id = R.color.transparent_background))
-        // .hazeChild(state = hazeState, shape = RoundedCornerShape(1.dp), HazeStyle(Color(0x80000000), 20.dp, 0f))
     ) {
         Row(
             modifier = Modifier
@@ -276,7 +263,7 @@ fun RocketDetail(
                 softWrap = false
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { viewModel.toggleFavorite(rocket.name) }) {
+            IconButton(onClick = { onFavoriteClick(rocket.name) }) {
                 Icon(
                     painter = painterResource(
                         id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
@@ -297,14 +284,18 @@ fun RocketDetail(
                 contentScale = ContentScale.Crop
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = rocket.description,
             style = MaterialTheme.typography.bodyLarge,
             color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
         DetailItem(
             label = stringResource(R.string.height),
             value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
@@ -329,7 +320,9 @@ fun RocketDetail(
             DetailItem(label = stringResource(R.string.payload_to_mars), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.cool_green),
@@ -343,7 +336,9 @@ fun RocketDetail(
         ) {
             Text(stringResource(R.string.learn_more))
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         rocket.flickrImages.drop(1).forEach { imageUrl ->
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),

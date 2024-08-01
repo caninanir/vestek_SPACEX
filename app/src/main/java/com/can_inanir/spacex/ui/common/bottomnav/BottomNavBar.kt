@@ -29,11 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
-// import dev.chrisbanes.haze.HazeState
-// import dev.chrisbanes.haze.HazeStyle
-// import dev.chrisbanes.haze.hazeChild
-// , hazeState: HazeState
-// .hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp, 0f)),
 @Composable
 fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
     val items = listOf(
