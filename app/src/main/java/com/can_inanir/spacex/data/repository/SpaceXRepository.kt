@@ -5,7 +5,6 @@ import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.model.Launch
-import com.can_inanir.spacex.data.model.Launchpad
 import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.ApiService
 import javax.inject.Inject
@@ -81,18 +80,5 @@ fun Launch.toLaunchEntity(): LaunchEntity {
         details = this.details,
         links = this.links,
         patches = this.patches
-    )
-}
-
-@Suppress("unused")
-fun Launchpad.toLaunchpadEntity(): LaunchpadEntity {
-    return LaunchpadEntity(
-        id = this.id,
-        name = this.name,
-        fullName = this.fullName,
-        status = this.status,
-        region = this.region,
-        details = this.details,
-        images = this.images
     )
 }

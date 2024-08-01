@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -152,7 +153,11 @@ fun EasterEggScreen(navController: NavController) {
             asteroids.forEach {
                 if ((spaceshipPosition - it.position).getDistance() <= ((it.size) + 50f)) {
                     // Collision detected if they touch
-                    Toast.makeText(context, "You crashed! High score = $elapsedTime", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.you_crashed_high_score) + elapsedTime,
+                        Toast.LENGTH_LONG
+                    ).show()
                     elapsedTime = 0
                     asteroids.clear()
                     velocity.snapTo(Offset.Zero)
@@ -168,7 +173,11 @@ fun EasterEggScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .pointerInput(Unit) { detectDragGestures { change, _ -> targetPosition = change.position } }
+            .pointerInput(Unit) {
+                detectDragGestures { change, _ ->
+                    targetPosition = change.position
+                }
+            }
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
@@ -204,7 +213,7 @@ fun EasterEggScreen(navController: NavController) {
         // Spaceship
         Image(
             painter = painterResource(id = R.drawable.rocket_e),
-            contentDescription = "Spaceship",
+            contentDescription = stringResource(R.string.spaceship),
             modifier = Modifier
                 .size(50.dp)
                 .graphicsLayer(
@@ -233,20 +242,20 @@ fun EasterEggScreen(navController: NavController) {
         asteroids.forEach { asteroid ->
             Image(
                 painter = painterResource(id = asteroid.imageRes),
-                contentDescription = "Asteroid",
+                contentDescription = stringResource(R.string.asteroid),
                 modifier = Modifier
                     .size(asteroid.size.dp) // Scale image with size
                     .graphicsLayer(
                         translationX = asteroid.position.x - (
-                            with(LocalDensity.current) {
-                                asteroid.size.dp.toPx()
-                            } / 2
-                            ),
+                                with(LocalDensity.current) {
+                                    asteroid.size.dp.toPx()
+                                } / 2
+                                ),
                         translationY = asteroid.position.y - (
-                            with(LocalDensity.current) {
-                                asteroid.size.dp.toPx()
-                            } / 2
-                            ),
+                                with(LocalDensity.current) {
+                                    asteroid.size.dp.toPx()
+                                } / 2
+                                ),
                         rotationZ = asteroid.rotation
                     )
             )
@@ -258,15 +267,15 @@ fun EasterEggScreen(navController: NavController) {
                         .size(asteroid.size.dp)
                         .graphicsLayer(
                             translationX = asteroid.position.x - (
-                                with(LocalDensity.current) {
-                                    asteroid.size.dp.toPx()
-                                } / 2
-                                ),
+                                    with(LocalDensity.current) {
+                                        asteroid.size.dp.toPx()
+                                    } / 2
+                                    ),
                             translationY = asteroid.position.y - (
-                                with(LocalDensity.current) {
-                                    asteroid.size.dp.toPx()
-                                } / 2
-                                )
+                                    with(LocalDensity.current) {
+                                        asteroid.size.dp.toPx()
+                                    } / 2
+                                    )
                         )
                 ) {
                     drawCircle(Color.White, asteroid.size.dp.toPx() / 2, style = Stroke(width = 20f))

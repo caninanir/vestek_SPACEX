@@ -48,6 +48,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -88,7 +89,7 @@ fun FavoritesScreen(navController: NavController) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
-            contentDescription = "Background",
+            contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
 //                .haze(state = hazeState)
@@ -111,7 +112,7 @@ fun FavoritesScreen(navController: NavController) {
                     ),
                     title = {
                         Text(
-                            text = "Favorite Rockets",
+                            text = stringResource(R.string.favorite_rockets),
                             style = MaterialTheme.typography.headlineLarge,
                             color = Color.White,
                             fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
@@ -120,7 +121,7 @@ fun FavoritesScreen(navController: NavController) {
                     actions = {
                         Icon(
                             imageVector = Icons.Default.Person,
-                            contentDescription = "Profile",
+                            contentDescription = stringResource(R.string.profile),
                             modifier = Modifier
                                 .padding(end = 16.dp)
                                 .clickable { showProfile = true },
@@ -145,7 +146,7 @@ fun FavoritesScreen(navController: NavController) {
                             .padding(paddingValues),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "Log in to view favorites", color = Color.White)
+                        Text(text = stringResource(R.string.log_in_to_view_favorites), color = Color.White)
                     }
                 }
             },
@@ -222,7 +223,7 @@ fun ProfileOverlay(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Logged in as", color = colorResource(id = R.color.cool_green))
+            Text(text = stringResource(R.string.logged_in_as), color = colorResource(id = R.color.cool_green))
             userState?.let { user ->
                 Text(text = "${user.email}", color = colorResource(id = R.color.cool_green))
                 Spacer(modifier = Modifier.height(16.dp))
@@ -236,7 +237,7 @@ fun ProfileOverlay(
                         onClose()
                     }
                 ) {
-                    Text(text = "Logout")
+                    Text(text = stringResource(R.string.logout))
                 }
             }
         }
@@ -353,7 +354,7 @@ fun RocketDetail(
             IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.close),
                     tint = Color.White,
                     modifier = Modifier.size(48.dp)
                 )
@@ -397,22 +398,23 @@ fun RocketDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DetailItem(label = "HEIGHT", value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
+        DetailItem(label = stringResource(R.string.height),
+            value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        DetailItem(label = "DIAMETER", value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft")
+        DetailItem(label = stringResource(R.string.diameter), value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft")
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        DetailItem(label = "MASS", value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
+        DetailItem(label = stringResource(R.string.mass), value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        rocket.payloadWeights.find { it.id == "leo" }?.let {
-            DetailItem(label = "PAYLOAD TO LEO", value = "${it.kg} kg / ${it.lb} lb")
+        rocket.payloadWeights.find { it.id == stringResource(R.string.leo) }?.let {
+            DetailItem(label = "leo", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
         rocket.payloadWeights.find { it.id == "gto" }?.let {
-            DetailItem(label = "PAYLOAD TO GTO", value = "${it.kg} kg / ${it.lb} lb")
+            DetailItem(label = stringResource(R.string.payload_to_gto), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
         rocket.payloadWeights.find { it.id == "mars" }?.let {
-            DetailItem(label = "PAYLOAD TO MARS", value = "${it.kg} kg / ${it.lb} lb")
+            DetailItem(label = stringResource(R.string.payload_to_mars), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -427,7 +429,7 @@ fun RocketDetail(
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text("Learn More")
+            Text(stringResource(R.string.learn_more))
         }
         Spacer(modifier = Modifier.height(16.dp))
         rocket.flickrImages.drop(1).forEach { imageUrl ->

@@ -53,6 +53,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -89,7 +90,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
-            contentDescription = "Background",
+            contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
 //                .haze(state = hazeState)
@@ -114,7 +115,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text = "Upcoming Launches",
+                                text = stringResource(R.string.upcoming_launches),
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                                 color = Color.White
@@ -213,7 +214,7 @@ fun LaunchCard(
             )
             Text(
                 color = Color.White,
-                text = "Date: ${formatUtcToRfc1123(launch.dateUtc)}",
+                text = stringResource(R.string.date, formatUtcToRfc1123(launch.dateUtc)),
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
             )
@@ -221,7 +222,7 @@ fun LaunchCard(
             if (rocket != null && launchpad != null) {
                 Text(
                     color = Color.White,
-                    text = "Rocket: ${rocket!!.name}",
+                    text = stringResource(R.string.rocket, rocket!!.name),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                 )
@@ -241,7 +242,7 @@ fun LaunchCard(
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     color = Color.White,
-                    text = "Launchpad: ${launchpad!!.name}",
+                    text = stringResource(R.string.launchpad, launchpad!!.name),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
                 )
@@ -260,12 +261,12 @@ fun LaunchCard(
 
                 Spacer(modifier = Modifier.height(2.dp))
             } else {
-                Text("Loading...", color = Color.White)
+                Text(stringResource(R.string.loading), color = Color.White)
             }
             launch.links.webcast?.let { webcastUrl ->
                 val context = LocalContext.current
                 Text(
-                    text = "Watch the webcast",
+                    text = stringResource(R.string.watch_the_webcast1),
                     color = Color(color = 0xFF58FBC8),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
@@ -318,7 +319,7 @@ fun LaunchDetail(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.close),
                     tint = Color.White,
                     modifier = Modifier.size(48.dp)
                 )
@@ -336,7 +337,7 @@ fun LaunchDetail(
         }
 
         Text(
-            text = launch.details ?: "No details available.",
+            text = launch.details ?: stringResource(R.string.no_details_available),
             style = MaterialTheme.typography.bodyLarge,
             color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -362,13 +363,13 @@ fun LaunchDetail(
                         context.startActivity(intent)
                     }
                 ) {
-                    Text("Learn More")
+                    Text(stringResource(R.string.learn_more))
                 }
             }
             launch.links.webcast?.let { webcastUrl ->
                 val appContext = LocalContext.current
                 Text(
-                    text = "Watch the webcast",
+                    text = stringResource(R.string.watch_the_webcast),
                     color = colorResource(id = R.color.cool_green),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
@@ -380,7 +381,7 @@ fun LaunchDetail(
             launch.links.article?.let { articleUrl ->
                 val appContext = LocalContext.current
                 Text(
-                    text = "Read Article",
+                    text = stringResource(R.string.read_article),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     color = colorResource(id = R.color.cool_green),
                     modifier = Modifier.clickable {
@@ -397,7 +398,7 @@ fun LaunchDetail(
             rocket?.flickrImages?.forEach { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),
-                    contentDescription = "Rocket Image",
+                    contentDescription = stringResource(R.string.rocket_image),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -408,7 +409,7 @@ fun LaunchDetail(
             launchpad?.images?.large?.forEach { imageUrl ->
                 Image(
                     painter = rememberAsyncImagePainter(model = imageUrl),
-                    contentDescription = "Launchpad Image",
+                    contentDescription = stringResource(R.string.launchpad_image),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -451,12 +452,12 @@ fun DetailItem(label: String, value: String) {
 @Composable
 fun formatUtcToRfc1123(dateUtc: String): String {
     // Define the input format with milliseconds
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).apply {
+    val inputFormat = SimpleDateFormat(stringResource(R.string.yyyy_mm_dd_t_hh_mm_ss_sss_z), Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
     // Define the output format (RFC 1123 Date Time format)
-    val outputFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US).apply {
+    val outputFormat = SimpleDateFormat(stringResource(R.string.eee_dd_mmm_yyyy_hh_mm_ss_zzz), Locale.US).apply {
         timeZone = TimeZone.getDefault()
     }
 

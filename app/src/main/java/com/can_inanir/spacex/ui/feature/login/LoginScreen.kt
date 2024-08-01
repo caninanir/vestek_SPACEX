@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -81,7 +82,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.space_x_white_logo_wine),
-                contentDescription = "Logo",
+                contentDescription = stringResource(R.string.logo),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -126,12 +127,12 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 enabled = isLoginEnabled,
                 enabledImageId = R.drawable.buttons_primary_enable,
                 disabledImageId = R.drawable.buttons_primary_disable,
-                contentDescription = "Login"
+                contentDescription = stringResource(R.string.login)
             ) {
-                Text(text = "Login", color = Color.White)
+                Text(text = stringResource(R.string.login), color = Color.White)
             }
             Text(
-                text = "or",
+                text = stringResource(R.string.or),
                 fontSize = 14.sp,
                 color = Color.White,
                 modifier = Modifier.padding(16.dp)
@@ -141,7 +142,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 enabled = true,
                 enabledImageId = R.drawable.buttons_secondary_enable,
                 disabledImageId = R.drawable.buttons_secondary_enable,
-                contentDescription = "Sign in with Google"
+                contentDescription = stringResource(R.string.sign_in_with_google)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -150,11 +151,11 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Sign in with Google", color = Color.White)
+                    Text(text = stringResource(R.string.sign_in_with_google), color = Color.White)
                 }
             }
             Text(
-                text = "Sign up",
+                text = stringResource(R.string.sign_up),
                 fontSize = 13.5.sp,
                 color = Color.White,
                 modifier = Modifier
@@ -218,7 +219,7 @@ fun LoginInputField(
             if (value.isEmpty()) {
                 Image(
                     painter = painterResource(id = labelIcon),
-                    contentDescription = "Label Icon",
+                    contentDescription = stringResource(R.string.label_icon),
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 16.dp)
@@ -230,7 +231,7 @@ fun LoginInputField(
                 leadingIcon = {
                     Image(
                         painter = painterResource(id = leadingIcon),
-                        contentDescription = "Leading Icon",
+                        contentDescription = stringResource(R.string.leading_icon),
                         modifier = Modifier.size(20.dp)
                     )
                 },
@@ -257,7 +258,7 @@ fun PasswordVisibilityIcon(passwordVisible: Boolean, onClick: () -> Unit) {
     }
     Image(
         painter = painterResource(id = icon),
-        contentDescription = "Toggle Password Visibility",
+        contentDescription = stringResource(R.string.toggle_password_visibility),
         modifier = Modifier
             .size(20.dp)
             .clickable { onClick() }

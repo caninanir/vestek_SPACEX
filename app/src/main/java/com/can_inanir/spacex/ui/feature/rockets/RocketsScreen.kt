@@ -49,6 +49,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -87,7 +88,7 @@ fun RocketsScreen(navController: NavController) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
-            contentDescription = "Background",
+            contentDescription = stringResource(R.string.background),
             modifier = Modifier
                 .fillMaxSize(),
             // .haze(state = hazeStateBottomNav)
@@ -110,7 +111,7 @@ fun RocketsScreen(navController: NavController) {
                     ),
                     title = {
                         Text(
-                            text = "SpaceX Rockets",
+                            text = stringResource(R.string.spacex_rockets),
                             style = MaterialTheme.typography.headlineLarge,
                             color = Color.White,
                             fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
@@ -260,7 +261,7 @@ fun RocketDetail(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.close),
                     tint = Color.White,
                     modifier = Modifier.size(48.dp)
                 )
@@ -304,22 +305,28 @@ fun RocketDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DetailItem(label = "HEIGHT", value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
+        DetailItem(
+            label = stringResource(R.string.height),
+            value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
+        )
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        DetailItem(label = "DIAMETER", value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft")
+        DetailItem(
+            label = stringResource(R.string.diameter),
+            value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft"
+        )
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        DetailItem(label = "MASS", value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
+        DetailItem(label = stringResource(R.string.mass), value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
         HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
-        rocket.payloadWeights.find { it.id == "leo" }?.let {
-            DetailItem(label = "PAYLOAD TO LEO", value = "${it.kg} kg / ${it.lb} lb")
+        rocket.payloadWeights.find { it.id == stringResource(R.string.leo) }?.let {
+            DetailItem(label = "leo", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
-        rocket.payloadWeights.find { it.id == "gto" }?.let {
-            DetailItem(label = "PAYLOAD TO GTO", value = "${it.kg} kg / ${it.lb} lb")
+        rocket.payloadWeights.find { it.id == stringResource(R.string.gto) }?.let {
+            DetailItem(label = "gto", value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
         rocket.payloadWeights.find { it.id == "mars" }?.let {
-            DetailItem(label = "PAYLOAD TO MARS", value = "${it.kg} kg / ${it.lb} lb")
+            DetailItem(label = stringResource(R.string.payload_to_mars), value = "${it.kg} kg / ${it.lb} lb")
             HorizontalDivider(color = Color(color = 0x807A7A7A), thickness = 1.dp)
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -334,7 +341,7 @@ fun RocketDetail(
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text("Learn More")
+            Text(stringResource(R.string.learn_more))
         }
         Spacer(modifier = Modifier.height(16.dp))
         rocket.flickrImages.drop(1).forEach { imageUrl ->
