@@ -3,7 +3,9 @@ package com.can_inanir.spacex.data.remote
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.can_inanir.spacex.data.local.entities.*
+import com.can_inanir.spacex.data.local.entities.LaunchEntity
+import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
+import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.repository.SpaceXRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,23 +38,15 @@ class FetchDataViewModel @Inject constructor(
 
     private fun fetchRockets() {
         viewModelScope.launch {
-            try {
-                val fetchedRockets = repository.getRockets()
-                _rockets.value = fetchedRockets
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching rockets", e)
-            }
+            val fetchedRockets = repository.getRockets()
+            _rockets.value = fetchedRockets
         }
     }
 
     private fun fetchUpcomingLaunches() {
         viewModelScope.launch {
-            try {
-                val fetchedLaunches = repository.getUpcomingLaunches()
-                _upcomingLaunches.value = fetchedLaunches
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching upcoming launches", e)
-            }
+            val fetchedLaunches = repository.getUpcomingLaunches()
+            _upcomingLaunches.value = fetchedLaunches
         }
     }
 
@@ -72,23 +66,15 @@ class FetchDataViewModel @Inject constructor(
 
     fun fetchRocketById(id: String, onSuccess: (RocketEntity) -> Unit) {
         viewModelScope.launch {
-            try {
-                val rocket = repository.getRocketById(id)
-                onSuccess(rocket)
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching rocket by ID", e)
-            }
+            val rocket = repository.getRocketById(id)
+            onSuccess(rocket)
         }
     }
 
     fun fetchLaunchpadById(id: String, onSuccess: (LaunchpadEntity) -> Unit) {
         viewModelScope.launch {
-            try {
-                val launchpad = repository.getLaunchpadById(id)
-                onSuccess(launchpad)
-            } catch (e: Exception) {
-                Log.e("RocketsViewModel", "Error fetching launchpad by ID", e)
-            }
+            val launchpad = repository.getLaunchpadById(id)
+            onSuccess(launchpad)
         }
     }
 

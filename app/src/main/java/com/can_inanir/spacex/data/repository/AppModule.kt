@@ -1,14 +1,15 @@
 @file:Suppress("deprecation")
+
 package com.can_inanir.spacex.data.repository
 
 import android.app.Application
+import androidx.room.Room
+import com.can_inanir.spacex.R
+import com.can_inanir.spacex.data.local.AppDatabase
+import com.can_inanir.spacex.data.remote.ApiService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.can_inanir.spacex.R
-import androidx.room.Room
-import com.can_inanir.spacex.data.local.AppDatabase
-import com.can_inanir.spacex.data.remote.ApiService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module

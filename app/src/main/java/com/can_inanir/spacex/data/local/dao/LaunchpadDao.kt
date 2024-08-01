@@ -1,6 +1,5 @@
 package com.can_inanir.spacex.data.local.dao
 
-
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

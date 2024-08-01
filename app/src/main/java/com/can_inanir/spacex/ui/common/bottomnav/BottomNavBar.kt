@@ -13,7 +13,13 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,21 +28,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-//import dev.chrisbanes.haze.HazeState
-//import dev.chrisbanes.haze.HazeStyle
-//import dev.chrisbanes.haze.hazeChild
 
+// import dev.chrisbanes.haze.HazeState
+// import dev.chrisbanes.haze.HazeStyle
+// import dev.chrisbanes.haze.hazeChild
+// , hazeState: HazeState
+// .hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp, 0f)),
 @Composable
-fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier/*, hazeState: HazeState*/) {
+fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
     val items = listOf(
         BottomNavItem.Rockets,
         BottomNavItem.Favorites,
         BottomNavItem.Upcoming,
     )
 
-    var rocketClickCount by remember { mutableStateOf(0) }
-    var lastClickTime by remember { mutableStateOf(0L) }
-    val coroutineScope = rememberCoroutineScope()
+    var rocketClickCount by remember { mutableIntStateOf(0) }
+    var lastClickTime by remember { mutableLongStateOf(0L) }
+    rememberCoroutineScope()
 
     Box(
         modifier = modifier
@@ -52,8 +60,7 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier/*, 
                 .height(60.dp)
                 .width(360.dp)
                 .align(Alignment.BottomCenter),
-                //.hazeChild(state = hazeState, shape = RoundedCornerShape(16.dp), HazeStyle(Color(0x33000000), 40.dp, 0f)),
-            color = Color(0x80000000)
+            color = Color(color = 0xBF000000)
         ) {
             NavigationBar(
                 containerColor = Color.Transparent,

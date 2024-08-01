@@ -1,5 +1,10 @@
 package com.can_inanir.spacex.ui.feature.upcominglaunches
 
+// import dev.chrisbanes.haze.HazeState
+// import dev.chrisbanes.haze.HazeStyle
+// import dev.chrisbanes.haze.haze
+// import dev.chrisbanes.haze.hazeChild
+// import androidx.compose.foundation.shape.RoundedCornerShape
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -62,21 +67,15 @@ import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.remote.FetchDataViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
-//import dev.chrisbanes.haze.HazeState
-//import dev.chrisbanes.haze.HazeStyle
-//import dev.chrisbanes.haze.haze
-//import dev.chrisbanes.haze.hazeChild
-//import androidx.compose.foundation.shape.RoundedCornerShape
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpcomingLaunchesScreen(navController: NavController) {
     val fetchDataViewModel: FetchDataViewModel = hiltViewModel()
-
 
     val upcomingLaunches by fetchDataViewModel.upcomingLaunches.collectAsState(initial = emptyList())
 //    val hazeState = remember { HazeState() }
@@ -172,13 +171,10 @@ fun LaunchList(
             .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
-
         launches.forEach { launch ->
             LaunchCard(launch, onLaunchClick, viewModel)
             Spacer(modifier = Modifier.height(16.dp))
         }
-
-
     }
 }
 
@@ -189,8 +185,6 @@ fun LaunchCard(
     onLaunchClick: (LaunchEntity) -> Unit,
     viewModel: FetchDataViewModel
 ) {
-
-
     var rocket by remember { mutableStateOf<RocketEntity?>(null) }
     var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
 
@@ -198,8 +192,6 @@ fun LaunchCard(
         viewModel.fetchRocketById(launch.rocket) { rocket = it }
         viewModel.fetchLaunchpadById(launch.launchpad) { launchpad = it }
     }
-
-
 
     Card(
         modifier = Modifier
@@ -226,26 +218,25 @@ fun LaunchCard(
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
             )
 
-                        if (rocket != null && launchpad != null) {
-                            Text(
-                                color = Color.White,
-                                text = "Rocket: ${rocket!!.name}",
-                                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
-                            )
+            if (rocket != null && launchpad != null) {
+                Text(
+                    color = Color.White,
+                    text = "Rocket: ${rocket!!.name}",
+                    fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
+                )
 
-                            val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
-                            imageUrl?.let {
-                                Image(
-                                    painter = rememberAsyncImagePainter(model = it),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(200.dp),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
-
+                val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
+                imageUrl?.let {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = it),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
@@ -266,7 +257,6 @@ fun LaunchCard(
                         contentScale = ContentScale.Crop
                     )
                 }
-
 
                 Spacer(modifier = Modifier.height(2.dp))
             } else {
@@ -315,7 +305,6 @@ fun LaunchDetail(
 //                HazeStyle(Color(0x80000000), 20.dp, 0f)
 //            )
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -346,7 +335,6 @@ fun LaunchDetail(
             Spacer(modifier = Modifier.weight(1f))
         }
 
-
         Text(
             text = launch.details ?: "No details available.",
             style = MaterialTheme.typography.bodyLarge,
@@ -355,19 +343,20 @@ fun LaunchDetail(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-
         DetailItem(label = "DATE", value = formatUtcToRfc1123(launch.dateUtc))
         HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
 
         Spacer(modifier = Modifier.height(16.dp))
-
 
         Column(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             launch.links.wikipedia?.let { wikipediaUrl ->
                 Button(
-                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.cool_green), contentColor = Color.White),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.cool_green),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(wikipediaUrl))
                         context.startActivity(intent)
@@ -472,8 +461,8 @@ fun formatUtcToRfc1123(dateUtc: String): String {
     }
 
     // Parse the date
-    val date: Date = inputFormat.parse(dateUtc)
+    val date: Date? = inputFormat.parse(dateUtc)
 
     // Format the date into RFC 1123 format
-    return outputFormat.format(date)
+    return date?.let { outputFormat.format(it) }.toString()
 }

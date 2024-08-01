@@ -19,6 +19,7 @@ android {
     defaultConfig {
         applicationId = "com.can_inanir.spacex"
         minSdk = 23
+        //noinspection EditedTargetSdkVersion
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -39,12 +40,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_19
-        targetCompatibility = JavaVersion.VERSION_19
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     buildFeatures {
@@ -95,6 +96,7 @@ dependencies {
 
     // Compose additions
     implementation("androidx.compose.ui:ui-test-junit4")
+    implementation("androidx.compose.runtime:runtime-android:1.6.8")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 

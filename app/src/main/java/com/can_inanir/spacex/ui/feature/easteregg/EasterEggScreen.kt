@@ -1,16 +1,31 @@
 package com.can_inanir.spacex.ui.feature.easteregg
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils.formatElapsedTime
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -28,19 +43,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.random.Random
+import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.PI
+import kotlin.random.Random
 
+@SuppressLint("ReturnFromAwaitPointerEventScope")
 @Composable
 fun EasterEggScreen(navController: NavController) {
     BackHandler { navController.popBackStack() }
     val debug = true
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
@@ -51,10 +66,10 @@ fun EasterEggScreen(navController: NavController) {
     var targetPosition by remember { mutableStateOf<Offset?>(null) }
     val velocity = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
     val friction = 0.99f // Coefficient of friction
-    var angle by remember { mutableStateOf(180f) } // Start upside down
+    var angle by remember { mutableFloatStateOf(value = 180f) } // Start upside down
 
     // Timer
-    var elapsedTime by remember { mutableStateOf(0L) }
+    var elapsedTime by remember { mutableLongStateOf(value = 0L) }
     LaunchedEffect(Unit) {
         while (true) {
             delay(1000)
@@ -76,7 +91,7 @@ fun EasterEggScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         while (true) {
             val delayTime = (2000 - 50 * elapsedTime).coerceAtLeast(200)
-            delay(delayTime.toLong())
+            delay(delayTime)
             val side = randomGenerator.nextInt(4)
             val (posX, posY) = when (side) {
                 0 -> Pair(-50f, randomGenerator.nextFloat() * screenHeightPx) // Left
@@ -107,7 +122,7 @@ fun EasterEggScreen(navController: NavController) {
             targetPosition?.let { target ->
                 val direction = target - spaceshipPosition
                 if (direction.getDistance() > 5f) {
-                    val acceleration = direction.normalize() * 5.5f // Increase speed
+                    val acceleration = direction.normalize() * 5.6f // Increase speed
                     velocity.snapTo(velocity.value + acceleration)
                 }
                 val newAngle = atan2(direction.y, direction.x) * 180 / PI.toFloat()
@@ -117,13 +132,21 @@ fun EasterEggScreen(navController: NavController) {
             // Update asteroid positions
             asteroids.forEachIndexed { index, asteroid ->
                 val curving = randomGenerator.nextFloat()
-                val curveVelocity = if (index % 2 == 0) asteroid.velocity.rotate(curving * 10f)
-                else asteroid.velocity.rotate(-curving * 10f)
+                val curveVelocity = if (index % 2 == 0) {
+                    asteroid.velocity.rotate(degrees = curving * 10f)
+                } else {
+                    asteroid.velocity.rotate(degrees = -curving * 10f)
+                }
                 asteroids[index] = asteroid.copy(position = asteroid.position + curveVelocity * 0.016f)
             }
 
             // Remove asteroids that are off-screen
-            asteroids.removeAll { it.position.x < -it.size - 500 || it.position.x > screenWidthPx + it.size + 500 || it.position.y < -it.size - 500 || it.position.y > screenHeightPx + it.size + 500 }
+            asteroids.removeAll {
+                it.position.x < -it.size - 500 ||
+                    it.position.x > screenWidthPx + it.size + 500 ||
+                    it.position.y < -it.size - 500 ||
+                    it.position.y > screenHeightPx + it.size + 500
+            }
 
             // Check collision exactly when they touch
             asteroids.forEach {
@@ -137,7 +160,7 @@ fun EasterEggScreen(navController: NavController) {
                     targetPosition = null
                 }
             }
-            delay(8)
+            delay(timeMillis = 8)
         }
     }
 
@@ -214,8 +237,16 @@ fun EasterEggScreen(navController: NavController) {
                 modifier = Modifier
                     .size(asteroid.size.dp) // Scale image with size
                     .graphicsLayer(
-                        translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
-                        translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
+                        translationX = asteroid.position.x - (
+                            with(LocalDensity.current) {
+                                asteroid.size.dp.toPx()
+                            } / 2
+                            ),
+                        translationY = asteroid.position.y - (
+                            with(LocalDensity.current) {
+                                asteroid.size.dp.toPx()
+                            } / 2
+                            ),
                         rotationZ = asteroid.rotation
                     )
             )
@@ -226,8 +257,16 @@ fun EasterEggScreen(navController: NavController) {
                     modifier = Modifier
                         .size(asteroid.size.dp)
                         .graphicsLayer(
-                            translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
-                            translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2)
+                            translationX = asteroid.position.x - (
+                                with(LocalDensity.current) {
+                                    asteroid.size.dp.toPx()
+                                } / 2
+                                ),
+                            translationY = asteroid.position.y - (
+                                with(LocalDensity.current) {
+                                    asteroid.size.dp.toPx()
+                                } / 2
+                                )
                         )
                 ) {
                     drawCircle(Color.White, asteroid.size.dp.toPx() / 2, style = Stroke(width = 20f))
@@ -256,5 +295,3 @@ private operator fun Offset.plus(other: Offset) = Offset(x + other.x, y + other.
 private operator fun Offset.minus(other: Offset) = Offset(x - other.x, y - other.y)
 private operator fun Offset.times(scalar: Float) = Offset(x * scalar, y * scalar)
 private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / y)
-
-private fun Offset.getDistance() = kotlin.math.sqrt(x * x + y * y)

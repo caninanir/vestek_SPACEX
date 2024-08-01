@@ -1,12 +1,15 @@
 package com.can_inanir.spacex.data.local
 
 import androidx.room.TypeConverter
-import com.can_inanir.spacex.data.model.*
+import com.can_inanir.spacex.data.model.Launch
+import com.can_inanir.spacex.data.model.Launchpad
+import com.can_inanir.spacex.data.model.Measurement
+import com.can_inanir.spacex.data.model.PayloadWeight
+import com.can_inanir.spacex.data.model.Weight
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class Converters {
-
 
     @TypeConverter
     fun fromString(value: String): List<String> {
@@ -19,7 +22,6 @@ class Converters {
         return Gson().toJson(list)
     }
 
-
     @TypeConverter
     fun fromMeasurement(measurement: Measurement): String {
         return Gson().toJson(measurement)
@@ -30,7 +32,6 @@ class Converters {
         return Gson().fromJson(value, Measurement::class.java)
     }
 
-
     @TypeConverter
     fun fromWeight(weight: Weight): String {
         return Gson().toJson(weight)
@@ -40,18 +41,6 @@ class Converters {
     fun toWeight(value: String): Weight {
         return Gson().fromJson(value, Weight::class.java)
     }
-
-    @Suppress("unused")
-    @TypeConverter
-    fun fromPayloadWeight(payloadWeight: PayloadWeight): String {
-        return Gson().toJson(payloadWeight)
-    }
-    @Suppress("unused")
-    @TypeConverter
-    fun toPayloadWeight(value: String): PayloadWeight {
-        return Gson().fromJson(value, PayloadWeight::class.java)
-    }
-
 
     @TypeConverter
     fun fromPayloadWeightList(list: List<PayloadWeight>): String {
@@ -64,7 +53,6 @@ class Converters {
         return Gson().fromJson(value, listType)
     }
 
-
     @TypeConverter
     fun fromLinks(links: Launch.Links): String {
         return Gson().toJson(links)
@@ -75,7 +63,6 @@ class Converters {
         return Gson().fromJson(value, Launch.Links::class.java)
     }
 
-
     @TypeConverter
     fun fromPatches(patches: Launch.Patches?): String {
         return Gson().toJson(patches)
@@ -85,7 +72,6 @@ class Converters {
     fun toPatches(value: String): Launch.Patches? {
         return Gson().fromJson(value, Launch.Patches::class.java)
     }
-
 
     @TypeConverter
     fun fromLaunchpadImages(images: Launchpad.LaunchpadImages): String {
