@@ -43,7 +43,7 @@ import androidx.navigation.NavController
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
-
+import com.can_inanir.spacex.ui.main.AppColors
 
 
 @Composable
@@ -54,11 +54,12 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(userState) {
         if (userState != null) {
             navController.navigate(BottomNavItem.Favorites.route) {
-                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
             }
         }
     }
@@ -70,11 +71,11 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(color = 0x806E6E6E))
+                .background(AppColors.Black.copy(alpha = 0.50f))
         )
+
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -86,6 +87,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     .height(200.dp)
                     .padding(bottom = 23.dp)
             )
+
             LoginInputField(
                 value = email,
                 onValueChange = { email = it },
@@ -96,7 +98,9 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     R.drawable.form_elements_icons_email_active
                 }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
             LoginInputField(
                 value = password,
                 onValueChange = { password = it },
@@ -118,7 +122,9 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     PasswordVisualTransformation()
                 }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
             val isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
             CustomButton(
                 onClick = { authViewModel.login(email, password) },
@@ -127,14 +133,16 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 disabledImageId = R.drawable.buttons_primary_disable,
                 contentDescription = stringResource(R.string.login)
             ) {
-                Text(text = stringResource(R.string.login), color = Color.White)
+                Text(text = stringResource(R.string.login), color = AppColors.White)
             }
+
             Text(
                 text = stringResource(R.string.or),
                 fontSize = 14.sp,
-                color = Color.White,
+                color = AppColors.White,
                 modifier = Modifier.padding(16.dp)
             )
+
             CustomButton(
                 onClick = { signInWithGoogle() },
                 enabled = true,
@@ -149,18 +157,20 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(R.string.sign_in_with_google), color = Color.White)
+                    Text(text = stringResource(R.string.sign_in_with_google), color = AppColors.White)
                 }
             }
+
             Text(
                 text = stringResource(R.string.sign_up),
                 fontSize = 13.5.sp,
-                color = Color.White,
+                color = AppColors.White,
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .clickable { authViewModel.createAccount(email, password) }
             )
         }
+
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize(),
@@ -206,7 +216,7 @@ fun LoginInputField(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color(color = 0xFFF3F3F3).copy(alpha = 0.2f),
+        color = AppColors.White.copy(alpha = 0.2f),
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 2.dp
     ) {
@@ -234,12 +244,12 @@ fun LoginInputField(
                 },
                 trailingIcon = trailingIcon,
                 visualTransformation = visualTransformation,
-                textStyle = LocalTextStyle.current.copy(color = Color.White),
+                textStyle = LocalTextStyle.current.copy(color = AppColors.White),
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(R.color.cool_green),
-                    unfocusedBorderColor = Color.LightGray,
-                    cursorColor = colorResource(R.color.cool_green)
+                    focusedBorderColor = AppColors.CoolGreen,
+                    unfocusedBorderColor = AppColors.LightGray,
+                    cursorColor = AppColors.CoolGreen,
                 ),
             )
         }

@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.can_inanir.spacex.ui.main.AppColors
 
 @Composable
 fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
@@ -55,7 +56,7 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
                 .height(60.dp)
                 .width(360.dp)
                 .align(Alignment.BottomCenter),
-            color = Color(color = 0xBF000000)
+            color = AppColors.Black.copy(alpha = 0.75f),
         ) {
             NavigationBar(
                 containerColor = Color.Transparent,

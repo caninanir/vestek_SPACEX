@@ -65,41 +65,38 @@ import com.can_inanir.spacex.data.remote.LaunchpadDetailViewModel
 import com.can_inanir.spacex.data.remote.RocketDetailViewModel
 import com.can_inanir.spacex.data.remote.UpcomingLaunchesViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
+import com.can_inanir.spacex.ui.main.AppColors
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.TimeZone
-@OptIn(ExperimentalMaterial3Api::class)
+import java.util.TimeZone@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpcomingLaunchesScreen(navController: NavController) {
     val upcomingLaunchesViewModel: UpcomingLaunchesViewModel = hiltViewModel()
     val rocketDetailViewModel: RocketDetailViewModel = hiltViewModel()
     val launchpadDetailViewModel: LaunchpadDetailViewModel = hiltViewModel()
-
     val upcomingLaunches by upcomingLaunchesViewModel.upcomingLaunches.collectAsState(initial = emptyList())
-
     var selectedLaunch by remember { mutableStateOf<LaunchEntity?>(null) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(AppColors.Black)
     ) {
         Image(
             painter = painterResource(id = R.drawable.space_x_android_bgl),
             contentDescription = stringResource(R.string.background),
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
+
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = Color.White
+                        containerColor = AppColors.FullTransparentBackground,
+                        titleContentColor = AppColors.White
                     ),
                     title = {
                         Row(
@@ -110,7 +107,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                                 text = stringResource(R.string.upcoming_launches),
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
-                                color = Color.White
+                                color = AppColors.White
                             )
                         }
                     },
@@ -126,13 +123,14 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                     launchpadDetailViewModel = launchpadDetailViewModel
                 )
             },
-            containerColor = Color.Transparent
+            containerColor = AppColors.FullTransparentBackground
         )
+
         if (selectedLaunch != null) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0x1AFFFFFF))
+                    .background(AppColors.White.copy(alpha = 0.10f))
             ) {
                 LaunchDetail(
                     launch = selectedLaunch!!,
@@ -142,6 +140,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
                 )
             }
         }
+
         BottomNavBar(
             navController = navController,
             modifier = Modifier.fillMaxSize()
@@ -174,6 +173,7 @@ fun LaunchList(
         }
     }
 }
+
 @Composable
 fun LaunchCard(
     launch: LaunchEntity,
@@ -194,30 +194,30 @@ fun LaunchCard(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onLaunchClick(launch) },
-        colors = CardDefaults.cardColors(containerColor = Color(0x347C7C7C)),
+        colors = CardDefaults.cardColors(containerColor = AppColors.Black.copy(alpha = 0.21f))
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                color = Color.White,
+                color = AppColors.White,
                 text = launch.name,
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 28.sp),
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold))
             )
             Text(
-                color = Color.White,
+                color = AppColors.White,
                 text = stringResource(R.string.date, formatUtcToRfc1123(launch.dateUtc)),
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
             )
             if (rocket != null && launchpad != null) {
                 Text(
-                    color = Color.White,
+                    color = AppColors.White,
                     text = stringResource(R.string.rocket, rocket!!.name),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
                 )
                 val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
                 imageUrl?.let {
@@ -232,10 +232,10 @@ fun LaunchCard(
                 }
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    color = Color.White,
+                    color = AppColors.White,
                     text = stringResource(R.string.launchpad, launchpad!!.name),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
-                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 launchpad!!.images.large.randomOrNull()?.let { imageUrl ->
@@ -250,13 +250,13 @@ fun LaunchCard(
                 }
                 Spacer(modifier = Modifier.height(2.dp))
             } else {
-                Text(stringResource(R.string.loading), color = Color.White)
+                Text(stringResource(R.string.loading), color = AppColors.White)
             }
             launch.links.webcast?.let { webcastUrl ->
                 val context = LocalContext.current
                 Text(
                     text = stringResource(R.string.watch_the_webcast1),
-                    color = Color(color = 0xFF58FBC8),
+                    color = AppColors.CoolGreen,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webcastUrl))
@@ -267,6 +267,7 @@ fun LaunchCard(
         }
     }
 }
+
 @Composable
 fun LaunchDetail(
     launch: LaunchEntity,
@@ -287,7 +288,7 @@ fun LaunchDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(colorResource(id = R.color.transparent_background))
+            .background(AppColors.TransparentBackground)
     ) {
         Row(
             modifier = Modifier
@@ -300,7 +301,7 @@ fun LaunchDetail(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.close),
-                    tint = Color.White,
+                    tint = AppColors.White,
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -308,7 +309,7 @@ fun LaunchDetail(
             Text(
                 text = launch.name,
                 style = MaterialTheme.typography.headlineLarge,
-                color = colorResource(id = R.color.cool_green),
+                color = AppColors.CoolGreen,
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                 modifier = Modifier.align(Alignment.CenterVertically),
                 softWrap = false
@@ -319,19 +320,21 @@ fun LaunchDetail(
         Text(
             text = launch.details ?: stringResource(R.string.no_details_available),
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.White,
+            color = AppColors.White,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         DetailItem(label = "DATE", value = formatUtcToRfc1123(launch.dateUtc))
-        HorizontalDivider(color = Color(0x807A7A7A), thickness = 1.dp)
+        HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
         Spacer(modifier = Modifier.height(16.dp))
+
         Column(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             launch.links.wikipedia?.let { wikipediaUrl ->
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.cool_green),
-                        contentColor = Color.White
+                        containerColor = AppColors.CoolGreen,
+                        contentColor = AppColors.White
                     ),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(wikipediaUrl))
@@ -341,12 +344,11 @@ fun LaunchDetail(
                     Text(stringResource(R.string.learn_more))
                 }
             }
-
             launch.links.webcast?.let { webcastUrl ->
                 val appContext = LocalContext.current
                 Text(
                     text = stringResource(R.string.watch_the_webcast),
-                    color = colorResource(id = R.color.cool_green),
+                    color = AppColors.CoolGreen,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webcastUrl))
@@ -354,13 +356,12 @@ fun LaunchDetail(
                     }
                 )
             }
-
             launch.links.article?.let { articleUrl ->
                 val appContext = LocalContext.current
                 Text(
                     text = stringResource(R.string.read_article),
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
-                    color = colorResource(id = R.color.cool_green),
+                    color = AppColors.CoolGreen,
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(articleUrl))
                         appContext.startActivity(intent)
@@ -368,7 +369,9 @@ fun LaunchDetail(
                 )
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Column {
             rocket?.flickrImages?.forEach { imageUrl ->
                 Image(
@@ -393,6 +396,7 @@ fun LaunchDetail(
                 )
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -412,13 +416,13 @@ fun DetailItem(label: String, value: String) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             ),
-            color = Color.White
+            color = AppColors.White
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = value,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.White
+            color = AppColors.White
         )
     }
 }
@@ -428,12 +432,9 @@ fun formatUtcToRfc1123(dateUtc: String): String {
     val inputFormat = SimpleDateFormat(stringResource(R.string.yyyy_mm_dd_t_hh_mm_ss_sss_z), Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
-
     val outputFormat = SimpleDateFormat(stringResource(R.string.eee_dd_mmm_yyyy_hh_mm_ss_zzz), Locale.US).apply {
         timeZone = TimeZone.getDefault()
     }
-
     val date: Date? = inputFormat.parse(dateUtc)
-
     return date?.let { outputFormat.format(it) }.toString()
 }

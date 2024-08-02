@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
+import com.can_inanir.spacex.ui.main.AppColors
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -54,6 +55,7 @@ import kotlin.random.Random
 @Composable
 fun EasterEggScreen(navController: NavController) {
     BackHandler { navController.popBackStack() }
+
     val debug = true
     val context = LocalContext.current
     rememberCoroutineScope()
@@ -89,6 +91,7 @@ fun EasterEggScreen(navController: NavController) {
 
     val asteroids = remember { mutableStateListOf<Asteroid>() }
     val randomGenerator = Random.Default
+
     LaunchedEffect(Unit) {
         while (true) {
             val delayTime = (2000 - 50 * elapsedTime).coerceAtLeast(200)
@@ -144,15 +147,14 @@ fun EasterEggScreen(navController: NavController) {
             // Remove asteroids that are off-screen
             asteroids.removeAll {
                 it.position.x < -it.size - 500 ||
-                    it.position.x > screenWidthPx + it.size + 500 ||
-                    it.position.y < -it.size - 500 ||
-                    it.position.y > screenHeightPx + it.size + 500
+                        it.position.x > screenWidthPx + it.size + 500 ||
+                        it.position.y < -it.size - 500 ||
+                        it.position.y > screenHeightPx + it.size + 500
             }
 
             // Check collision exactly when they touch
             asteroids.forEach {
-                if ((spaceshipPosition - it.position).getDistance() <= ((it.size) + 50f)) {
-                    // Collision detected if they touch
+                if ((spaceshipPosition - it.position).getDistance() <= ((it.size) + 50f)) { // Collision detected
                     Toast.makeText(
                         context,
                         context.getString(R.string.you_crashed_high_score) + elapsedTime,
@@ -172,11 +174,9 @@ fun EasterEggScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(AppColors.Black)
             .pointerInput(Unit) {
-                detectDragGestures { change, _ ->
-                    targetPosition = change.position
-                }
+                detectDragGestures { change, _ -> targetPosition = change.position }
             }
             .pointerInput(Unit) {
                 awaitPointerEventScope {
@@ -202,7 +202,7 @@ fun EasterEggScreen(navController: NavController) {
         // Timer Display
         Text(
             text = formatElapsedTime(elapsedTime),
-            color = Color.White,
+            color = AppColors.White,
             fontSize = 20.sp,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -234,7 +234,7 @@ fun EasterEggScreen(navController: NavController) {
                     )
                     .size(50.dp)
             ) {
-                drawCircle(Color.Blue, 25.dp.toPx(), style = Stroke(width = 2f))
+                drawCircle(AppColors.CoolGreen, 25.dp.toPx(), style = Stroke(width = 2f))
             }
         }
 
@@ -246,16 +246,8 @@ fun EasterEggScreen(navController: NavController) {
                 modifier = Modifier
                     .size(asteroid.size.dp) // Scale image with size
                     .graphicsLayer(
-                        translationX = asteroid.position.x - (
-                                with(LocalDensity.current) {
-                                    asteroid.size.dp.toPx()
-                                } / 2
-                                ),
-                        translationY = asteroid.position.y - (
-                                with(LocalDensity.current) {
-                                    asteroid.size.dp.toPx()
-                                } / 2
-                                ),
+                        translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
+                        translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
                         rotationZ = asteroid.rotation
                     )
             )
@@ -266,19 +258,11 @@ fun EasterEggScreen(navController: NavController) {
                     modifier = Modifier
                         .size(asteroid.size.dp)
                         .graphicsLayer(
-                            translationX = asteroid.position.x - (
-                                    with(LocalDensity.current) {
-                                        asteroid.size.dp.toPx()
-                                    } / 2
-                                    ),
-                            translationY = asteroid.position.y - (
-                                    with(LocalDensity.current) {
-                                        asteroid.size.dp.toPx()
-                                    } / 2
-                                    )
+                            translationX = asteroid.position.x - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2),
+                            translationY = asteroid.position.y - (with(LocalDensity.current) { asteroid.size.dp.toPx() } / 2)
                         )
                 ) {
-                    drawCircle(Color.White, asteroid.size.dp.toPx() / 2, style = Stroke(width = 20f))
+                    drawCircle(AppColors.White, asteroid.size.dp.toPx() / 2, style = Stroke(width = 20f))
                 }
             }
         }
@@ -301,6 +285,15 @@ private fun Offset.normalize(): Offset {
 }
 
 private operator fun Offset.plus(other: Offset) = Offset(x + other.x, y + other.y)
+
 private operator fun Offset.minus(other: Offset) = Offset(x - other.x, y - other.y)
+
 private operator fun Offset.times(scalar: Float) = Offset(x * scalar, y * scalar)
-private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / y)
+
+private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / scalar)
+
+private fun formatElapsedTime(elapsedTime: Long): String {
+    val minutes = elapsedTime / 60
+    val seconds = elapsedTime % 60
+    return "%02d:%02d".format(minutes, seconds)
+}
