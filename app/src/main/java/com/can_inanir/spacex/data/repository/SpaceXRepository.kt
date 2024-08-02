@@ -6,8 +6,6 @@ import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.local.entities.toLaunchEntity
 import com.can_inanir.spacex.data.local.entities.toRocketEntity
-import com.can_inanir.spacex.data.model.Launch
-import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.ApiService
 import javax.inject.Inject
 import javax.inject.Singleton

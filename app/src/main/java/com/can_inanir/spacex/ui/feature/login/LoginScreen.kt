@@ -29,9 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -91,7 +89,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             LoginInputField(
                 value = email,
                 onValueChange = { email = it },
-                labelIcon = R.drawable.form_elements_text_content_active_white2,
+                labelIcon = R.drawable.form_elements_text_content_active_white_email,
                 leadingIcon = if (email.isEmpty()) {
                     R.drawable.form_elements_icons_email_enable_white
                 } else {

@@ -75,7 +75,7 @@ fun RocketCard(
                         modifier = Modifier.size(64.dp),
                         tint = Color.Unspecified,
                         painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+                            id = if (isFavorite) R.drawable.buttons_icons_favorites_active_pressed else R.drawable.buttons_icons_favorites_enable
                         ),
                         contentDescription = null
                     )
@@ -127,7 +127,7 @@ fun LaunchCard(
             )
             Text(
                 color = AppColors.White,
-                text = com.can_inanir.spacex.ui.feature.informationscreens.formatUtcToRfc1123(
+                text = formatUtcToRfc1123(
                     launch.dateUtc
                 ),
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),

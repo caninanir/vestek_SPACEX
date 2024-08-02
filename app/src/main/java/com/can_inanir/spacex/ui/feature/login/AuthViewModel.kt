@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,17 +50,6 @@ class AuthViewModel @Inject constructor(
     fun createAccount(email: String, password: String) {
         viewModelScope.launch {
             val task = auth.createUserWithEmailAndPassword(email, password).await()
-            if (task.user != null) {
-                _userState.value = auth.currentUser
-                checkAndCreateUserDocument(auth.currentUser!!.email!!)
-            }
-        }
-    }
-
-    fun handleGoogleAccessToken(idToken: String) {
-        viewModelScope.launch {
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            val task = auth.signInWithCredential(credential).await()
             if (task.user != null) {
                 _userState.value = auth.currentUser
                 checkAndCreateUserDocument(auth.currentUser!!.email!!)

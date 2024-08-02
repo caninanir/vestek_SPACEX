@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -112,7 +111,7 @@ fun EasterEggScreen(navController: NavController) {
                 position = Offset(posX, posY),
                 velocity = Offset(velocityX, velocityY),
                 rotation = (randomGenerator.nextFloat() * 2f - 1f) * 30f,
-                imageRes = R.drawable.fav_d
+                imageRes = R.drawable.ee_star
             )
             asteroids.add(newAsteroid)
         }
@@ -212,8 +211,9 @@ fun EasterEggScreen(navController: NavController) {
 
         // Spaceship
         Image(
-            painter = painterResource(id = R.drawable.rocket_e),
+            painter = painterResource(id = R.drawable.ee_rocket),
             contentDescription = stringResource(R.string.spaceship),
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(50.dp)
                 .graphicsLayer(
@@ -243,6 +243,7 @@ fun EasterEggScreen(navController: NavController) {
             Image(
                 painter = painterResource(id = asteroid.imageRes),
                 contentDescription = stringResource(R.string.asteroid),
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(asteroid.size.dp) // Scale image with size
                     .graphicsLayer(
@@ -292,8 +293,3 @@ private operator fun Offset.times(scalar: Float) = Offset(x * scalar, y * scalar
 
 private operator fun Offset.div(scalar: Float) = Offset(x / scalar, y / scalar)
 
-private fun formatElapsedTime(elapsedTime: Long): String {
-    val minutes = elapsedTime / 60
-    val seconds = elapsedTime % 60
-    return "%02d:%02d".format(minutes, seconds)
-}
