@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -55,9 +56,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     LaunchedEffect(userState) {
         if (userState != null) {
             navController.navigate(BottomNavItem.Favorites.route) {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
-                }
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
             }
         }
     }
@@ -71,34 +70,35 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 .fillMaxSize()
                 .background(AppColors.Black.copy(alpha = 0.50f))
         )
-
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = painterResource(id = R.drawable.space_x_white_logo_wine),
                 contentDescription = stringResource(R.string.logo),
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(bottom = 23.dp)
+                    .padding(start = 52.dp, end = 23.dp)
             )
-
+            Spacer(modifier = Modifier.height(23.dp))
             LoginInputField(
                 value = email,
                 onValueChange = { email = it },
+
                 labelIcon = R.drawable.form_elements_text_content_active_white_email,
+
+
                 leadingIcon = if (email.isEmpty()) {
                     R.drawable.form_elements_icons_email_enable_white
                 } else {
                     R.drawable.form_elements_icons_email_active
                 }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            Spacer(modifier = Modifier.height(22.dp))
             LoginInputField(
                 value = password,
                 onValueChange = { password = it },
@@ -120,9 +120,19 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     PasswordVisualTransformation()
                 }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.forgot_password),
+                fontSize = 14.sp,
+                color = AppColors.White,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(start = 16.dp)
+                    .clickable {
+                        // Add forgot password logic
+                    }
+            )
+            Spacer(modifier = Modifier.height(64.dp)) // Adjust spacing
             val isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
             CustomButton(
                 onClick = { authViewModel.login(email, password) },
@@ -131,16 +141,20 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 disabledImageId = R.drawable.buttons_primary_disable,
                 contentDescription = stringResource(R.string.login)
             ) {
-                Text(text = stringResource(R.string.login), color = AppColors.White)
+                Text(
+                    text = stringResource(R.string.login),
+                    color = AppColors.White,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
-
+            Spacer(modifier = Modifier.height(20.dp)) // Adjust spacing
             Text(
                 text = stringResource(R.string.or),
                 fontSize = 14.sp,
                 color = AppColors.White,
                 modifier = Modifier.padding(16.dp)
             )
-
             CustomButton(
                 onClick = { signInWithGoogle() },
                 enabled = true,
@@ -155,10 +169,15 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(R.string.sign_in_with_google), color = AppColors.White)
+                    Text(
+                        text = stringResource(R.string.sign_in_with_google),
+                        color = AppColors.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
-
+            Spacer(modifier = Modifier.height(94.dp)) // Adjust spacing
             Text(
                 text = stringResource(R.string.sign_up),
                 fontSize = 13.5.sp,
@@ -169,10 +188,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             )
         }
 
-        BottomNavBar(
-            navController = navController,
-            modifier = Modifier.fillMaxSize(),
-        )
+        BottomNavBar(navController = navController, modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -188,8 +204,8 @@ fun CustomButton(
     val imageId = if (enabled) enabledImageId else disabledImageId
     Box(
         modifier = Modifier
-            .fillMaxWidth()
             .height(48.dp)
+            .padding(horizontal = 75.dp)
             .clickable(enabled = enabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -197,7 +213,6 @@ fun CustomButton(
             painter = painterResource(id = imageId),
             contentDescription = contentDescription,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
         )
         content()
     }
@@ -213,10 +228,10 @@ fun LoginInputField(
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
         color = AppColors.White.copy(alpha = 0.2f),
         shape = RoundedCornerShape(10.dp),
-        shadowElevation = 2.dp
     ) {
         Box(
             modifier = Modifier.fillMaxWidth()
@@ -227,7 +242,7 @@ fun LoginInputField(
                     contentDescription = stringResource(R.string.label_icon),
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(start = 16.dp)
+                        .padding(start = 50.dp, top = 11.dp, bottom = 9.dp)
                 )
             }
             OutlinedTextField(
@@ -237,7 +252,7 @@ fun LoginInputField(
                     Image(
                         painter = painterResource(id = leadingIcon),
                         contentDescription = stringResource(R.string.leading_icon),
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(50.dp).padding(all = 12.dp)
                     )
                 },
                 trailingIcon = trailingIcon,
@@ -246,7 +261,7 @@ fun LoginInputField(
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AppColors.CoolGreen,
-                    unfocusedBorderColor = AppColors.LightGray,
+                    unfocusedBorderColor = AppColors.FullTransparentBackground,
                     cursorColor = AppColors.CoolGreen,
                 ),
             )
@@ -265,7 +280,7 @@ fun PasswordVisibilityIcon(passwordVisible: Boolean, onClick: () -> Unit) {
         painter = painterResource(id = icon),
         contentDescription = stringResource(R.string.toggle_password_visibility),
         modifier = Modifier
-            .size(20.dp)
+            .size(50.dp).padding(all = 12.dp)
             .clickable { onClick() }
     )
 }

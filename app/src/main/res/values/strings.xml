@@ -28,7 +28,7 @@
     <string name="mars">mars</string>
     <string name="spacex_rockets">SpaceX Rockets</string>
     <string name="logo">Logo</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="or">or</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_up">Sign up</string>
@@ -43,4 +43,5 @@
     <string name="you_crashed_high_score">"You crashed! High score = "</string>
     <string name="spaceship">Spaceship</string>
     <string name="asteroid">Asteroid</string>
+    <string name="forgot_password">Forgot Password</string>
 </resources>
