@@ -11,6 +11,9 @@ object AppColors {
     val Teal700 = Color(0xFF018786)
     val Black = Color(0xFF000000)
     val White = Color(0xFFFFFFFF)
-    val TransparentBackground = Color(0xE6545454)
+    val CardBackground = Color(0x26FFFFFF)
+    val NavBackground = Color(0xBF000000)
+    val DividerColor = Color(0xBF505050)
+    val HalfGrayTransparentBackground = Color(0xE6545454)
     val FullTransparentBackground = Color(0x00545454)
 }

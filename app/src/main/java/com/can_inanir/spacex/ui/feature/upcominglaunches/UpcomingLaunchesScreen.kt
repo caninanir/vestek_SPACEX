@@ -43,10 +43,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -130,7 +128,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(AppColors.White.copy(alpha = 0.10f))
+                    .background(AppColors.CardBackground)
             ) {
                 LaunchDetail(
                     launch = selectedLaunch!!,
@@ -194,7 +192,7 @@ fun LaunchCard(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onLaunchClick(launch) },
-        colors = CardDefaults.cardColors(containerColor = AppColors.Black.copy(alpha = 0.21f))
+        colors = CardDefaults.cardColors(containerColor = AppColors.CardBackground)
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -288,7 +286,7 @@ fun LaunchDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(AppColors.TransparentBackground)
+            .background(AppColors.HalfGrayTransparentBackground)
     ) {
         Row(
             modifier = Modifier
@@ -326,7 +324,7 @@ fun LaunchDetail(
         Spacer(modifier = Modifier.height(16.dp))
 
         DetailItem(label = "DATE", value = formatUtcToRfc1123(launch.dateUtc))
-        HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(modifier = Modifier.align(Alignment.CenterHorizontally)) {

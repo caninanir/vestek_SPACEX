@@ -47,7 +47,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -184,7 +183,7 @@ fun RocketCard(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.Black.copy(alpha = 0.21f))
+        colors = CardDefaults.cardColors(containerColor = AppColors.CardBackground)
     ) {
         Column {
             Row(
@@ -237,7 +236,7 @@ fun RocketDetail(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(AppColors.TransparentBackground)
+            .background(AppColors.HalfGrayTransparentBackground)
     ) {
         Row(
             modifier = Modifier
@@ -303,26 +302,26 @@ fun RocketDetail(
             label = stringResource(R.string.height),
             value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
         )
-        HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
 
         DetailItem(
             label = stringResource(R.string.diameter),
             value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft"
         )
-        HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
 
         DetailItem(
             label = stringResource(R.string.mass),
             value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb"
         )
-        HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
 
         rocket.payloadWeights.find { it.id == "leo" }?.let {
             DetailItem(
                 label = stringResource(R.string.payload_to_leo),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
-            HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         }
 
         rocket.payloadWeights.find { it.id == "gto" }?.let {
@@ -330,7 +329,7 @@ fun RocketDetail(
                 label = stringResource(R.string.payload_to_gto),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
-            HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         }
 
         rocket.payloadWeights.find { it.id == "mars" }?.let {
@@ -338,7 +337,7 @@ fun RocketDetail(
                 label = stringResource(R.string.payload_to_mars),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
-            HorizontalDivider(color = AppColors.Black.copy(alpha = 0.50f), thickness = 1.dp)
+            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         }
 
         Spacer(modifier = Modifier.height(16.dp))

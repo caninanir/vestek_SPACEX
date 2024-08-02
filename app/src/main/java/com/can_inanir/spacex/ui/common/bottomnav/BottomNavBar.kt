@@ -56,7 +56,7 @@ fun BottomNavBar(navController: NavController, modifier: Modifier = Modifier) {
                 .height(60.dp)
                 .width(360.dp)
                 .align(Alignment.BottomCenter),
-            color = AppColors.Black.copy(alpha = 0.75f),
+            color = AppColors.NavBackground,
         ) {
             NavigationBar(
                 containerColor = Color.Transparent,
