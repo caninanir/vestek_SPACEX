@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.data.repository
+package com.can_inanir.spacex.ui.main
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
