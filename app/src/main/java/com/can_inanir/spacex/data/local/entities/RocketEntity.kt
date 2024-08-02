@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.can_inanir.spacex.data.model.Measurement
 import com.can_inanir.spacex.data.model.PayloadWeight
+import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.model.Weight
 
 @Entity(tableName = "rockets")
@@ -22,3 +23,20 @@ data class RocketEntity(
     @ColumnInfo(name = "mass") val mass: Weight,
     @ColumnInfo(name = "payload_weights") val payloadWeights: List<PayloadWeight>
 )
+
+fun Rocket.toRocketEntity(): RocketEntity {
+    return RocketEntity(
+        id = this.id,
+        name = this.name,
+        description = this.description,
+        firstFlight = this.firstFlight,
+        costPerLaunch = this.costPerLaunch,
+        successRatePct = this.successRatePct,
+        wikipedia = this.wikipedia,
+        flickrImages = this.flickrImages,
+        height = this.height,
+        diameter = this.diameter,
+        mass = this.mass,
+        payloadWeights = this.payloadWeights
+    )
+}

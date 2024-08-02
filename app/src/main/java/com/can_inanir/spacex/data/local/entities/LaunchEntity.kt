@@ -16,3 +16,16 @@ data class LaunchEntity(
     @ColumnInfo(name = "links") val links: Launch.Links,
     @ColumnInfo(name = "patches") val patches: Launch.Patches?
 )
+
+fun Launch.toLaunchEntity(): LaunchEntity {
+    return LaunchEntity(
+        id = this.id,
+        name = this.name,
+        dateUtc = this.dateUtc,
+        rocket = this.rocket,
+        launchpad = this.launchpad,
+        details = this.details,
+        links = this.links,
+        patches = this.patches
+    )
+}

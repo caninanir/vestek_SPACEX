@@ -4,6 +4,8 @@ import com.can_inanir.spacex.data.local.AppDatabase
 import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.data.local.entities.toLaunchEntity
+import com.can_inanir.spacex.data.local.entities.toRocketEntity
 import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Rocket
 import com.can_inanir.spacex.data.remote.ApiService
@@ -51,34 +53,4 @@ class SpaceXRepository @Inject constructor(private val apiService: ApiService, p
         val cachedLaunchpad = appDatabase.launchpadDao().getLaunchpadById(id)
         return cachedLaunchpad
     }
-}
-
-fun Rocket.toRocketEntity(): RocketEntity {
-    return RocketEntity(
-        id = this.id,
-        name = this.name,
-        description = this.description,
-        firstFlight = this.firstFlight,
-        costPerLaunch = this.costPerLaunch,
-        successRatePct = this.successRatePct,
-        wikipedia = this.wikipedia,
-        flickrImages = this.flickrImages,
-        height = this.height,
-        diameter = this.diameter,
-        mass = this.mass,
-        payloadWeights = this.payloadWeights
-    )
-}
-
-fun Launch.toLaunchEntity(): LaunchEntity {
-    return LaunchEntity(
-        id = this.id,
-        name = this.name,
-        dateUtc = this.dateUtc,
-        rocket = this.rocket,
-        launchpad = this.launchpad,
-        details = this.details,
-        links = this.links,
-        patches = this.patches
-    )
 }
