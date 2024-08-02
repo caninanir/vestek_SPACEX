@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -88,10 +89,12 @@ fun FavoritesScreen(navController: NavController) {
                     ),
                     title = {
                         Text(
+                            modifier = Modifier.padding(start = 78.dp,end = 78.dp, bottom = 36.dp),
                             text = stringResource(R.string.favorite_rockets),
                             style = MaterialTheme.typography.headlineLarge,
                             color = AppColors.White,
-                            fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
+                            overflow = TextOverflow.Visible,
+                            softWrap = false,
                         )
                     },
                     actions = {
@@ -182,7 +185,6 @@ fun FavoriteRocketList(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
         favoriteRockets.forEach { rocket ->

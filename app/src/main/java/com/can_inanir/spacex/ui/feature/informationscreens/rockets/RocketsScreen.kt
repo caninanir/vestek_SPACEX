@@ -30,9 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -68,7 +66,7 @@ fun RocketsScreen(navController: NavController) {
             contentScale = ContentScale.Crop
         )
         Scaffold(
-            modifier = Modifier.fillMaxSize().systemBarsPadding(),
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     modifier = Modifier.align(Alignment.TopCenter),
@@ -78,10 +76,12 @@ fun RocketsScreen(navController: NavController) {
                     ),
                     title = {
                         Text(
+                            modifier = Modifier.padding(start = 78.dp,end = 78.dp, bottom = 36.dp),
                             text = stringResource(R.string.spacex_rockets),
                             style = MaterialTheme.typography.headlineLarge,
                             color = AppColors.White,
-                            fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
+                            overflow = TextOverflow.Visible,
+                            softWrap = false,
                         )
                     }
                 )
@@ -129,7 +129,6 @@ fun RocketList(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState())
     ) {
         sortedRockets.forEach { rocket ->

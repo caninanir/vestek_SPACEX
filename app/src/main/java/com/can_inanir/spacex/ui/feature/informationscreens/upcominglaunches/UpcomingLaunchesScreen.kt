@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -70,22 +72,20 @@ fun UpcomingLaunchesScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
+                    modifier = Modifier.align(Alignment.TopCenter),
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = AppColors.FullTransparentBackground,
                         titleContentColor = AppColors.White
                     ),
                     title = {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
                             Text(
+                                modifier = Modifier.padding(start = 78.dp,end = 78.dp, bottom = 36.dp),
                                 text = stringResource(R.string.upcoming_launches),
                                 style = MaterialTheme.typography.headlineLarge,
-                                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
-                                color = AppColors.White
+                                color = AppColors.White,
+                                overflow = TextOverflow.Visible,
+                                softWrap = false,
                             )
-                        }
                     },
                     actions = {}
                 )

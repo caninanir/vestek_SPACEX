@@ -13,7 +13,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,10 +23,12 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.ui.main.AppColors
+import java.util.Locale
 
 @Composable
 fun RocketCard(
@@ -39,8 +40,9 @@ fun RocketCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            //.height(250.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppColors.CardBackground)
     ) {
         Column {
@@ -49,9 +51,10 @@ fun RocketCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = rocket.name,
-                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.padding(start = 17.dp, top = 20.dp),
+                    text = rocket.name.uppercase(Locale.ROOT),
+                    //style = MaterialTheme.typography.headlineMedium,
+                    fontSize = 26.sp,
                     color = AppColors.White,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
                 )
@@ -72,7 +75,8 @@ fun RocketCard(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp),
+//                        .fillMaxHeight(),
+                        .height(250.dp),
                     contentScale = ContentScale.FillBounds
                 )
             }

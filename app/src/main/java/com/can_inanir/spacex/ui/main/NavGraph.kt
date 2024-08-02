@@ -1,6 +1,7 @@
 package com.can_inanir.spacex.ui.main
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,30 +13,16 @@ import com.can_inanir.spacex.ui.feature.informationscreens.upcominglaunches.Upco
 import com.can_inanir.spacex.ui.feature.login.LoginScreen
 
 @Composable
-fun NavGraph(signInWithGoogle: () -> Unit) {
-    val navController = rememberNavController()
-
+fun NavGraph(navController: NavHostController, signInWithGoogle: () -> Unit) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavItem.Rockets.route,
+        startDestination = BottomNavItem.Login.route,
     ) {
-        composable(BottomNavItem.Rockets.route) {
-            RocketsScreen(navController = navController)
-        }
-        composable(BottomNavItem.Favorites.route) {
-            FavoritesScreen(navController = navController)
-        }
-        composable(BottomNavItem.Upcoming.route) {
-            UpcomingLaunchesScreen(navController = navController)
-        }
-        composable(BottomNavItem.Login.route) {
-            LoginScreen(navController, signInWithGoogle)
-        }
-        composable(BottomNavItem.Profile.route) {
-            LoginScreen(navController, signInWithGoogle)
-        }
-        composable("easter_egg") {
-            EasterEggScreen(navController)
-        }
+        composable(BottomNavItem.Rockets.route) { RocketsScreen(navController = navController) }
+        composable(BottomNavItem.Favorites.route) { FavoritesScreen(navController = navController) }
+        composable(BottomNavItem.Upcoming.route) { UpcomingLaunchesScreen(navController = navController) }
+        composable(BottomNavItem.Login.route) { LoginScreen(navController, signInWithGoogle) }
+        composable(BottomNavItem.Profile.route) { LoginScreen(navController, signInWithGoogle) }
+        composable("easter_egg") { EasterEggScreen(navController) }
     }
 }

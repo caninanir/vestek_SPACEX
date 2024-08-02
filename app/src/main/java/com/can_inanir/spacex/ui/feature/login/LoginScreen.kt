@@ -44,7 +44,6 @@ import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.main.AppColors
 
-
 @Composable
 fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     val authViewModel: AuthViewModel = hiltViewModel()
@@ -72,7 +71,8 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
         )
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(horizontal = 16.dp), // Add horizontal padding
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -88,10 +88,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
             LoginInputField(
                 value = email,
                 onValueChange = { email = it },
-
                 labelIcon = R.drawable.form_elements_text_content_active_white_email,
-
-
                 leadingIcon = if (email.isEmpty()) {
                     R.drawable.form_elements_icons_email_enable_white
                 } else {
@@ -142,7 +139,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 contentDescription = stringResource(R.string.login)
             ) {
                 Text(
-                    text = stringResource(R.string.login),
+                    text = stringResource(R.string.login), // Convert text to uppercase
                     color = AppColors.White,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold
@@ -170,7 +167,7 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(R.string.sign_in_with_google),
+                        text = stringResource(R.string.sign_in_with_google), // Convert text to uppercase
                         color = AppColors.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -187,7 +184,6 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                     .clickable { authViewModel.createAccount(email, password) }
             )
         }
-
         BottomNavBar(navController = navController, modifier = Modifier.fillMaxSize())
     }
 }
