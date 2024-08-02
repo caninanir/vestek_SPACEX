@@ -6,10 +6,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.feature.easteregg.EasterEggScreen
-import com.can_inanir.spacex.ui.feature.favorite.FavoritesScreen
+import com.can_inanir.spacex.ui.feature.informationscreens.favorite.FavoritesScreen
 import com.can_inanir.spacex.ui.feature.login.LoginScreen
-import com.can_inanir.spacex.ui.feature.rockets.RocketsScreen
-import com.can_inanir.spacex.ui.feature.upcominglaunches.UpcomingLaunchesScreen
+import com.can_inanir.spacex.ui.feature.informationscreens.rockets.RocketsScreen
+import com.can_inanir.spacex.ui.feature.informationscreens.upcominglaunches.UpcomingLaunchesScreen
 
 @Composable
 fun NavGraph(signInWithGoogle: () -> Unit) {

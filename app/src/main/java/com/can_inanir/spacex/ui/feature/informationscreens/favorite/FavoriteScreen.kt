@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.ui.feature.favorite
+package com.can_inanir.spacex.ui.feature.informationscreens.favorite
 
 import android.content.Intent
 import android.net.Uri
@@ -63,6 +63,8 @@ import com.can_inanir.spacex.data.remote.RocketListViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.favorites.FavoritesViewModel
+import com.can_inanir.spacex.ui.feature.informationscreens.RocketCard
+import com.can_inanir.spacex.ui.feature.informationscreens.RocketDetail
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.main.AppColors
 
@@ -89,7 +91,6 @@ fun FavoritesScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -144,7 +145,6 @@ fun FavoritesScreen(navController: NavController) {
             },
             containerColor = AppColors.FullTransparentBackground
         )
-
         if (selectedRocket != null) {
             Box(
                 modifier = Modifier
@@ -159,13 +159,10 @@ fun FavoritesScreen(navController: NavController) {
                 )
             }
         }
-
         if (showProfile) {
             if (userState == null) {
                 navController.navigate(BottomNavItem.Login.route) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
-                    }
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 }
             }
             Box(
@@ -182,11 +179,35 @@ fun FavoritesScreen(navController: NavController) {
                 )
             }
         }
+        BottomNavBar(navController = navController, modifier = Modifier.fillMaxSize())
+    }
+}
 
-        BottomNavBar(
-            navController = navController,
-            modifier = Modifier.fillMaxSize()
-        )
+@Composable
+fun FavoriteRocketList(
+    rockets: List<RocketEntity>,
+    favorites: Set<String>,
+    paddingValues: PaddingValues,
+    onRocketClick: (RocketEntity) -> Unit,
+    onFavoriteClick: (String) -> Unit
+) {
+    val favoriteRockets = rockets.filter { favorites.contains(it.name) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(horizontal = 10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        favoriteRockets.forEach { rocket ->
+            RocketCard(
+                rocket = rocket,
+                isFavorite = true,
+                onClick = { onRocketClick(rocket) },
+                onFavoriteClick = { onFavoriteClick(rocket.name) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
@@ -237,258 +258,5 @@ fun ProfileOverlay(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun FavoriteRocketList(
-    rockets: List<RocketEntity>,
-    favorites: Set<String>,
-    paddingValues: PaddingValues,
-    onRocketClick: (RocketEntity) -> Unit,
-    onFavoriteClick: (String) -> Unit
-) {
-    val favoriteRockets = rockets.filter { favorites.contains(it.name) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .padding(horizontal = 10.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        favoriteRockets.forEach { rocket ->
-            RocketCard(
-                rocket = rocket,
-                isFavorite = true,
-                onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { onFavoriteClick(rocket.name) }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}
-
-@Composable
-fun RocketCard(
-    rocket: RocketEntity,
-    isFavorite: Boolean,
-    onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColors.CardBackground)
-    ) {
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = rocket.name,
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = AppColors.White,
-                    fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
-                )
-                IconButton(onClick = onFavoriteClick, modifier = Modifier.size(64.dp)) {
-                    Icon(
-                        modifier = Modifier.size(64.dp),
-                        tint = Color.Unspecified,
-                        painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
-                        ),
-                        contentDescription = null
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            rocket.flickrImages.firstOrNull()?.let { imageUrl ->
-                Image(
-                    painter = rememberAsyncImagePainter(model = imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp),
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun RocketDetail(
-    rocket: RocketEntity,
-    isFavorite: Boolean,
-    onClose: () -> Unit,
-    onFavoriteClick: (String) -> Unit
-) {
-    val context = LocalContext.current
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(AppColors.HalfGrayTransparentBackground)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 50.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.close),
-                    tint = AppColors.White,
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = rocket.name,
-                style = MaterialTheme.typography.headlineLarge,
-                color = AppColors.CoolGreen,
-                fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
-                modifier = Modifier.align(Alignment.CenterVertically),
-                softWrap = false
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { onFavoriteClick(rocket.name) }) {
-                Icon(
-                    painter = painterResource(
-                        id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
-                    ),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-            }
-        }
-
-        rocket.flickrImages.firstOrNull()?.let { imageUrl ->
-            Image(
-                painter = rememberAsyncImagePainter(model = imageUrl),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .heightIn(max = 300.dp),
-                contentScale = ContentScale.Crop
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = rocket.description,
-            style = MaterialTheme.typography.bodyLarge,
-            color = AppColors.White,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        DetailItem(
-            label = stringResource(R.string.height),
-            value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
-        )
-        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-
-        DetailItem(
-            label = stringResource(R.string.diameter),
-            value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft"
-        )
-        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-
-        DetailItem(
-            label = stringResource(R.string.mass),
-            value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb"
-        )
-        HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-
-        rocket.payloadWeights.find { it.id == stringResource(R.string.leo) }?.let {
-            DetailItem(
-                label = "leo",
-                value = "${it.kg} kg / ${it.lb} lb"
-            )
-            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-        }
-
-        rocket.payloadWeights.find { it.id == stringResource(R.string.gto) }?.let {
-            DetailItem(
-                label = stringResource(R.string.payload_to_gto),
-                value = "${it.kg} kg / ${it.lb} lb"
-            )
-            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-        }
-
-        rocket.payloadWeights.find { it.id == "mars" }?.let {
-            DetailItem(
-                label = stringResource(R.string.payload_to_mars),
-                value = "${it.kg} kg / ${it.lb} lb"
-            )
-            HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = AppColors.CoolGreen,
-                contentColor = AppColors.White
-            ),
-            onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(rocket.wikipedia))
-                context.startActivity(intent)
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(stringResource(R.string.learn_more))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        rocket.flickrImages.drop(1).forEach { imageUrl ->
-            Image(
-                painter = rememberAsyncImagePainter(model = imageUrl),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .heightIn(max = 300.dp),
-                contentScale = ContentScale.Crop
-            )
-        }
-    }
-}
-
-@Composable
-fun DetailItem(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            ),
-            color = AppColors.White
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge,
-            color = AppColors.White
-        )
     }
 }
