@@ -5,6 +5,7 @@ import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.local.entities.toLaunchEntity
+import com.can_inanir.spacex.data.local.entities.toLaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.toRocketEntity
 import com.can_inanir.spacex.data.remote.ApiService
 import javax.inject.Inject
@@ -49,6 +50,11 @@ class SpaceXRepository @Inject constructor(private val apiService: ApiService, p
 
     suspend fun getLaunchpadById(id: String): LaunchpadEntity {
         val cachedLaunchpad = appDatabase.launchpadDao().getLaunchpadById(id)
-        return cachedLaunchpad
+        return cachedLaunchpad ?: run {
+            val launchpadFromApi = apiService.getLaunchpad(id)
+            val launchpadEntity = launchpadFromApi.toLaunchpadEntity()
+            appDatabase.launchpadDao().insertLaunchpad(launchpadEntity)
+            launchpadEntity
+        }
     }
 }

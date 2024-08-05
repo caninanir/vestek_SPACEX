@@ -1,17 +1,16 @@
 package com.can_inanir.spacex.data.model
 
-import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 
 data class Launch(
     val id: String,
     val name: String,
-    @ColumnInfo(name = "date_utc")
-    val dateUtc: String,
+    @SerializedName("date_utc") val dateUtc: String,
     val rocket: String,
     val launchpad: String,
     val details: String?,
     val links: Links,
-    val patches: Patches?,
+    val patches: Patches?
 ) {
     data class Links(
         val webcast: String?,

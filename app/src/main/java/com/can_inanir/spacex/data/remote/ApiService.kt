@@ -15,7 +15,6 @@ interface ApiService {
     @GET("v5/launches/upcoming")
     suspend fun getUpcomingLaunches(): List<Launch>
 
-    @Suppress("unused")
     @GET("v4/launchpads/{id}")
     suspend fun getLaunchpad(@Path("id") id: String): Launchpad
 }

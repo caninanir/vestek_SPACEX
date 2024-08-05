@@ -36,6 +36,7 @@ import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.remote.LaunchpadDetailViewModel
 import com.can_inanir.spacex.data.remote.RocketDetailViewModel
 import com.can_inanir.spacex.ui.main.AppColors
+import timber.log.Timber
 
 @Composable
 fun LaunchCard(
@@ -82,7 +83,8 @@ fun LaunchCard(
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
                 )
-                val imageUrl = launch.patches?.large ?: rocket!!.flickrImages.randomOrNull()
+                val imageUrl = rocket!!.flickrImages.randomOrNull()
+                Timber.d("Launch image URL: %s", imageUrl)
                 imageUrl?.let {
                     Image(
                         painter = rememberAsyncImagePainter(model = it),
@@ -112,9 +114,12 @@ fun LaunchCard(
                     )
                 }
                 Spacer(Modifier.height(2.dp))
-            } else {
-                Text("Loading...", color = AppColors.White)
+            } else if(rocket == null){
+                Text("Rocket Null", color = AppColors.White)
             }
+            else if(launchpad == null){ Text("Launchpad Null", color = AppColors.White)}
+            else {Text("NO Null", color = AppColors.White)}
+
             launch.links.webcast?.let { webcastUrl ->
                 val context = LocalContext.current
                 Text(

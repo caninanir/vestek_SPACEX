@@ -3,6 +3,7 @@ package com.can_inanir.spacex.data.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.can_inanir.spacex.data.model.Launch
 import com.can_inanir.spacex.data.model.Launchpad
 
 @Entity(tableName = "launchpads")
@@ -15,3 +16,15 @@ data class LaunchpadEntity(
     @ColumnInfo(name = "details") val details: String,
     @ColumnInfo(name = "images") val images: Launchpad.LaunchpadImages
 )
+
+fun Launchpad.toLaunchpadEntity(): LaunchpadEntity {
+    return LaunchpadEntity(
+        id = this.id,
+        name = this.name,
+        fullName = this.fullName,
+        status = this.status,
+        region = this.region,
+        details = this.details,
+        images = this.images
+    )
+}

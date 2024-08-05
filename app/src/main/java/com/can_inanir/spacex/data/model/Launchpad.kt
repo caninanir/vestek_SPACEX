@@ -1,12 +1,10 @@
 package com.can_inanir.spacex.data.model
-
-import androidx.room.ColumnInfo
+import com.google.gson.annotations.SerializedName
 
 data class Launchpad(
     val id: String,
     val name: String,
-    @ColumnInfo(name = "full_name")
-    val fullName: String,
+    @SerializedName("full_name") val fullName: String,
     val status: String,
     val region: String,
     val details: String,
