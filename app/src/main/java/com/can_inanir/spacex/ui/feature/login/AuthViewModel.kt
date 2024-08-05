@@ -22,6 +22,9 @@ class AuthViewModel @Inject constructor(
     private val _userState: MutableStateFlow<FirebaseUser?> = MutableStateFlow(auth.currentUser)
     val userState: StateFlow<FirebaseUser?> = _userState
 
+    private val _loginErrorState = MutableStateFlow<String?>(null)
+    val loginErrorState: StateFlow<String?> = _loginErrorState
+
     init {
         auth.addAuthStateListener { firebaseAuth ->
             firebaseAuth.currentUser?.let { user ->
@@ -31,13 +34,19 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
-
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            val task = auth.signInWithEmailAndPassword(email, password).await()
-            if (task.user != null) {
-                _userState.value = auth.currentUser
-                checkAndCreateUserDocument(auth.currentUser!!.email!!)
+            try {
+                val task = auth.signInWithEmailAndPassword(email, password).await()
+                if (task.user != null) {
+                    _userState.value = auth.currentUser
+                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
+                    _loginErrorState.value = null // Clear error message on success
+                } else {
+                    _loginErrorState.value = "Your password or e-mail address is wrong."
+                }
+            } catch (e: Exception) {
+                _loginErrorState.value = "Your password or e-mail address is wrong."
             }
         }
     }

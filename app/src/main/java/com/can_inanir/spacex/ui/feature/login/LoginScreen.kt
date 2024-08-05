@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,14 +44,15 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.main.AppColors
-
 @Composable
 fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
     val authViewModel: AuthViewModel = hiltViewModel()
     val userState by authViewModel.userState.collectAsState()
+    val loginErrorState by authViewModel.loginErrorState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var errorMessage = loginErrorState
 
     LaunchedEffect(userState) {
         if (userState != null) {
@@ -111,13 +113,17 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                         onClick = { passwordVisible = !passwordVisible }
                     )
                 },
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                }
+                visualTransformation = if (passwordVisible) { VisualTransformation.None } else { PasswordVisualTransformation() }
             )
             Spacer(modifier = Modifier.height(8.dp))
+            if (!errorMessage.isNullOrEmpty()) {
+                Text(
+                    text = errorMessage!!,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+                )
+            }
             Text(
                 text = stringResource(R.string.forgot_password),
                 fontSize = 14.sp,
@@ -125,14 +131,14 @@ fun LoginScreen(navController: NavController, signInWithGoogle: () -> Unit) {
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(start = 16.dp)
-                    .clickable {
-                        // Add forgot password logic
-                    }
+                    .clickable { /* Add forgot password logic */ }
             )
             Spacer(modifier = Modifier.height(64.dp)) // Adjust spacing
             val isLoginEnabled = email.isNotEmpty() && password.isNotEmpty()
             CustomButton(
-                onClick = { authViewModel.login(email, password) },
+                onClick = {
+                    authViewModel.login(email, password)
+                },
                 enabled = isLoginEnabled,
                 enabledImageId = R.drawable.buttons_primary_enable,
                 disabledImageId = R.drawable.buttons_primary_disable,
@@ -224,21 +230,18 @@ fun LoginInputField(
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Surface(
-        modifier = Modifier
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.padding(horizontal = 16.dp),
         color = AppColors.White.copy(alpha = 0.2f),
         shape = RoundedCornerShape(10.dp),
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
             if (value.isEmpty()) {
                 Image(
                     painter = painterResource(id = labelIcon),
                     contentDescription = stringResource(R.string.label_icon),
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(start = 50.dp, top = 11.dp, bottom = 9.dp)
+                        .padding(start = 55.dp, top = 11.dp, bottom = 9.dp)
                 )
             }
             OutlinedTextField(
