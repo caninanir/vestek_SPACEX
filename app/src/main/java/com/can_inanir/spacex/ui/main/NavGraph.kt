@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
 import com.can_inanir.spacex.ui.feature.easteregg.EasterEggScreen
 import com.can_inanir.spacex.ui.feature.informationscreens.favorite.FavoritesScreen
