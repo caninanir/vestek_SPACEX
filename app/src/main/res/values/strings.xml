@@ -44,4 +44,5 @@
     <string name="spaceship">Spaceship</string>
     <string name="asteroid">Asteroid</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="explore">EXPLORE</string>
 </resources>
