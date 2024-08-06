@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavItem
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -54,7 +53,9 @@ class InitialAuthViewModel @Inject constructor(
                 if (account != null) {
                     firebaseAuthWithGoogle(account, context) {
                         navController.navigate(BottomNavItem.Favorites.route) {
-                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = true
+                            }
                         }
                     }
                 }

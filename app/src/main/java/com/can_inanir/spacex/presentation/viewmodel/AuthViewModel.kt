@@ -18,7 +18,6 @@ class AuthViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore
 ) : ViewModel() {
-
     private val _userState: MutableStateFlow<FirebaseUser?> = MutableStateFlow(auth.currentUser)
     val userState: StateFlow<FirebaseUser?> = _userState
 
@@ -34,6 +33,7 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {

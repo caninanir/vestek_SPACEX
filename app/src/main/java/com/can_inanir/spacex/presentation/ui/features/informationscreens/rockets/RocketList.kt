@@ -12,14 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.domain.model.Rocket
 
 
 @Composable
 fun RocketList(
-    rockets: List<RocketEntity>,
+    rockets: List<Rocket>,
     favorites: Set<String>,
     paddingValues: PaddingValues,
-    onRocketClick: (RocketEntity) -> Unit,
+    onRocketClick: (Rocket) -> Unit,
     onFavoriteClick: (String) -> Unit
 ) {
     val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }

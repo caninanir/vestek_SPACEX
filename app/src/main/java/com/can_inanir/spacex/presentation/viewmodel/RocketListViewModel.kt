@@ -2,8 +2,8 @@ package com.can_inanir.spacex.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.can_inanir.spacex.data.local.entities.RocketEntity
-import com.can_inanir.spacex.domain.repository.SpaceXRepository
+import com.can_inanir.spacex.domain.model.Rocket
+import com.can_inanir.spacex.domain.usecase.FetchRocketsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,11 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RocketListViewModel @Inject constructor(
-    private val repository: SpaceXRepository
+    private val fetchRocketsUseCase: FetchRocketsUseCase
 ) : ViewModel() {
 
-    private val _rockets = MutableStateFlow<List<RocketEntity>>(emptyList())
-    val rockets: StateFlow<List<RocketEntity>> = _rockets
+    private val _rockets = MutableStateFlow<List<Rocket>>(emptyList())
+    val rockets: StateFlow<List<Rocket>> = _rockets
 
     init {
         fetchRockets()
@@ -24,7 +24,8 @@ class RocketListViewModel @Inject constructor(
 
     private fun fetchRockets() {
         viewModelScope.launch {
-            _rockets.value = repository.getRockets()
+            val rockets = fetchRocketsUseCase.invoke()
+            _rockets.value = rockets
         }
     }
 }

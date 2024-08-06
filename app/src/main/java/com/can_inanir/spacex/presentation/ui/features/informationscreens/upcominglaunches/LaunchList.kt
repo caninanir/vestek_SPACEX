@@ -34,15 +34,18 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.domain.model.Launch
+import com.can_inanir.spacex.domain.model.Launchpad
+import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.viewmodel.LaunchpadDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketDetailViewModel
 import com.can_inanir.spacex.presentation.utils.AppColors
 
 @Composable
 fun LaunchList(
-    launches: List<LaunchEntity>,
+    launches: List<Launch>,
     paddingValues: PaddingValues,
-    onLaunchClick: (LaunchEntity, Int) -> Unit,
+    onLaunchClick: (Launch, Int) -> Unit,
     rocketDetailViewModel: RocketDetailViewModel,
     launchpadDetailViewModel: LaunchpadDetailViewModel
 ) {
@@ -53,8 +56,8 @@ fun LaunchList(
             .verticalScroll(rememberScrollState())
     ) {
         launches.take(3).forEachIndexed { index, launch ->
-            var rocket by remember { mutableStateOf<RocketEntity?>(null) }
-            var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
+            var rocket by remember { mutableStateOf<Rocket?>(null) }
+            var launchpad by remember { mutableStateOf<Launchpad?>(null) }
 
             LaunchedEffect(launch) {
                 rocketDetailViewModel.fetchRocketById(launch.rocket) { rocket = it }

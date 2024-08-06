@@ -1,5 +1,4 @@
 @file:Suppress("deprecation")
-
 package com.can_inanir.spacex.di
 
 import android.app.Application
@@ -7,7 +6,12 @@ import androidx.room.Room
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.AppDatabase
 import com.can_inanir.spacex.data.remote.api.ApiService
+import com.can_inanir.spacex.data.repository_impl.SpaceXRepositoryImpl
 import com.can_inanir.spacex.domain.repository.SpaceXRepository
+import com.can_inanir.spacex.domain.usecase.FetchLaunchpadByIdUseCase
+import com.can_inanir.spacex.domain.usecase.FetchRocketByIdUseCase
+import com.can_inanir.spacex.domain.usecase.FetchRocketsUseCase
+import com.can_inanir.spacex.domain.usecase.FetchUpcomingLaunchesUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,8 +32,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabase(app: Application): AppDatabase {
-        return Room.databaseBuilder(app, AppDatabase::class.java, "spacex_database")
-            .build()
+        return Room.databaseBuilder(app, AppDatabase::class.java, "spacex_database").build()
     }
 
     @Provides
@@ -44,8 +47,39 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSpaceXRepository(apiService: ApiService, appDatabase: AppDatabase): SpaceXRepository {
-        return SpaceXRepository(apiService, appDatabase)
+    fun provideSpaceXRepository(
+        apiService: ApiService,
+        appDatabase: AppDatabase
+    ): SpaceXRepository {
+        return SpaceXRepositoryImpl(apiService, appDatabase)
+    }
+
+    // Provide FetchRocketByIdUseCase
+    @Provides
+    @Singleton
+    fun provideFetchRocketByIdUseCase(repository: SpaceXRepository): FetchRocketByIdUseCase {
+        return FetchRocketByIdUseCase(repository)
+    }
+
+    // Provide FetchRocketsUseCase
+    @Provides
+    @Singleton
+    fun provideFetchRocketsUseCase(repository: SpaceXRepository): FetchRocketsUseCase {
+        return FetchRocketsUseCase(repository)
+    }
+
+    // Provide FetchUpcomingLaunchesUseCase
+    @Provides
+    @Singleton
+    fun provideFetchUpcomingLaunchesUseCase(repository: SpaceXRepository): FetchUpcomingLaunchesUseCase {
+        return FetchUpcomingLaunchesUseCase(repository)
+    }
+
+    // Provide FetchLaunchpadByIdUseCase
+    @Provides
+    @Singleton
+    fun provideFetchLaunchpadByIdUseCase(repository: SpaceXRepository): FetchLaunchpadByIdUseCase {
+        return FetchLaunchpadByIdUseCase(repository)
     }
 
     @Provides

@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.LaunchEntity
+import com.can_inanir.spacex.domain.model.Launch
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.presentation.viewmodel.LaunchpadDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketDetailViewModel
@@ -41,7 +42,7 @@ fun UpcomingLaunchesScreen(navController: NavController) {
     val rocketDetailViewModel: RocketDetailViewModel = hiltViewModel()
     val launchpadDetailViewModel: LaunchpadDetailViewModel = hiltViewModel()
     val upcomingLaunches by upcomingLaunchesViewModel.upcomingLaunches.collectAsState(initial = emptyList())
-    var selectedLaunch by remember { mutableStateOf<Pair<LaunchEntity, Int>?>(null) }
+    var selectedLaunch by remember { mutableStateOf<Pair<Launch, Int>?>(null) }
 
     Box(
         modifier = Modifier

@@ -47,6 +47,9 @@ import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.domain.model.Launch
+import com.can_inanir.spacex.domain.model.Launchpad
+import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.viewmodel.LaunchpadDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketDetailViewModel
 import com.can_inanir.spacex.presentation.utils.AppColors
@@ -57,15 +60,15 @@ import java.util.TimeZone
 
 @Composable
 fun LaunchDetail(
-    launch: LaunchEntity,
+    launch: Launch,
     launchIndex: Int,
     onClose: () -> Unit,
     rocketDetailViewModel: RocketDetailViewModel,
     launchpadDetailViewModel: LaunchpadDetailViewModel
 ) {
     val context = LocalContext.current
-    var rocket by remember { mutableStateOf<RocketEntity?>(null) }
-    var launchpad by remember { mutableStateOf<LaunchpadEntity?>(null) }
+    var rocket by remember { mutableStateOf<Rocket?>(null) }
+    var launchpad by remember { mutableStateOf<Launchpad?>(null) }
 
     LaunchedEffect(launch) {
         rocketDetailViewModel.fetchRocketById(launch.rocket) { rocket = it }

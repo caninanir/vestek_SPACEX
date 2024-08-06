@@ -27,12 +27,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.utils.AppColors
 import java.util.Locale
 
 @Composable
 fun RocketCard(
-    rocket: RocketEntity,
+    rocket: Rocket,
     isFavorite: Boolean,
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit

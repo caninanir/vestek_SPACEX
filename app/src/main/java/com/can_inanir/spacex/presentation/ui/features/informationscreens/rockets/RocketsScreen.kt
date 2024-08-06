@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
 import com.can_inanir.spacex.data.local.entities.RocketEntity
+import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.presentation.viewmodel.FavoritesViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketListViewModel
@@ -42,7 +43,7 @@ fun RocketsScreen(navController: NavController) {
     val favoritesViewModel: FavoritesViewModel = hiltViewModel()
     val rockets by rocketListViewModel.rockets.collectAsState(initial = emptyList())
     val favorites by favoritesViewModel.favorites.collectAsState(initial = emptySet())
-    var selectedRocket by remember { mutableStateOf<RocketEntity?>(null) }
+    var selectedRocket by remember { mutableStateOf<Rocket?>(null) }
     BackHandler(enabled = selectedRocket != null) {
         selectedRocket = null
     }
