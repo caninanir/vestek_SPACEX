@@ -27,13 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.local.entities.LaunchEntity
 import com.can_inanir.spacex.domain.model.Launch
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavBar
+import com.can_inanir.spacex.presentation.utils.AppColors
 import com.can_inanir.spacex.presentation.viewmodel.LaunchpadDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.UpcomingLaunchesViewModel
-import com.can_inanir.spacex.presentation.utils.AppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

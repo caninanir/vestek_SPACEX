@@ -31,15 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.local.entities.LaunchEntity
-import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
-import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.domain.model.Launch
 import com.can_inanir.spacex.domain.model.Launchpad
 import com.can_inanir.spacex.domain.model.Rocket
+import com.can_inanir.spacex.presentation.utils.AppColors
 import com.can_inanir.spacex.presentation.viewmodel.LaunchpadDetailViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketDetailViewModel
-import com.can_inanir.spacex.presentation.utils.AppColors
 
 @Composable
 fun LaunchList(

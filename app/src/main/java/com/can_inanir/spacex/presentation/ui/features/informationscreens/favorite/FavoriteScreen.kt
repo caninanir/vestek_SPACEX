@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavItem

@@ -2,7 +2,6 @@ package com.can_inanir.spacex.data.remote.dto
 
 import com.can_inanir.spacex.domain.model.Measurement
 import com.can_inanir.spacex.domain.model.PayloadWeight
-import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.domain.model.Weight
 import com.google.gson.annotations.SerializedName
 

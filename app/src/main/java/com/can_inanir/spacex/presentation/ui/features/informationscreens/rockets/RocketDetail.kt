@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.utils.AppColors
 

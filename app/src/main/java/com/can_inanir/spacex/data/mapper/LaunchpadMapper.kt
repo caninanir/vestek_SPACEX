@@ -1,7 +1,7 @@
 package com.can_inanir.spacex.data.mapper
 
-import com.can_inanir.spacex.data.remote.dto.LaunchpadDto
 import com.can_inanir.spacex.data.local.entities.LaunchpadEntity
+import com.can_inanir.spacex.data.remote.dto.LaunchpadDto
 import com.can_inanir.spacex.domain.model.Launchpad
 
 fun LaunchpadDto.toEntity(): LaunchpadEntity {

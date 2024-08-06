@@ -28,13 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.can_inanir.spacex.R
-import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.domain.model.Rocket
 import com.can_inanir.spacex.presentation.common.bottomnav.BottomNavBar
+import com.can_inanir.spacex.presentation.utils.AppColors
 import com.can_inanir.spacex.presentation.viewmodel.FavoritesViewModel
 import com.can_inanir.spacex.presentation.viewmodel.RocketListViewModel
-
-import com.can_inanir.spacex.presentation.utils.AppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
