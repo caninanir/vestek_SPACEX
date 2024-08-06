@@ -3,7 +3,7 @@ package com.can_inanir.spacex.data.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.can_inanir.spacex.data.model.Launchpad
+import com.can_inanir.spacex.domain.model.Launchpad
 
 @Entity(tableName = "launchpads")
 data class LaunchpadEntity(

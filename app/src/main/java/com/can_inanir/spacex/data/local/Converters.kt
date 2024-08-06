@@ -1,11 +1,11 @@
 package com.can_inanir.spacex.data.local
 
 import androidx.room.TypeConverter
-import com.can_inanir.spacex.data.model.Launch
-import com.can_inanir.spacex.data.model.Launchpad
-import com.can_inanir.spacex.data.model.Measurement
-import com.can_inanir.spacex.data.model.PayloadWeight
-import com.can_inanir.spacex.data.model.Weight
+import com.can_inanir.spacex.domain.model.Launch
+import com.can_inanir.spacex.domain.model.Launchpad
+import com.can_inanir.spacex.domain.model.Measurement
+import com.can_inanir.spacex.domain.model.PayloadWeight
+import com.can_inanir.spacex.domain.model.Weight
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

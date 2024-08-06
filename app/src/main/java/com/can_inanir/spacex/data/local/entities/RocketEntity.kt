@@ -3,10 +3,10 @@ package com.can_inanir.spacex.data.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.can_inanir.spacex.data.model.Measurement
-import com.can_inanir.spacex.data.model.PayloadWeight
-import com.can_inanir.spacex.data.model.Rocket
-import com.can_inanir.spacex.data.model.Weight
+import com.can_inanir.spacex.domain.model.Measurement
+import com.can_inanir.spacex.domain.model.PayloadWeight
+import com.can_inanir.spacex.domain.model.Rocket
+import com.can_inanir.spacex.domain.model.Weight
 
 @Entity(tableName = "rockets")
 data class RocketEntity(

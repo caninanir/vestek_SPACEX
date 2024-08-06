@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name=".ui.main.SpaceXApplication"
+        android:name="com.can_inanir.spacex.di.SpaceXApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,7 +14,7 @@
         android:theme="@style/SpaceX"
         >
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="MainActivity"
             android:exported="true"
             android:theme="@style/SpaceX">
             <intent-filter>
