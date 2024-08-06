@@ -33,7 +33,7 @@ fun SpaceXMainApp(googleSignInClient: GoogleSignInClient) {
 
     LaunchedEffect(Unit) {
         authViewModel.registerGoogleSignInLauncher(googleSignInLauncher)
-        delay(timeMillis = 1000)
+        delay(timeMillis = 500)
         showSplash = false
     }
 

@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.ui.feature.informationscreens
+package com.can_inanir.spacex.ui.feature.informationscreens.rockets
 
 import android.content.Intent
 import android.net.Uri
@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -109,32 +110,32 @@ fun RocketDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DetailItem(label = "Height", value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
+        DetailItem(label = stringResource(id = R.string.height), value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
         HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         DetailItem(
-            label = "Diameter",
+            label = stringResource(id = R.string.diameter),
             value = "${rocket.diameter.meters}m / ${rocket.diameter.feet} ft"
         )
         HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
-        DetailItem(label = "Mass", value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
+        DetailItem(label = stringResource(id = R.string.mass), value = "${rocket.mass.kg} kg / ${rocket.mass.lb} lb")
         HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         rocket.payloadWeights.find { it.id == "leo" }?.let {
             DetailItem(
-                label = "Payload to LEO",
+                label = stringResource(id = R.string.payload_to_leo),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
             HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         }
         rocket.payloadWeights.find { it.id == "gto" }?.let {
             DetailItem(
-                label = "Payload to GTO",
+                label = stringResource(id = R.string.payload_to_gto),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
             HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         }
         rocket.payloadWeights.find { it.id == "mars" }?.let {
             DetailItem(
-                label = "Payload to Mars",
+                label = stringResource(id = R.string.payload_to_mars),
                 value = "${it.kg} kg / ${it.lb} lb"
             )
             HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
@@ -151,7 +152,7 @@ fun RocketDetail(
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text("Learn More")
+            Text(stringResource(id = R.string.learn_more))
         }
         Spacer(modifier = Modifier.height(16.dp))
         rocket.flickrImages.drop(1).forEach { imageUrl ->

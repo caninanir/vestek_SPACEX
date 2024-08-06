@@ -4,14 +4,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,8 +32,6 @@ import com.can_inanir.spacex.data.local.entities.RocketEntity
 import com.can_inanir.spacex.data.remote.FavoritesViewModel
 import com.can_inanir.spacex.data.remote.RocketListViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
-import com.can_inanir.spacex.ui.feature.informationscreens.RocketCard
-import com.can_inanir.spacex.ui.feature.informationscreens.RocketDetail
 import com.can_inanir.spacex.ui.main.AppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,29 +107,3 @@ fun RocketsScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun RocketList(
-    rockets: List<RocketEntity>,
-    favorites: Set<String>,
-    paddingValues: PaddingValues,
-    onRocketClick: (RocketEntity) -> Unit,
-    onFavoriteClick: (String) -> Unit
-) {
-    val sortedRockets = rockets.sortedByDescending { favorites.contains(it.name) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .verticalScroll(rememberScrollState())
-    ) {
-        sortedRockets.forEach { rocket ->
-            RocketCard(
-                rocket = rocket,
-                isFavorite = favorites.contains(rocket.name),
-                onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { onFavoriteClick(rocket.name) }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}

@@ -14,9 +14,9 @@
     <string name="close">Close</string>
     <string name="watch_the_webcast1">Watch the webcast</string>
     <string name="loading">Loading…</string>
-    <string name="launchpad">Launchpad: %1$s</string>
-    <string name="rocket">Rocket: %1$s</string>
-    <string name="date">Date: %1$s</string>
+    <string name="launchpad">Launchpad: </string>
+    <string name="rocket">Rocket: </string>
+    <string name="date">Date: </string>
     <string name="height">HEIGHT</string>
     <string name="diameter">DIAMETER</string>
     <string name="mass">MASS</string>
@@ -45,4 +45,6 @@
     <string name="asteroid">Asteroid</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="explore">EXPLORE</string>
+    <string name="vehicle">VEHICLE</string>
+    <string name="launchpadH">LAUNCHPAD</string>
 </resources>

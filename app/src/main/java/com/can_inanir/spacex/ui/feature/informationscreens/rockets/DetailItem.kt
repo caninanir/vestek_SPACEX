@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.ui.feature.informationscreens
+package com.can_inanir.spacex.ui.feature.informationscreens.rockets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

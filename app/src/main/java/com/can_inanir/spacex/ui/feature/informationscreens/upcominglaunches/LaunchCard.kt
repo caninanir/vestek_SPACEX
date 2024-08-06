@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.ui.feature.informationscreens
+package com.can_inanir.spacex.ui.feature.informationscreens.upcominglaunches
 
 import android.content.Intent
 import android.net.Uri
@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -70,7 +71,7 @@ fun LaunchCard(
             )
             Text(
                 color = AppColors.White,
-                text = formatUtcToRfc1123(
+                text = "" + extractDateComponents(
                     launch.dateUtc
                 ),
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
@@ -79,7 +80,7 @@ fun LaunchCard(
             if (rocket != null && launchpad != null) {
                 Text(
                     color = AppColors.White,
-                    text = "Rocket: ${rocket!!.name}",
+                    text = stringResource(id = R.string.rocket) + rocket!!.name,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
                 )
@@ -98,7 +99,7 @@ fun LaunchCard(
                 Spacer(Modifier.height(2.dp))
                 Text(
                     color = AppColors.White,
-                    text = "Launchpad: ${launchpad!!.name}",
+                    text = stringResource(id = R.string.launchpad) + launchpad!!.name,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                     style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
                 )
@@ -114,16 +115,15 @@ fun LaunchCard(
                     )
                 }
                 Spacer(Modifier.height(2.dp))
-            } else if(rocket == null){
-                Text("Rocket Null", color = AppColors.White)
+            } else{
+                Text(stringResource(id = R.string.loading), color = AppColors.White)
             }
-            else if(launchpad == null){ Text("Launchpad Null", color = AppColors.White)}
-            else {Text("NO Null", color = AppColors.White)}
+
 
             launch.links.webcast?.let { webcastUrl ->
                 val context = LocalContext.current
                 Text(
-                    text = "Watch the webcast",
+                    text = stringResource(id = R.string.watch_the_webcast),
                     color = AppColors.CoolGreen,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal)),
                     modifier = Modifier.clickable {

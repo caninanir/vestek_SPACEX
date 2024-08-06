@@ -1,4 +1,4 @@
-package com.can_inanir.spacex.ui.feature.informationscreens
+package com.can_inanir.spacex.ui.feature.informationscreens.rockets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -40,7 +40,6 @@ fun RocketCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            //.height(250.dp)
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppColors.CardBackground)
@@ -53,7 +52,6 @@ fun RocketCard(
                 Text(
                     modifier = Modifier.padding(start = 17.dp, top = 20.dp),
                     text = rocket.name.uppercase(Locale.ROOT),
-                    //style = MaterialTheme.typography.headlineMedium,
                     fontSize = 26.sp,
                     color = AppColors.White,
                     fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Normal))
@@ -75,7 +73,6 @@ fun RocketCard(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-//                        .fillMaxHeight(),
                         .height(250.dp),
                     contentScale = ContentScale.FillBounds
                 )

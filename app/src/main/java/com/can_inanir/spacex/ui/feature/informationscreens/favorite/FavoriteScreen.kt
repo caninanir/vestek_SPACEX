@@ -3,21 +3,11 @@ package com.can_inanir.spacex.ui.feature.informationscreens.favorite
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,8 +36,7 @@ import com.can_inanir.spacex.data.remote.FavoritesViewModel
 import com.can_inanir.spacex.data.remote.RocketListViewModel
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavBar
 import com.can_inanir.spacex.ui.common.bottomnav.BottomNavItem
-import com.can_inanir.spacex.ui.feature.informationscreens.RocketCard
-import com.can_inanir.spacex.ui.feature.informationscreens.RocketDetail
+import com.can_inanir.spacex.ui.feature.informationscreens.rockets.RocketDetail
 import com.can_inanir.spacex.ui.feature.login.AuthViewModel
 import com.can_inanir.spacex.ui.main.AppColors
 
@@ -169,79 +157,3 @@ fun FavoritesScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun FavoriteRocketList(
-    rockets: List<RocketEntity>,
-    favorites: Set<String>,
-    paddingValues: PaddingValues,
-    onRocketClick: (RocketEntity) -> Unit,
-    onFavoriteClick: (String) -> Unit
-) {
-    val favoriteRockets = rockets.filter { favorites.contains(it.name) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .verticalScroll(rememberScrollState())
-    ) {
-        favoriteRockets.forEach { rocket ->
-            RocketCard(
-                rocket = rocket,
-                isFavorite = true,
-                onClick = { onRocketClick(rocket) },
-                onFavoriteClick = { onFavoriteClick(rocket.name) }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}
-
-@Composable
-fun ProfileOverlay(
-    authViewModel: AuthViewModel,
-    navController: NavController,
-    onClose: () -> Unit,
-) {
-    val userState by authViewModel.userState.collectAsState()
-
-    Box(
-        modifier = Modifier
-            .size(width = 250.dp, height = 150.dp)
-            .background(AppColors.HalfGrayTransparentBackground),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.logged_in_as),
-                color = AppColors.CoolGreen
-            )
-            userState?.let { user ->
-                Text(text = "${user.email}", color = AppColors.CoolGreen)
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
-                        contentColor = AppColors.White
-                    ),
-                    onClick = {
-                        authViewModel.logout()
-                        navController.navigate(BottomNavItem.Login.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true
-                            }
-                        }
-                        onClose()
-                    }
-                ) {
-                    Text(text = stringResource(R.string.logout))
-                }
-            }
-        }
-    }
-}

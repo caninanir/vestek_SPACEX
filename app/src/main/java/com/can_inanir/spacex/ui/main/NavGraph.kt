@@ -15,7 +15,7 @@ import com.can_inanir.spacex.ui.feature.login.LoginScreen
 fun NavGraph(navController: NavHostController, signInWithGoogle: () -> Unit) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavItem.Login.route,
+        startDestination = BottomNavItem.Rockets.route,
     ) {
         composable(BottomNavItem.Rockets.route) { RocketsScreen(navController = navController) }
         composable(BottomNavItem.Favorites.route) { FavoritesScreen(navController = navController) }
