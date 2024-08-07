@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.can_inanir.spacex"
+    namespace = "com.caninanir.spacex"
     compileSdk = 35
 
     kotlinOptions {

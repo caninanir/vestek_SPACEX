@@ -47,4 +47,6 @@
     <string name="explore">EXPLORE</string>
     <string name="vehicle">VEHICLE</string>
     <string name="launchpadH">LAUNCHPAD</string>
+    <string name="year">YEAR</string>
+    <string name="dateB">DATE</string>
 </resources>
