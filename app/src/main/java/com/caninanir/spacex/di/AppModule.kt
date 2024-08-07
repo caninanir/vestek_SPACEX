@@ -7,7 +7,7 @@ import androidx.room.Room
 import com.caninanir.spacex.R
 import com.caninanir.spacex.data.local.AppDatabase
 import com.caninanir.spacex.data.remote.api.ApiService
-import com.caninanir.spacex.data.repository_impl.SpaceXRepositoryImpl
+import com.caninanir.spacex.data.repositoryimpl.SpaceXRepositoryImpl
 import com.caninanir.spacex.domain.repository.SpaceXRepository
 import com.caninanir.spacex.domain.usecase.FetchLaunchpadByIdUseCase
 import com.caninanir.spacex.domain.usecase.FetchRocketByIdUseCase

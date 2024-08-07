@@ -1,4 +1,4 @@
-package com.caninanir.spacex.data.repository_impl
+package com.caninanir.spacex.data.repositoryimpl
 
 import com.caninanir.spacex.data.local.AppDatabase
 import com.caninanir.spacex.data.local.entities.toLaunchEntity

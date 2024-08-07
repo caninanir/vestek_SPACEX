@@ -84,7 +84,11 @@ fun RocketDetail(
             IconButton(onClick = { onFavoriteClick(rocket.name) }) {
                 Icon(
                     painter = painterResource(
-                        id = if (isFavorite) R.drawable.buttons_icons_favorites_active_pressed else R.drawable.buttons_icons_favorites_enable
+                        id = if (isFavorite) {
+                            R.drawable.buttons_icons_favorites_active_pressed
+                        } else {
+                            R.drawable.buttons_icons_favorites_enable
+                        }
                     ),
                     contentDescription = null,
                     tint = Color.Unspecified
@@ -110,7 +114,10 @@ fun RocketDetail(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DetailItem(label = stringResource(id = R.string.height), value = "${rocket.height.meters}m / ${rocket.height.feet} ft")
+        DetailItem(
+            label = stringResource(id = R.string.height),
+            value = "${rocket.height.meters}m / ${rocket.height.feet} ft"
+        )
         HorizontalDivider(color = AppColors.DividerColor, thickness = 1.dp)
         DetailItem(
             label = stringResource(id = R.string.diameter),
