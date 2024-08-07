@@ -1,4 +1,84 @@
 <resources>
-    <string name="app_name">SpaceX</string>
+    <!-- Web Client Id -->
     <string name="default_web_client_id">925834563886-1nfck8qngkgk1odjecpkbfodh9cfjm7u.apps.googleusercontent.com</string>
+    <!-- App name -->
+    <string name="app_name">SpaceX</string>
+
+    <!-- Date Info -->
+    <string name="eee_dd_mmm_yyyy_hh_mm_ss_zzz">EEE, dd MMM yyyy HH:mm:ss zzz</string>
+    <string name="yyyy_mm_dd_t_hh_mm_ss_sss_z">yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'</string>
+
+
+    <!-- Details of elements (not visible to the user) -->
+    <string name="launchpad_image">Launchpad Image</string>
+    <string name="background">Background</string>
+    <string name="rocket_image">Rocket Image</string>
+    <string name="logo">Logo</string>
+    <string name="toggle_password_visibility">Toggle Password Visibility</string>
+    <string name="spaceship">Spaceship</string>
+    <string name="asteroid">Asteroid</string>
+    <string name="leading_icon">Leading Icon</string>
+    <string name="label_icon">Label Icon</string>
+
+
+    <!-- Top Bar Names  -->
+    <string name="upcoming_launches">Upcoming Launches</string>
+    <string name="favorite_rockets">Favorite Rockets</string>
+    <string name="spacex_rockets">SpaceX Rockets</string>
+
+    <!-- Log in -->
+    <string name="login">Log in</string>
+    <string name="or">or</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_up">Sign up</string>
+    <string name="forgot_password">Forgot Password</string>
+
+    <!-- Profile -->
+    <string name="profile">Profile</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="logout">Logout</string>
+    <string name="log_in_to_view_favorites">Log in to view favorites</string>
+
+    <!-- Rocket Details -->
+
+    <string name="leo">leo</string>
+    <string name="gto">gto</string>
+    <string name="mars">mars</string>
+
+    <string name="payload_to_leo">PAYLOAD TO LEO</string>
+    <string name="payload_to_gto">PAYLOAD TO GTO</string>
+    <string name="payload_to_mars">PAYLOAD TO MARS</string>
+
+    <string name="height">HEIGHT</string>
+    <string name="diameter">DIAMETER</string>
+    <string name="mass">MASS</string>
+
+
+    <!-- Launch Details -->
+
+
+    <string name="explore">EXPLORE</string>
+    <string name="vehicle">VEHICLE</string>
+    <string name="launchpadH">LAUNCHPAD</string>
+    <string name="year">YEAR</string>
+    <string name="dateB">DATE</string>
+
+    <string name="read_article">Read Article</string>
+    <string name="watch_the_webcast">Watch the webcast</string>
+    <string name="learn_more">Learn More</string>
+    <string name="no_details_available">No details available.</string>
+    <string name="watch_the_webcast1">Watch the webcast</string>
+
+
+    <!-- Launch Card -->
+
+    <string name="loading">Loading…</string>
+    <string name="launchpad">Launchpad: </string>
+    <string name="rocket">Rocket: </string>
+    <string name="date">Date: </string>
+
+
+
+    <!-- Secret :) -->
+    <string name="you_crashed_high_score">"You crashed! High score = "</string>
 </resources>
