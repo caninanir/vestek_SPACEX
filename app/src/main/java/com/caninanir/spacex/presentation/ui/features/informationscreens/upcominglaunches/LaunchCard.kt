@@ -71,9 +71,10 @@ fun LaunchCard(
             )
             Text(
                 color = AppColors.White,
-                text = "" + extractDateComponents(
-                    launch.dateUtc
-                ),
+                text = "" + extractDateComponents(launch.dateUtc).first +
+                        " " + extractDateComponents(launch.dateUtc).second +
+                        " " + extractDateComponents(launch.dateUtc).third +
+                        " " + extractDateComponents(launch.dateUtc).fourth,
                 fontFamily = FontFamily(Font(R.font.nasalization, FontWeight.Bold)),
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 16.sp)
             )
