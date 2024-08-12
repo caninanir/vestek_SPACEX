@@ -1,5 +1,6 @@
 package com.caninanir.spacex.presentation.ui.features.informationscreens.favorite
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,8 +66,15 @@ fun FavoritesScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
+
+        val padding = if (Build.VERSION.SDK_INT > 30) {
+            Modifier.systemBarsPadding().padding(top = 20.dp)
+        } else {
+            Modifier.padding(top = 50.dp)
+        }
+
         Scaffold(
-            modifier = Modifier.fillMaxSize().padding(top = 50.dp),
+            modifier = Modifier.fillMaxSize().then(padding),
             topBar = {
                 TopAppBar(
                     modifier = Modifier.align(Alignment.TopCenter),

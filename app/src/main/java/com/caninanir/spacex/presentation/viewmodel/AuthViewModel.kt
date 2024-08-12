@@ -39,11 +39,12 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                val task = auth.signInWithEmailAndPassword(email, password).await()
-                if (task.user != null) {
-                    _userState.value = auth.currentUser
-                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
-                    _loginErrorState.value = null // Clear error message on success
+                val authResult = auth.signInWithEmailAndPassword(email, password).await()
+                val user = authResult.user
+                if (user != null) {
+                    _userState.value = user
+                    checkAndCreateUserDocument(user.email!!)
+                    _loginErrorState.value = null
                 } else {
                     _loginErrorState.value = "Your password or e-mail address is wrong."
                 }
@@ -62,18 +63,19 @@ class AuthViewModel @Inject constructor(
     fun createAccount(email: String, password: String) {
         viewModelScope.launch {
             try {
-                val task = auth.createUserWithEmailAndPassword(email, password).await()
-                if (task.user != null) {
-                    _userState.value = auth.currentUser
-                    checkAndCreateUserDocument(auth.currentUser!!.email!!)
-                    _loginErrorState.value = null // Clear any previous error message
-                }
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+                val user = authResult.user
+               if (user != null && user.email != null) {
+                    _userState.value = user
+                    checkAndCreateUserDocument(user.email!!)
+                   _loginErrorState.value = null
+               }
             } catch (e: FirebaseAuthUserCollisionException) {
                 Timber.log(1, e.message.toString())
                 _loginErrorState.value = "The email address is already in use by another account."
             } catch (e: Exception) {
                 Timber.log(1, e.message.toString())
-                _loginErrorState.value = "Account creation failed: ${e.message}"
+                _loginErrorState.value = "Account creation failed: $e"
             }
         }
     }

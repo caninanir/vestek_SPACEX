@@ -101,7 +101,7 @@ fun LaunchDetail(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 50.dp),
+                    .padding(top = 35.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onClose, modifier = Modifier.size(48.dp)) {
@@ -184,7 +184,7 @@ fun LaunchDetail(
                     .padding(bottom = 30.dp, top = 30.dp, start = 4.dp, end = 16.dp)
             ) {
                 val dateComponents = extractDateComponents(launch.dateUtc)
-                val fontSize = 40f
+                val fontSize = 50f
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly // Evenly space the columns
