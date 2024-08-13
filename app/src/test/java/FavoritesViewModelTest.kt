@@ -2,22 +2,25 @@ package com.caninanir.spacex
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.caninanir.spacex.presentation.viewmodel.FavoritesViewModel
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import io.mockk.*
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.*
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.*
 import timber.log.Timber
-
 
 @ExperimentalCoroutinesApi
 class FavoritesViewModelTest {
@@ -56,18 +59,18 @@ class FavoritesViewModelTest {
         val documentSnapshotMock = mockk<DocumentSnapshot>(relaxed = true) {
             every { data } returns mapOf("favorites" to initialFavorites)
         }
-        val listenerMock = slot<(DocumentSnapshot?, FirebaseFirestoreException?) -> Unit>()
+        val listenerSlot = slot<EventListener<DocumentSnapshot>>()
 
         val documentReferenceMock = mockk<DocumentReference>(relaxed = true)
         val listenerRegistrationMock = mockk<ListenerRegistration>(relaxed = true)
 
-        // Correctly mock the nested calls
         every { firestore.collection("users").document(testEmail) } returns documentReferenceMock
-        every { documentReferenceMock.addSnapshotListener(capture(listenerMock)) } returns listenerRegistrationMock
+        every { documentReferenceMock.addSnapshotListener(capture(listenerSlot)) } returns listenerRegistrationMock
 
         favoritesViewModel = FavoritesViewModel(firebaseAuth, firestore)
 
-        listenerMock.captured(documentSnapshotMock, null)
+        // Trigger the listener
+        listenerSlot.captured.onEvent(documentSnapshotMock, null)
 
         advanceUntilIdle()
 
@@ -78,74 +81,70 @@ class FavoritesViewModelTest {
     fun `toggleFavorite updates favorite status in firestore`() = runTest {
         val testEmail = "test12@gmail.com"
         val rocketName = "Falcon 1"
-        val initialFavorites = setOf("Falcon 1")
+        val initialState = mapOf("favorites" to mapOf(rocketName to true))
 
         val firebaseUserMock = mockk<FirebaseUser>(relaxed = true) {
             every { email } returns testEmail
         }
         every { firebaseAuth.currentUser } returns firebaseUserMock
 
-        val documentReferenceMock = mockk<DocumentReference>(relaxed = true)
-        every { firestore.collection("users").document(testEmail) } returns documentReferenceMock
-
-        // Simulate initial favorite status
         val documentSnapshotMock = mockk<DocumentSnapshot>(relaxed = true) {
-            every { data } returns mapOf("favorites" to initialFavorites.associateWith { true })
+            every { data } returns initialState
         }
-        val listenerMock = slot<(DocumentSnapshot?, FirebaseFirestoreException?) -> Unit>()
-        every { documentReferenceMock.addSnapshotListener(capture(listenerMock)) } returns mockk(relaxed = true)
+        val listenerSlot = slot<EventListener<DocumentSnapshot>>()
+        val documentReferenceMock = mockk<DocumentReference>(relaxed = true)
+
+        every { firestore.collection("users").document(testEmail) } returns documentReferenceMock
+        every { documentReferenceMock.addSnapshotListener(capture(listenerSlot)) } returns mockk<ListenerRegistration>(relaxed = true)
 
         favoritesViewModel = FavoritesViewModel(firebaseAuth, firestore)
 
         // Trigger listener to set initial favorites
-        listenerMock.captured(documentSnapshotMock, null)
+        listenerSlot.captured.onEvent(documentSnapshotMock, null)
 
-        // Now toggle favorite
         favoritesViewModel.toggleFavorite(rocketName)
 
         advanceUntilIdle()
 
-        verify { documentReferenceMock.update("favorites.Falcon 1", false) }
+        verify { documentReferenceMock.update("favorites.$rocketName", false) }
     }
 
     @Test
     fun `toggleFavorite adds favorite status in firestore`() = runTest {
         val testEmail = "test12@gmail.com"
         val rocketName = "Falcon 9"
-        val initialFavorites = setOf("Falcon 1")
+        val initialState = mapOf("favorites" to mapOf("Falcon 1" to true))
 
         val firebaseUserMock = mockk<FirebaseUser>(relaxed = true) {
             every { email } returns testEmail
         }
         every { firebaseAuth.currentUser } returns firebaseUserMock
 
-        val documentReferenceMock = mockk<DocumentReference>(relaxed = true)
-        every { firestore.collection("users").document(testEmail) } returns documentReferenceMock
-
-        // Simulate initial favorite status
         val documentSnapshotMock = mockk<DocumentSnapshot>(relaxed = true) {
-            every { data } returns mapOf("favorites" to initialFavorites.associateWith { true })
+            every { data } returns initialState
         }
-        val listenerMock = slot<(DocumentSnapshot?, FirebaseFirestoreException?) -> Unit>()
-        every { documentReferenceMock.addSnapshotListener(capture(listenerMock)) } returns mockk(relaxed = true)
+        val listenerSlot = slot<EventListener<DocumentSnapshot>>()
+        val documentReferenceMock = mockk<DocumentReference>(relaxed = true)
+
+        every { firestore.collection("users").document(testEmail) } returns documentReferenceMock
+        every { documentReferenceMock.addSnapshotListener(capture(listenerSlot)) } returns mockk<ListenerRegistration>(relaxed = true)
 
         favoritesViewModel = FavoritesViewModel(firebaseAuth, firestore)
 
         // Trigger listener to set initial favorites
-        listenerMock.captured(documentSnapshotMock, null)
+        listenerSlot.captured.onEvent(documentSnapshotMock, null)
 
-        // Now toggle favorite
         favoritesViewModel.toggleFavorite(rocketName)
 
         advanceUntilIdle()
 
-        verify { documentReferenceMock.update("favorites.Falcon 9", true) }
+        verify { documentReferenceMock.update("favorites.$rocketName", true) }
     }
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain() // Reset the Main dispatcher to the original Main dispatcher
+        Dispatchers.resetMain()
         unmockkAll()
-        Timber.uprootAll() // Remove any Timber trees
+        Timber.uprootAll()
     }
 }
