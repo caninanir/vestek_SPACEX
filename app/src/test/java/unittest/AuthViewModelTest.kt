@@ -1,4 +1,4 @@
-package com.caninanir.spacex
+package unittest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.caninanir.spacex.presentation.viewmodel.AuthViewModel

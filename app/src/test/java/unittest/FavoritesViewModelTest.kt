@@ -1,4 +1,4 @@
-package com.caninanir.spacex
+package unittest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.caninanir.spacex.presentation.viewmodel.FavoritesViewModel
@@ -8,7 +8,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import io.mockk.*
 import junit.framework.TestCase.assertEquals

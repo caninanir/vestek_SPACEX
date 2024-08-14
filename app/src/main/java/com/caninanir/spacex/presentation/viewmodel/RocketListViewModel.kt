@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RocketListViewModel @Inject constructor(
+open class RocketListViewModel @Inject constructor(
     private val fetchRocketsUseCase: FetchRocketsUseCase
 ) : ViewModel() {
 
     private val _rockets = MutableStateFlow<List<Rocket>>(emptyList())
-    val rockets: StateFlow<List<Rocket>> = _rockets
+    open val rockets: StateFlow<List<Rocket>> = _rockets
 
     init {
         fetchRockets()

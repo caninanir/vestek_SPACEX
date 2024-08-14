@@ -10,12 +10,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(
+open class FavoritesViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore
 ) : ViewModel() {
     private val _favorites = MutableStateFlow<Set<String>>(emptySet())
-    val favorites: StateFlow<Set<String>> = _favorites
+    open val favorites: StateFlow<Set<String>> = _favorites
 
     init {
         auth.currentUser?.let {

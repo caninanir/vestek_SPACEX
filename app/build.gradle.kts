@@ -74,6 +74,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.ui:ui-test-junit4-android:1.6.8")
     testImplementation("androidx.arch.core:core-testing:2.2.0") // Use in debug only
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
@@ -125,8 +126,6 @@ dependencies {
 
     // AndroidX Testing
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.49")
