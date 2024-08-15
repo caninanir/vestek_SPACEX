@@ -1,5 +1,3 @@
-package unittest
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.caninanir.spacex.presentation.viewmodel.AuthViewModel
 import com.google.android.gms.tasks.Task

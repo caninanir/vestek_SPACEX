@@ -1,5 +1,3 @@
-package unittest
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.caninanir.spacex.presentation.viewmodel.FavoritesViewModel
 import com.google.firebase.auth.FirebaseAuth

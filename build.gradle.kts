@@ -5,12 +5,18 @@ plugins {
     id("com.google.gms.google-services") version "4.4.2" apply false
     id("com.google.devtools.ksp") version "2.0.0-1.0.24" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" apply false
-    id("com.google.dagger.hilt.android") version "2.49" apply false
+    id("com.google.dagger.hilt.android") version "2.52" apply false
 }
 
 buildscript {
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
     dependencies {
         classpath("com.google.gms:google-services:4.4.2")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.49")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.52")
     }
 }
