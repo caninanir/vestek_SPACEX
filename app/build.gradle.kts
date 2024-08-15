@@ -25,18 +25,10 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "dagger.hilt.android.testing.HiltTestRunner"
-        vectorDrawables {
+       vectorDrawables {
             useSupportLibrary = true
         }
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf(
-                    "dagger.hilt.android.internal.disableAndroidSuperclassValidation" to "true"
-                )
-            }
-        }
 
 
         buildTypes {
@@ -126,7 +118,7 @@ android {
         implementation("androidx.room:room-ktx:2.6.1")
 
         // Hilt
-        implementation("com.google.dagger:hilt-android:2.49")
+        implementation("com.google.dagger:hilt-android:2.52")
         kapt("com.google.dagger:hilt-android-compiler:2.49")
         implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
@@ -139,12 +131,12 @@ android {
         testImplementation("junit:junit:4.13.2")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
         testImplementation("io.mockk:mockk:1.13.5")
-        testImplementation("com.google.dagger:hilt-android-testing:2.49")
+        testImplementation("com.google.dagger:hilt-android-testing:2.52")
         kaptTest("com.google.dagger:hilt-android-compiler:2.49")
         testImplementation("androidx.arch.core:core-testing:2.2.0")
 
         // Android Test Implementation
-        androidTestImplementation("com.google.dagger:hilt-android-testing:2.49")
+        androidTestImplementation("com.google.dagger:hilt-android-testing:2.52")
         kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.49")
 
 
@@ -176,11 +168,6 @@ android {
     }
     kapt {
         correctErrorTypes = true
-    }
-    hilt {
-        enableAggregatingTask = true
-        enableTransformForLocalTests = true
-        enableExperimentalClasspathAggregation = true
     }
 }
 
